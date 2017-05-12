@@ -3,18 +3,21 @@
 <head>
   <meta charset="utf-8">
   
-  <title>first Blog | FatOfYoung</title>
+  <title>关于在Mac下配置Hexo | FatOfYoung</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Hahah">
+  <meta name="description" content="关于Hexo在Mac下的配置，百度上可以搜出大量的教程。但我在配置的过程中出现了一些教程未提及的错误。 ##node版本不足##  首先在终端输入执行安装命令     12345678910111213	$ sudo npm install -g hexo-cli  		```  - 报错如下   ![](img/1_1.png) 根据提示信息，是因为系统中Node.js的版本不够所导致。  -">
 <meta property="og:type" content="article">
-<meta property="og:title" content="first Blog">
+<meta property="og:title" content="关于在Mac下配置Hexo">
 <meta property="og:url" content="/2017/05/12/first-Blog/index.html">
 <meta property="og:site_name" content="FatOfYoung">
-<meta property="og:description" content="Hahah">
-<meta property="og:updated_time" content="2017-05-12T03:50:52.000Z">
+<meta property="og:description" content="关于Hexo在Mac下的配置，百度上可以搜出大量的教程。但我在配置的过程中出现了一些教程未提及的错误。 ##node版本不足##  首先在终端输入执行安装命令     12345678910111213	$ sudo npm install -g hexo-cli  		```  - 报错如下   ![](img/1_1.png) 根据提示信息，是因为系统中Node.js的版本不够所导致。  -">
+<meta property="og:image" content="/2017/05/12/first-Blog/img/1_5.png">
+<meta property="og:image" content="/2017/05/12/first-Blog/img/1_6.png">
+<meta property="og:updated_time" content="2017-05-12T10:36:58.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="first Blog">
-<meta name="twitter:description" content="Hahah">
+<meta name="twitter:title" content="关于在Mac下配置Hexo">
+<meta name="twitter:description" content="关于Hexo在Mac下的配置，百度上可以搜出大量的教程。但我在配置的过程中出现了一些教程未提及的错误。 ##node版本不足##  首先在终端输入执行安装命令     12345678910111213	$ sudo npm install -g hexo-cli  		```  - 报错如下   ![](img/1_1.png) 根据提示信息，是因为系统中Node.js的版本不够所导致。  -">
+<meta name="twitter:image" content="/2017/05/12/first-Blog/img/1_5.png">
   
     <link rel="alternate" href="/atom.xml" title="FatOfYoung" type="application/atom+xml">
   
@@ -81,7 +84,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      first Blog
+      关于在Mac下配置Hexo
     </h1>
   
 
@@ -89,12 +92,37 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Hahah</p>
+        <p>关于Hexo在Mac下的配置，百度上可以搜出大量的教程。<br>但我在配置的过程中出现了一些教程未提及的错误。</p>
+<p>##node版本不足##</p>
+<ul>
+<li><p>首先在终端输入执行安装命令  </p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">	$ sudo npm install -g hexo-cli  </div><div class="line">	</div><div class="line">	```  </div><div class="line"></div><div class="line">- 报错如下</div><div class="line"></div><div class="line">   ![](img/1_1.png)</div><div class="line"></div><div class="line"> 根据提示信息，是因为系统中Node.js的版本不够所导致。  </div><div class="line"></div><div class="line">- 于是更新最新版node  </div><div class="line"></div><div class="line">  输入命令如下</div></pre></td></tr></table></figure>
+<p>  $ sudo n lastest</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">安装完毕后再次输入安装命令即可  </div><div class="line"></div><div class="line">##Hexo config文件格式错误##</div><div class="line">- 在配置_config.yml完毕后，输入</div></pre></td></tr></table></figure>
+<p>  $ sudo hexo s</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">- 出现错误如下  </div><div class="line"></div><div class="line">   ![](img/1_3.png) </div><div class="line"></div><div class="line">	原因出于_config.yml中每个value和key之间必须存在一个空格，否则将无法编译。  </div><div class="line"></div><div class="line">##编辑.md文件时的权限问题##</div><div class="line">- 有两种解决方案  </div><div class="line"></div><div class="line">	1. 提升mac最高root权限  </div><div class="line">	- 修改.md文件的权限值</div><div class="line">	   </div><div class="line">- 关于第一种可以自行百度,尝试使用第二种方式解决。  </div><div class="line">   </div><div class="line">  输入</div></pre></td></tr></table></figure>
+<p>  $ ls -al [/path/fileName]</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">	![](img/1_4.png)  </div><div class="line">   </div><div class="line">	发现 .md文件及文件夹针对admin用户组仅提供Read权限。由于我登陆的用户属于admin组别，于是提升组别权限即可。  </div><div class="line">  </div><div class="line">- 分别针对.md文件及.md所在文件夹输入命令</div></pre></td></tr></table></figure>
+<p>  $ sudo chmod 771 [/path/fileName]<br>  ```  </p>
+<p>  <img src="img/1_5.png" alt=""> </p>
+<p>  即可。</p>
+</li>
+</ul>
+<p>##GitHub出现404界面##</p>
+<ul>
+<li><p>此issue隐藏的极为隐蔽，但鲜有教程会提及。  </p>
+</li>
+<li><p>原因是GitHub的Organization和所建立的Repository名称必须保持一致，但可以不区分大小写。</p>
+</li>
+<li><p>如图所示  </p>
+<p> <img src="img/1_6.png" alt="">  </p>
+</li>
+</ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="/2017/05/12/first-Blog/" data-id="cj2lij2vc0000b1qr4hlg1bht" class="article-share-link">Share</a>
+      <a data-url="/2017/05/12/first-Blog/" data-id="cj2lps5kz0000z3qr9ykagsbb" class="article-share-link">Share</a>
       
       
     </footer>
@@ -133,7 +161,7 @@
       <ul>
         
           <li>
-            <a href="/2017/05/12/first-Blog/">first Blog</a>
+            <a href="/2017/05/12/first-Blog/">关于在Mac下配置Hexo</a>
           </li>
         
       </ul>
