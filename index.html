@@ -250,7 +250,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="/2017/05/12/aboutSetuoHexoInMac/">
+    <link itemprop="mainEntityOfPage" href="/2017/05/12/firstMD-0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mornchan">
@@ -272,7 +272,7 @@
             
               
                 
-                <a class="post-title-link" href="/2017/05/12/aboutSetuoHexoInMac/" itemprop="url">
+                <a class="post-title-link" href="/2017/05/12/firstMD-0/" itemprop="url">
                   关于在Mac下配置Hexo
                 </a>
               
@@ -300,6 +300,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Others/" itemprop="url" rel="index">
+                    <span itemprop="name">Others</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -307,7 +329,7 @@
 
           
           
-             <span id="/2017/05/12/aboutSetuoHexoInMac/" class="leancloud_visitors" data-flag-title="关于在Mac下配置Hexo">
+             <span id="/2017/05/12/firstMD-0/" class="leancloud_visitors" data-flag-title="关于在Mac下配置Hexo">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -368,15 +390,20 @@
 <h2 id="编辑-md文件时的权限问题"><a href="#编辑-md文件时的权限问题" class="headerlink" title="编辑.md文件时的权限问题"></a>编辑.md文件时的权限问题</h2><ul>
 <li><p>有两种解决方案  </p>
 <ol>
-<li>提升mac最高root权限  </li>
-<li>修改.md文件的权限值</li>
+<li>提升mac最高root权限</li>
+<li>修改.md文件的权限值  </li>
 </ol>
 </li>
 <li><p>关于第一种可以自行百度,尝试使用第二种方式解决。  </p>
 <p>输入</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">	$ ls -al [/path/fileName]</div><div class="line">	```  </div><div class="line">	![](http://i4.buimg.com/1949/b7dbc49f2574c8c9.png)  </div><div class="line">   </div><div class="line">	发现 .md文件及文件夹针对admin用户组仅提供Read权限。和我目前登陆的用户属于同一组别，于是提升组别权限即可。  </div><div class="line">  </div><div class="line">- 分别针对.md文件及.md所在文件夹  </div><div class="line"></div><div class="line"></div><div class="line">  输入命令</div></pre></td></tr></table></figure>
-<p>  $ sudo chmod 771 [/path/fileName]<br>  ```  </p>
-<p>  <img src="http://i4.buimg.com/1949/7f3a05b500bed3f7.png" alt=""> </p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ls -al [/path/fileName]</div></pre></td></tr></table></figure>
+<p>  <img src="http://i4.buimg.com/1949/b7dbc49f2574c8c9.png" alt="">  </p>
+<p>  发现 .md文件及文件夹针对admin用户组仅提供Read权限。和我目前登陆的用户属于同一组别，于是提升组别权限即可。  </p>
+</li>
+<li><p>分别针对.md文件及.md所在文件夹  </p>
+<p>输入命令</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo chmod 771 [/path/fileName]</div></pre></td></tr></table></figure>
+<p>  <img src="http://i4.buimg.com/1949/7f3a05b500bed3f7.png" alt="">  </p>
 <p>  即可。</p>
 </li>
 </ul>
@@ -469,6 +496,13 @@
             </div>
           
 
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
           
 
           
@@ -621,18 +655,21 @@
 
 
   
-
-
-
-
-
+    
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "3fc13b2e556a433b9ef53c2529dba4b2",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
   
 
 
 
 
-
-  
 
 
 
