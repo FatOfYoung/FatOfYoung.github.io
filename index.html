@@ -366,7 +366,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo npm install -g hexo-cli</div></pre></td></tr></table></figure>
 </li>
 <li><p>报错如下</p>
-<p><img src="http://i4.buimg.com/1949/928d9205afb6c7d9.png" alt=""></p>
+<p><img src="/img/1_1.png" alt=""></p>
 <p>根据提示信息，因为系统中Node.js的不是最新版所致。  </p>
 </li>
 </ul>
@@ -383,7 +383,7 @@
  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo hexo s</div></pre></td></tr></table></figure>
 </li>
 <li><p>出现错误如下  </p>
-<p> <img src="http://i4.buimg.com/1949/c4141c4c2a888338.png" alt=""> </p>
+<p> <img src="/img/1_2.png" alt=""> </p>
 </li>
 </ul>
 <p>原因为_config.yml中每个value和key之间必须存在一个空格，否则将无法编译。  </p>
@@ -397,13 +397,13 @@
 <li><p>关于第一种可以自行百度,尝试使用第二种方式解决。  </p>
 <p>输入</p>
   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ls -al [/path/fileName]</div></pre></td></tr></table></figure>
-<p>  <img src="/uploads/1_1.png" alt="">  </p>
+<p>  <img src="/img/1_3.png" alt="">  </p>
 <p>  发现 .md文件及文件夹针对admin用户组仅提供Read权限。和我目前登陆的用户属于同一组别，于是提升组别权限即可。  </p>
 </li>
 <li><p>分别针对.md文件及.md所在文件夹  </p>
 <p>输入命令</p>
   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo chmod 771 [/path/fileName]</div></pre></td></tr></table></figure>
-<p>  <img src="http://i4.buimg.com/1949/7f3a05b500bed3f7.png" alt="">  </p>
+<p>  <img src="/img/1_4.png" alt="">  </p>
 <p>  即可。</p>
 </li>
 </ul>
@@ -411,7 +411,7 @@
 <li><p>此issue极为隐蔽，但鲜有教程会提及。  </p>
 </li>
 <li><p>原因是GitHub的Organization和所建立的Repository名称未一致，改为同样即可（可以不区分大小写）。</p>
-<p> <img src="http://i4.buimg.com/1949/07be4e7c29d60a78.png" alt=""> </p>
+<p> <img src="/img/1_5.png" alt=""> </p>
 </li>
 </ul>
 
