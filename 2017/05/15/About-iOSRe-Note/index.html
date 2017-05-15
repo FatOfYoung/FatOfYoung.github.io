@@ -87,17 +87,17 @@
 
 
 
-<meta name="description" content="由于iOS逆向debug会涉及到很多命令，而且大多数都很长。如果不是频繁的使用，很容易会忘记。所以此文将记录我曾使用过的一些简单高频的指令。 SSH123456789$ ssh root@[ip] //连接iPhone$ cycript -p appKey //注入cycript$ clutch -i //获取所有安装App的bundleID$ ps -e | grep /Application">
+<meta name="description" content="由于iOS逆向debug会涉及到很多命令，而且大多数都很长。如果不是频繁的使用，很容易会遗忘。">
 <meta name="keywords" content="iOSRe">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOSRe Debug基础指令速查表">
 <meta property="og:url" content="/2017/05/15/About-iOSRe-Note/index.html">
 <meta property="og:site_name" content="FatOfYoung">
-<meta property="og:description" content="由于iOS逆向debug会涉及到很多命令，而且大多数都很长。如果不是频繁的使用，很容易会忘记。所以此文将记录我曾使用过的一些简单高频的指令。 SSH123456789$ ssh root@[ip] //连接iPhone$ cycript -p appKey //注入cycript$ clutch -i //获取所有安装App的bundleID$ ps -e | grep /Application">
-<meta property="og:updated_time" content="2017-05-15T09:27:06.000Z">
+<meta property="og:description" content="由于iOS逆向debug会涉及到很多命令，而且大多数都很长。如果不是频繁的使用，很容易会遗忘。">
+<meta property="og:updated_time" content="2017-05-15T09:49:43.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOSRe Debug基础指令速查表">
-<meta name="twitter:description" content="由于iOS逆向debug会涉及到很多命令，而且大多数都很长。如果不是频繁的使用，很容易会忘记。所以此文将记录我曾使用过的一些简单高频的指令。 SSH123456789$ ssh root@[ip] //连接iPhone$ cycript -p appKey //注入cycript$ clutch -i //获取所有安装App的bundleID$ ps -e | grep /Application">
+<meta name="twitter:description" content="由于iOS逆向debug会涉及到很多命令，而且大多数都很长。如果不是频繁的使用，很容易会遗忘。">
 
 
 
@@ -343,7 +343,7 @@
       
 
       
-        <p>由于iOS逆向<strong>debug</strong>会涉及到很多命令，而且大多数都很长。如果不是频繁的使用，很容易会忘记。所以此文将记录我曾使用过的一些简单高频的指令。</p>
+        <p>由于iOS逆向<strong>debug</strong>会涉及到很多命令，而且大多数都很长。如果不是频繁的使用，很容易会遗忘。<a id="more"></a>所以此文将记录我曾使用过的一些简单高频的指令。</p>
 <h1 id="SSH"><a href="#SSH" class="headerlink" title="SSH"></a>SSH</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$ ssh root@[ip] //连接iPhone</div><div class="line">$ cycript -p appKey //注入cycript</div><div class="line">$ clutch -i //获取所有安装App的bundleID</div><div class="line">$ ps -e | grep /Application //获取所有当前运行的App的路径</div><div class="line">$ clutch -d [bundleID] //砸壳</div><div class="line">$ debug server *:[port] -a [bundleID]</div><div class="line">//指定端口号开启app调试监听状态</div><div class="line">$ socat - UNIX-CONNECT:/var/run/lockdown/syslog.sock </div><div class="line">//获取系统（或者指定的hook函数）所有打印信息</div></pre></td></tr></table></figure>
 <p>关于socat的配置及使用可<a href="http://daringfireball.net/projects/markdown/syntax" target="_blank" rel="external">参照</a></p>
 <h1 id="Cycript"><a href="#Cycript" class="headerlink" title="Cycript"></a>Cycript</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">#cycript [[[UIWindow keyWindow] rootViewController] _printHierarchy].toString() </div><div class="line">//打印所有控制器</div><div class="line">#cycript [choose(SBApplicationController)[0] _methodDescription].toString() </div><div class="line">//打印所有属性</div><div class="line">#cycript [[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] </div><div class="line">//沙盒打印</div></pre></td></tr></table></figure>

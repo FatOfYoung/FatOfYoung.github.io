@@ -337,25 +337,14 @@
 
       
         
-          
-            <p>由于iOS逆向<strong>debug</strong>会涉及到很多命令，而且大多数都很长。如果不是频繁的使用，很容易会忘记。所以此文将记录我曾使用过的一些简单高频的指令。</p>
-<h1 id="SSH"><a href="#SSH" class="headerlink" title="SSH"></a>SSH</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$ ssh root@[ip] //连接iPhone</div><div class="line">$ cycript -p appKey //注入cycript</div><div class="line">$ clutch -i //获取所有安装App的bundleID</div><div class="line">$ ps -e | grep /Application //获取所有当前运行的App的路径</div><div class="line">$ clutch -d [bundleID] //砸壳</div><div class="line">$ debug server *:[port] -a [bundleID]</div><div class="line">//指定端口号开启app调试监听状态</div><div class="line">$ socat - UNIX-CONNECT:/var/run/lockdown/syslog.sock </div><div class="line">//获取系统（或者指定的hook函数）所有打印信息</div></pre></td></tr></table></figure>
-<p>关于socat的配置及使用可<a href="http://daringfireball.net/projects/markdown/syntax" target="_blank" rel="external">参照</a></p>
-<h1 id="Cycript"><a href="#Cycript" class="headerlink" title="Cycript"></a>Cycript</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">#cycript [[[UIWindow keyWindow] rootViewController] _printHierarchy].toString() </div><div class="line">//打印所有控制器</div><div class="line">#cycript [choose(SBApplicationController)[0] _methodDescription].toString() </div><div class="line">//打印所有属性</div><div class="line">#cycript [[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] </div><div class="line">//沙盒打印</div></pre></td></tr></table></figure>
-<h1 id="LLDB"><a href="#LLDB" class="headerlink" title="LLDB"></a>LLDB</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(lldb) process connect connect://[IP:port] //连接指定的ip进行断点调试</div></pre></td></tr></table></figure>
-<h3 id="参数打印-x64"><a href="#参数打印-x64" class="headerlink" title="参数打印(x64)"></a>参数打印(x64)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">(lldb) po $x0 </div><div class="line">(lldb) p (char*)x0</div><div class="line">(lldb) p (SEL)x0</div></pre></td></tr></table></figure>
-<h3 id="修改值Exg"><a href="#修改值Exg" class="headerlink" title="修改值Exg"></a>修改值Exg</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">(lldb) expr char *$str = (char *)malloc(8)</div><div class="line">(lldb) expr (void)strcpy($str, &quot;munkeys&quot;)</div><div class="line">(lldb) expr $str[1] = &apos;o&apos;</div><div class="line">(char) $0 = &apos;o&apos;</div><div class="line">(lldb) p $str</div><div class="line">(char *) $str = 0x00007fd04a900040 &quot;monkeys&quot;</div><div class="line"></div><div class="line">(lldb) x/4c $str</div><div class="line">(lldb) x/1w `$str + 3`</div><div class="line">(lldb) expr (void)free($str)</div><div class="line"></div><div class="line">(lldb) expr id $myView = (id)0x7f82b1d01fd0</div><div class="line">(lldb) expr (void)[$myView setBackgroundColor:[UIColor blueColor]]</div><div class="line">(lldb) expr (void)[CATransaction flush]</div><div class="line"></div><div class="line">(lldb) po [$myButton allTargets]</div><div class="line"></div><div class="line">(lldb) p (ptrdiff_t)ivar_getOffset((struct Ivar *)class_getInstanceVariable([MyView class], &quot;_layer&quot;))</div></pre></td></tr></table></figure>
-<h3 id="读取内存值"><a href="#读取内存值" class="headerlink" title="读取内存值"></a>读取内存值</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mem read -s A -f  B -c C 0x0000  </div><div class="line">//A:位数 B:格式(如x 将显示16进制) C:显示数量</div></pre></td></tr></table></figure>
-<h3 id="断点设置"><a href="#断点设置" class="headerlink" title="断点设置"></a>断点设置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">br s -a 0x11111111 //设置断点</div><div class="line">br list //查看所有断点信息</div><div class="line">br del x //删除指定断点x</div><div class="line">br en //断点开启</div><div class="line">br dis //断点失效</div></pre></td></tr></table></figure>
-<h3 id="获取Controller方法地址"><a href="#获取Controller方法地址" class="headerlink" title="获取Controller方法地址"></a>获取Controller方法地址</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(lldb) po [someController _shortMethodDescription]</div></pre></td></tr></table></figure>
-<p>此方法将显示实际地址，无需再使用<figure class="highlight plain"><figcaption><span>list -o -f```获取偏移计算地址。</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">但需基于Python的Chisel支持。关于Chisel的配置可[参考]()</div><div class="line"></div><div class="line"># Class-dump</div></pre></td></tr></table></figure></p>
-<p>$ cd /pathTo/xxx.app<br>$ class-dump -s -S -H xxx.decrypted -o /pathTo/Headers<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">xxx.decrypted为xxx.app中二进制可执行文件。</div><div class="line"></div><div class="line"></div><div class="line">#Otool</div></pre></td></tr></table></figure></p>
-<p>$ otool -l xxx.decrypted | grep crypt</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">若cryptid返回值为0,则砸壳成功</div><div class="line"></div><div class="line"></div><div class="line"># Theos</div></pre></td></tr></table></figure>
-<p>/pathTo/opt/theos/bin/nic.pl //创建theos<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">### 给指定的.h文件中所有的函数添加%log</div></pre></td></tr></table></figure></p>
-<p>pathTo/opt/theos/bin/logify.pl pathTo/xxx.h &gt; pathTo/Tweak.xm<br>```</p>
-
-          
+          <p>由于iOS逆向<strong>debug</strong>会涉及到很多命令，而且大多数都很长。如果不是频繁的使用，很容易会遗忘。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/05/15/About-iOSRe-Note/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -481,63 +470,14 @@
 
       
         
-          
-            <p>关于Hexo在Mac下的配置，百度上可以搜出大量的教程。<br>虽然并不复杂，但作为第一次的配置，不免会犯下了一些错误。所以本文将记录此次操作中遇到的一些<strong>issue</strong></p>
-<h2 id="node版本不足"><a href="#node版本不足" class="headerlink" title="node版本不足"></a>node版本不足</h2><ul>
-<li><p>首先在终端输入执行安装hexo命令</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo npm install -g hexo-cli</div></pre></td></tr></table></figure>
-</li>
-<li><p>报错如下</p>
-<p><img src="/img/1_1.png" alt=""></p>
-<p>根据提示信息，因为系统中Node.js的不是最新版所致。  </p>
-</li>
-</ul>
-<ul>
-<li><p>于是更新最新版node  </p>
-<p>输入命令如下</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo n lastest</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>安装完毕后再次输入安装命令即可  </p>
-<h2 id="Hexo-config文件格式错误"><a href="#Hexo-config文件格式错误" class="headerlink" title="Hexo config文件格式错误"></a>Hexo config文件格式错误</h2><ul>
-<li><p>在配置_config.yml完毕后，  </p>
-<p>输入</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo hexo s</div></pre></td></tr></table></figure>
-</li>
-<li><p>出现错误如下  </p>
-<p> <img src="/img/1_2.png" alt=""> </p>
-</li>
-</ul>
-<p>原因为_config.yml中每个value和key之间必须存在一个空格，否则将无法编译。  </p>
-<h2 id="编辑-md文件时的权限问题"><a href="#编辑-md文件时的权限问题" class="headerlink" title="编辑.md文件时的权限问题"></a>编辑.md文件时的权限问题</h2><ul>
-<li><p>有两种解决方案  </p>
-<ol>
-<li>提升mac最高root权限</li>
-<li>修改.md文件的权限值  </li>
-</ol>
-</li>
-<li><p>关于第一种可以自行百度,尝试使用第二种方式解决。  </p>
-<p>输入</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ls -al [/path/fileName]</div></pre></td></tr></table></figure>
-<p>  <img src="/img/1_3.png" alt="">  </p>
-<p>  发现 .md文件及文件夹针对admin用户组仅提供Read权限。和我目前登陆的用户属于同一组别，于是提升组别权限即可。  </p>
-</li>
-<li><p>分别针对.md文件及.md所在文件夹  </p>
-<p>输入命令</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo chmod 771 [/path/fileName]</div></pre></td></tr></table></figure>
-<p>  <img src="/img/1_4.png" alt="">  </p>
-<p>  即可。</p>
-</li>
-</ul>
-<h2 id="GitHub出现404界面"><a href="#GitHub出现404界面" class="headerlink" title="GitHub出现404界面"></a>GitHub出现404界面</h2><ul>
-<li><p>此issue极为隐蔽，但鲜有教程会提及。  </p>
-</li>
-<li><p>原因是GitHub的Organization和所建立的Repository名称未一致，改为同样即可（可以不区分大小写）。</p>
-<p> <img src="/img/1_5.png" alt=""> </p>
-</li>
-</ul>
-
-          
+          <p>关于Hexo在Mac下的配置，百度上可以搜出大量的教程。<br>虽然并不复杂，但作为第一次的配置，不免会犯下了一些错误。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/05/12/firstMD-0/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
