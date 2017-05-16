@@ -87,17 +87,19 @@
 
 
 
-<meta name="description" content="由于iOS逆向debug会涉及到很多命令，且大多看起来很生涩。如果不是频繁的使用，很容易会遗忘。">
+<meta name="description" content="小黄书中，狗神在函数打印时使用的是系统自带的Syslogd，但在iOS9中此功能已失效。于是通过Google找到了一款可替代的插件Socat。">
 <meta name="keywords" content="iOSRe">
 <meta property="og:type" content="article">
-<meta property="og:title" content="iOSRe Debug基础指令速查表">
-<meta property="og:url" content="/2017/05/15/About-iOSRe-Note/index.html">
+<meta property="og:title" content="Socat的配置使用">
+<meta property="og:url" content="/2017/05/16/setup-socat/index.html">
 <meta property="og:site_name" content="FatOfYoung">
-<meta property="og:description" content="由于iOS逆向debug会涉及到很多命令，且大多看起来很生涩。如果不是频繁的使用，很容易会遗忘。">
-<meta property="og:updated_time" content="2017-05-15T13:00:31.000Z">
+<meta property="og:description" content="小黄书中，狗神在函数打印时使用的是系统自带的Syslogd，但在iOS9中此功能已失效。于是通过Google找到了一款可替代的插件Socat。">
+<meta property="og:image" content="/img/setup-socat-1.png">
+<meta property="og:updated_time" content="2017-05-16T02:36:13.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="iOSRe Debug基础指令速查表">
-<meta name="twitter:description" content="由于iOS逆向debug会涉及到很多命令，且大多看起来很生涩。如果不是频繁的使用，很容易会遗忘。">
+<meta name="twitter:title" content="Socat的配置使用">
+<meta name="twitter:description" content="小黄书中，狗神在函数打印时使用的是系统自带的Syslogd，但在iOS9中此功能已失效。于是通过Google找到了一款可替代的插件Socat。">
+<meta name="twitter:image" content="/img/setup-socat-1.png">
 
 
 
@@ -125,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="/2017/05/15/About-iOSRe-Note/"/>
+  <link rel="canonical" href="/2017/05/16/setup-socat/"/>
 
 
 
 
 
-  <title> iOSRe Debug基础指令速查表 | FatOfYoung </title>
+  <title> Socat的配置使用 | FatOfYoung </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -250,7 +252,7 @@
   
 
   <article class="post post-type-tags " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="/2017/05/15/About-iOSRe-Note/">
+    <link itemprop="mainEntityOfPage" href="/2017/05/16/setup-socat/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="fatofyoung@yeah.net">
@@ -271,7 +273,7 @@
             
             
               
-                iOSRe Debug基础指令速查表
+                Socat的配置使用
               
             
           </h1>
@@ -286,8 +288,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-15T15:04:39+08:00">
-                2017-05-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-16T09:32:49+08:00">
+                2017-05-16
               </time>
             
 
@@ -306,8 +308,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/05/15/About-iOSRe-Note/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count hc-comment-count" data-xid="2017/05/15/About-iOSRe-Note/" itemprop="commentsCount"></span>
+                <a href="/2017/05/16/setup-socat/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count hc-comment-count" data-xid="2017/05/16/setup-socat/" itemprop="commentsCount"></span>
                 </a>
               </span>
               <!--/noindex-->
@@ -316,7 +318,7 @@
 
           
           
-             <span id="/2017/05/15/About-iOSRe-Note/" class="leancloud_visitors" data-flag-title="iOSRe Debug基础指令速查表">
+             <span id="/2017/05/16/setup-socat/" class="leancloud_visitors" data-flag-title="Socat的配置使用">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -345,23 +347,64 @@
       
 
       
-        <p>由于iOS逆向<strong>debug</strong>会涉及到很多命令，且大多看起来很生涩。如果不是频繁的使用，很容易会遗忘。<a id="more"></a>所以此文将记录我曾使用过的一些简单高频的指令。</p>
-<h1 id="SSH"><a href="#SSH" class="headerlink" title="SSH"></a>SSH</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$ ssh root@[ip] //连接iPhone</div><div class="line">$ cycript -p appKey //注入cycript</div><div class="line">$ clutch -i //获取所有安装App的bundleID</div><div class="line">$ ps -e | grep /Application //获取所有当前运行的App的路径</div><div class="line">$ clutch -d [bundleID] //砸壳</div><div class="line">$ debug server *:[port] -a [bundleID]</div><div class="line">//指定端口号开启app调试监听状态</div><div class="line">$ socat - UNIX-CONNECT:/var/run/lockdown/syslog.sock </div><div class="line">//获取系统（或者指定的hook函数）所有打印信息</div></pre></td></tr></table></figure>
-<p>关于socat的配置及使用可<a href="">参照</a></p>
-<h1 id="Cycript"><a href="#Cycript" class="headerlink" title="Cycript"></a>Cycript</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">#cycript [[[UIWindow keyWindow] rootViewController] _printHierarchy].toString() </div><div class="line">//打印所有控制器</div><div class="line">#cycript [choose(SBApplicationController)[0] _methodDescription].toString() </div><div class="line">//打印所有属性</div><div class="line">#cycript [[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] </div><div class="line">//沙盒打印</div></pre></td></tr></table></figure>
-<h1 id="LLDB"><a href="#LLDB" class="headerlink" title="LLDB"></a>LLDB</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(lldb) process connect connect://[IP:port] //连接指定的ip进行断点调试</div><div class="line">(lldb) process interrupt //暂停进程</div></pre></td></tr></table></figure>
-<h4 id="参数打印-x64"><a href="#参数打印-x64" class="headerlink" title="参数打印(x64)"></a>参数打印(x64)</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">(lldb) po $x0 </div><div class="line">(lldb) p (char*)x0</div><div class="line">(lldb) p (SEL)x0</div></pre></td></tr></table></figure>
-<h4 id="修改值Exg"><a href="#修改值Exg" class="headerlink" title="修改值Exg"></a>修改值Exg</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">(lldb) expr char *$str = (char *)malloc(8)</div><div class="line">(lldb) expr (void)strcpy($str, &quot;munkeys&quot;)</div><div class="line">(lldb) expr $str[1] = &apos;o&apos;</div><div class="line">(char) $0 = &apos;o&apos;</div><div class="line">(lldb) p $str</div><div class="line">(char *) $str = 0x00007fd04a900040 &quot;monkeys&quot;</div><div class="line"></div><div class="line">(lldb) x/4c $str</div><div class="line">(lldb) x/1w `$str + 3`</div><div class="line">(lldb) expr (void)free($str)</div><div class="line"></div><div class="line">(lldb) expr id $myView = (id)0x7f82b1d01fd0</div><div class="line">(lldb) expr (void)[$myView setBackgroundColor:[UIColor blueColor]]</div><div class="line">(lldb) expr (void)[CATransaction flush]</div><div class="line"></div><div class="line">(lldb) po [$myButton allTargets]</div><div class="line"></div><div class="line">(lldb) p (ptrdiff_t)ivar_getOffset((struct Ivar *)class_getInstanceVariable([MyView class], &quot;_layer&quot;))</div></pre></td></tr></table></figure>
-<h4 id="读取内存值"><a href="#读取内存值" class="headerlink" title="读取内存值"></a>读取内存值</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">(lldb) mem read -s A -f  B -c C 0x0000  </div><div class="line">//A:位数 B:格式(如x 将显示16进制) C:显示数量</div></pre></td></tr></table></figure>
-<h4 id="断点设置"><a href="#断点设置" class="headerlink" title="断点设置"></a>断点设置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">(lldb) br s -a 0x11111111 //设置断点</div><div class="line">(lldb) br list //查看所有断点信息</div><div class="line">(lldb) br del x //删除指定断点x</div><div class="line">(lldb) br en //断点开启</div><div class="line">(lldb) br dis //断点失效</div></pre></td></tr></table></figure>
-<h4 id="获取Controller方法地址"><a href="#获取Controller方法地址" class="headerlink" title="获取Controller方法地址"></a>获取Controller方法地址</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(lldb) po [someController _shortMethodDescription]</div></pre></td></tr></table></figure>
-<p>此方法将显示实际地址，无需再使用<br><code>image list -o -f</code><br>获取偏移计算地址。  </p>
-<h1 id="Class-dump"><a href="#Class-dump" class="headerlink" title="Class-dump"></a>Class-dump</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ cd /pathTo/xxx.app</div><div class="line">$ class-dump -s -S -H xxx.decrypted -o /pathTo/Headers</div></pre></td></tr></table></figure>
-<p>xxx.decrypted为xxx.app中二进制可执行文件。</p>
-<h1 id="Otool"><a href="#Otool" class="headerlink" title="Otool"></a>Otool</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ otool -l xxx.decrypted | grep crypt</div></pre></td></tr></table></figure>
-<p>若cryptid返回值为0,则砸壳成功</p>
-<h1 id="Theos"><a href="#Theos" class="headerlink" title="Theos"></a>Theos</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&amp; /pathTo/opt/theos/bin/nic.pl //创建theos</div></pre></td></tr></table></figure>
-<h4 id="给指定的-h文件中所有的函数添加-log"><a href="#给指定的-h文件中所有的函数添加-log" class="headerlink" title="给指定的.h文件中所有的函数添加%log"></a>给指定的.h文件中所有的函数添加%log</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pathTo/opt/theos/bin/logify.pl pathTo/xxx.h &gt; pathTo/Tweak.xm</div></pre></td></tr></table></figure>
+        <p>小黄书中，狗神在函数打印时使用的是系统自带的<strong>Syslogd</strong>，<br>但在iOS9中此功能已失效。于是通过Google找到了一款可替代的插件<strong>Socat</strong>。<a id="more"></a></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>此插件可通过在Cydia搜索<code>SOcket CAT</code>安装。<br><img src="/img/setup-socat-1.png" alt=""></p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>可分别在Mac和iOS（iPhone需<strong>MTerminal</strong>插件）中使用。  </p>
+<h4 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">MorndeMacBook-Pro:~ mornchan$ ssh root@192.168.2.11</div><div class="line">root@192.168.2.11&apos;s password: </div><div class="line">Cache:~ root# socat - UNIX-CONNECT:/var/run/lockdown/syslog.sock</div><div class="line"></div><div class="line">========================</div><div class="line">ASL is here to serve you</div><div class="line">&gt; watch //输入watch可查看当前所有打印信息</div></pre></td></tr></table></figure>
+<p>输入<code>stop</code>可停止接收消息，  </p>
+<p><code>exit</code>退出socat</p>
+<h2 id="过滤"><a href="#过滤" class="headerlink" title="过滤"></a>过滤</h2><p>在多数情况下我们仅需要指定的打印信息，此时可用socat自带过滤功能。<br>格式为<code>* key value</code>  </p>
+<p><strong>key</strong>值可参照</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Exp</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> ASLMessageID</td>
+<td>asl消息id</td>
+</tr>
+<tr>
+<td> Level</td>
+<td>进程级别</td>
+</tr>
+<tr>
+<td> Time</td>
+<td>进程时间</td>
+</tr>
+<tr>
+<td> TimeNanoSec</td>
+<td>进程时间ns</td>
+</tr>
+<tr>
+<td> Sender</td>
+<td>进程消息发送者</td>
+</tr>
+<tr>
+<td> Facility</td>
+<td>进程BundleID</td>
+</tr>
+<tr>
+<td> PID</td>
+<td>进程id</td>
+</tr>
+<tr>
+<td> Message</td>
+<td>进程消息内容</td>
+</tr>
+<tr>
+<td> ReadUID</td>
+<td>读取所使用的用户ID</td>
+</tr>
+</tbody>
+</table>
+<h2 id="EXG"><a href="#EXG" class="headerlink" title="EXG"></a>EXG</h2><p>最常使用的过滤指令为<code>* Facility [bundleID]</code><br>这里以mobike的bundleID为例。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">* Facility com.mobike.bike</div><div class="line">May 16 10:22:03 Cache SpringBoard[304] &lt;Warning&gt;: No image found for recordID 0:eef0c5b1ea0a5f77:516594123.732903 yet we&apos;re being asked for a scale</div><div class="line">May 16 10:22:03 Cache SpringBoard[304] &lt;Warning&gt;: No image found for recordID 0:eef0c5b1ea0a5f77:516594123.732903 yet we&apos;re being asked for a scale</div><div class="line">May 16 10:22:04 Cache SpringBoard[304] &lt;Warning&gt;: SBLockScreenNotificationListController: Attempting to remove a bulletin I don&apos;t have</div><div class="line">May 16 10:22:04 Cache SpringBoard[304] &lt;Warning&gt;: SBLockScreenNotificationListController: Attempting to remove a bulletin I don&apos;t have</div><div class="line">watch //输入查看指令</div><div class="line">OK</div><div class="line"></div><div class="line">May 16 10:20:53 Cache Mobike[5708] &lt;Warning&gt;: TalkingData: enterForeground()# 读取缓存数据</div><div class="line">May 16 10:20:53 Cache Mobike[5708] &lt;Warning&gt;: TalkingData: Enter foreground.</div><div class="line">May 16 10:20:53 Cache Mobike[5708] &lt;Warning&gt;: TalkingData: Start a new session.</div><div class="line">May 16 10:20:53 Cache Mobike[5708] &lt;Warning&gt;: TalkingData: AdTracking Start sending data.</div><div class="line">May 16 10:20:54 Cache Mobike[5708] &lt;Warning&gt;: TalkingData: AdTracking Send data success!</div><div class="line">May 16 10:20:54 Cache Mobike[5708] &lt;Warning&gt;: Success to connect to NBSSERVER</div><div class="line">May 16 10:21:39 Cache Mobike[5708] &lt;Warning&gt;: Getui Sdk client has been registered as: 906143587378cfb09ecb1f23ccb5a1f9</div></pre></td></tr></table></figure>
+<p>更多指令可参照<strong>help</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">help</div><div class="line">Commands</div><div class="line">    quit                 exit session</div><div class="line">    select [val]         get [set] current database</div><div class="line">                         val must be &quot;file&quot; or &quot;mem&quot;</div><div class="line">    file [on/off]        enable / disable file store</div><div class="line">    memory [on/off]      enable / disable memory store</div><div class="line">    stats                database statistics</div><div class="line">    flush                flush database</div><div class="line">    dbsize [val]         get [set] database size (# of records)</div><div class="line">    watch                print new messages as they arrive</div><div class="line">    stop                 stop watching for new messages</div><div class="line">    raw                  use raw format for printing messages</div><div class="line">    std                  use standard format for printing messages</div><div class="line">    *                    show all log messages</div><div class="line">    * key val            equality search for messages (single key/value pair)</div><div class="line">    * op key val         search for matching messages (single key/value pair)</div><div class="line">    * [op key val] ...   search for matching messages (multiple key/value pairs)</div><div class="line">                         operators:  =  &lt;  &gt;  ! (not equal)  T (key exists)  R (regex)</div><div class="line">                         modifiers (must follow operator):</div><div class="line">                                 C=casefold  N=numeric  S=substring  A=prefix  Z=suffix</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -398,8 +441,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/05/12/firstMD-0/" rel="next" title="关于在Mac下配置Hexo">
-                <i class="fa fa-chevron-left"></i> 关于在Mac下配置Hexo
+              <a href="/2017/05/15/setup-chisel/" rel="next" title="Chisel的配置使用">
+                <i class="fa fa-chevron-left"></i> Chisel的配置使用
               </a>
             
           </div>
@@ -407,10 +450,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/05/15/setup-chisel/" rel="prev" title="Chisel的配置使用">
-                Chisel的配置使用 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -544,7 +583,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SSH"><span class="nav-number">1.</span> <span class="nav-text">SSH</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Cycript"><span class="nav-number">2.</span> <span class="nav-text">Cycript</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#LLDB"><span class="nav-number">3.</span> <span class="nav-text">LLDB</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#参数打印-x64"><span class="nav-number">3.0.0.1.</span> <span class="nav-text">参数打印(x64)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修改值Exg"><span class="nav-number">3.0.0.2.</span> <span class="nav-text">修改值Exg</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#读取内存值"><span class="nav-number">3.0.0.3.</span> <span class="nav-text">读取内存值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#断点设置"><span class="nav-number">3.0.0.4.</span> <span class="nav-text">断点设置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#获取Controller方法地址"><span class="nav-number">3.0.0.5.</span> <span class="nav-text">获取Controller方法地址</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Class-dump"><span class="nav-number">4.</span> <span class="nav-text">Class-dump</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Otool"><span class="nav-number">5.</span> <span class="nav-text">Otool</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Theos"><span class="nav-number">6.</span> <span class="nav-text">Theos</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#给指定的-h文件中所有的函数添加-log"><span class="nav-number">6.0.0.1.</span> <span class="nav-text">给指定的.h文件中所有的函数添加%log</span></a></li></ol></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用"><span class="nav-number">2.</span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#连接"><span class="nav-number">2.0.1.</span> <span class="nav-text">连接</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#过滤"><span class="nav-number">3.</span> <span class="nav-text">过滤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EXG"><span class="nav-number">4.</span> <span class="nav-text">EXG</span></a></li></ol></div>
             
 
           </div>
@@ -684,7 +723,7 @@
 		_hcwp.push({widget:"Bloggerstream", widget_id: 90927, selector:".hc-comment-count", label: "{\%COUNT%\}" });
 
 		
-		_hcwp.push({widget:"Stream", widget_id: 90927, xid: "2017/05/15/About-iOSRe-Note/"});
+		_hcwp.push({widget:"Stream", widget_id: 90927, xid: "2017/05/16/setup-socat/"});
 		
 
 		(function() {
