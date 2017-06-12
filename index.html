@@ -260,6 +260,186 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="/2017/06/12/iOS-Essence-Zombie/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="fatofyoung@yeah.net">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/icon.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="FatOfYoung">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/06/12/iOS-Essence-Zombie/" itemprop="url">
+                  僵尸对象调试工具
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-12T16:57:47+08:00">
+                2017-06-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Tools/" itemprop="url" rel="index">
+                    <span itemprop="name">Tools</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            <!--noindex-->
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/06/12/iOS-Essence-Zombie/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count hc-comment-count" data-xid="2017/06/12/iOS-Essence-Zombie/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+              <!--/noindex-->
+            
+          
+
+          
+          
+             <span id="/2017/06/12/iOS-Essence-Zombie/" class="leancloud_visitors" data-flag-title="僵尸对象调试工具">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="NSZombie-Object"><a href="#NSZombie-Object" class="headerlink" title="NSZombie Object"></a>NSZombie Object</h2><p><strong>Cocoa</strong>提供了“僵尸对象（<strong>NSZombie Object</strong>）”功能。启用这个功能之后，运行期系统会把所有已经回收的实例转化成为特殊的“僵尸对象”，而不会真正回收它们（大概就是死而不僵，相当形象了）。这种对象所在的核心内存无法重用，因此不可能早到覆写。僵尸对象收到消息后，会抛出异常，其中准确说明了发送过来的消息，并描述了回收之前的那个对象。</p>
+<p>当我们对已回收的对象发送消息时，崩溃不是每次都会发生的：具体是否会崩溃取决于对象所占内存有没有被其他内容所覆写。</p>
+<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><p>在Xcode中打开<strong>Edit Scheme</strong>。  </p>
+<p>勾选 <strong>Zombie Object</strong></p>
+<p><img src="/img/zombie_1.png" alt=""></p>
+<h2 id="功能探究"><a href="#功能探究" class="headerlink" title="功能探究"></a>功能探究</h2><p>由于在<strong>ARC</strong>中不能简单直观的表现出僵尸对象，因此下列代码将使用MRC进行阐述。</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"><span class="keyword">void</span> PrintClassInfo(<span class="keyword">id</span> obj) &#123;</div><div class="line">    Class cls = object_getClass(obj);</div><div class="line">    Class superCls = class_getSuperclass(cls);</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%s : %s"</span>, class_getName(cls), class_getName(superCls));</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</div><div class="line">    Person *p = [[Person alloc] init];</div><div class="line"></div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"Before release:"</span>);</div><div class="line">    PrintClassInfo(p);</div><div class="line">    </div><div class="line">    [p release];</div><div class="line">    </div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"After release:"</span>);</div><div class="line">    PrintClassInfo(p);</div><div class="line">    </div><div class="line">    [p person];</div><div class="line">    </div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"><span class="number">2017</span><span class="number">-06</span><span class="number">-12</span> <span class="number">17</span>:<span class="number">21</span>:<span class="number">11.345860</span> OCConsole[<span class="number">23099</span>:<span class="number">3880490</span>] Before release:</div><div class="line"><span class="number">2017</span><span class="number">-06</span><span class="number">-12</span> <span class="number">17</span>:<span class="number">21</span>:<span class="number">11.346050</span> OCConsole[<span class="number">23099</span>:<span class="number">3880490</span>] Person : BaseCopyObject</div><div class="line"><span class="number">2017</span><span class="number">-06</span><span class="number">-12</span> <span class="number">17</span>:<span class="number">21</span>:<span class="number">11.346082</span> OCConsole[<span class="number">23099</span>:<span class="number">3880490</span>] After release:</div><div class="line"><span class="number">2017</span><span class="number">-06</span><span class="number">-12</span> <span class="number">17</span>:<span class="number">21</span>:<span class="number">11.346107</span> OCConsole[<span class="number">23099</span>:<span class="number">3880490</span>] _NSZombie_Person : <span class="literal">nil</span></div></pre></td></tr></table></figure>
+<p>对象所述的类已经由<strong>Person</strong>变为<strong>_NSZombie_Person</strong>。<strong>_NSZombie_Person</strong>实际是在运行期生成的，当首次遇到<strong>Person</strong>的对象要变成僵尸对象时，就会创建这么一个类。创建过程中用到了<strong>runtime</strong>，然后操作了类列表（<strong>class list</strong>）。</p>
+<p>僵尸类（<strong>zombie class</strong>）是从名为<strong><em>NSZombie</em></strong>的莫办理复制出来的。这些僵尸类没有多少事情可做，只是充当一个标记。下面的伪代码演示了系统如果根据需要创建僵尸类，而僵尸类又如何把待回收的对象转化为僵尸对象。</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"><span class="comment">//获取要被dealloc的对象的类</span></div><div class="line">Class cls = object_getClass(<span class="keyword">self</span>);</div><div class="line"></div><div class="line"><span class="comment">//获取类名</span></div><div class="line"><span class="keyword">const</span> <span class="keyword">char</span> *clsName = class_getName(cls);</div><div class="line"></div><div class="line"><span class="comment">//获取僵尸类名</span></div><div class="line"><span class="keyword">const</span> <span class="keyword">char</span> *zombieClsName = <span class="string">"_NSZombie_"</span> + clsName;</div><div class="line"></div><div class="line"><span class="comment">//查看是否类已存在</span></div><div class="line">Class zombieCls = objc_lookUpClass(zombieClsName);</div><div class="line"></div><div class="line"><span class="comment">//如果不存在，则需要被创建</span></div><div class="line"><span class="keyword">if</span>(!zombieCls)&#123;</div><div class="line">    <span class="comment">//获取_NSZombie_类</span></div><div class="line">    Class baseZombieCls = objc_lookUpClass(<span class="string">"_NSZombie_"</span>);</div><div class="line">    </div><div class="line">    <span class="comment">//复制_NSZombie_类，并以新类名命名</span></div><div class="line">    zombieCls = objc_duplecateClass(baseZombieCls, zombieClsName, <span class="number">0</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//手动释放对象</span></div><div class="line">objc_destructInstance(<span class="keyword">self</span>);</div><div class="line"></div><div class="line"><span class="comment">//设置已经被dealloc的类为僵尸类，至此，这个对象已经变成了僵尸对象</span></div><div class="line">objc_setClass(<span class="keyword">self</span>, zombieCls);</div></pre></td></tr></table></figure>
+<p>这个方式实际是<strong>NSObject</strong>的<strong>dealloc</strong>方法所做的事。运行时系统如果发现<strong>NSZombieEnabled=YES</strong>，则将<strong>dealloc</strong>交换为上面的代码。执行到最后时，对象所属的类已经变成<strong>_NSZombie_Person</strong>了。</p>
+<p>代码的关键在于：对象所占的内存没有（通过调用<strong>free()</strong>函数）释放，因此，这个内存不可复用。当然这只是调试手段，正式发布的程序不会这么作死。</p>
+<p>之所以为每个变为僵尸的类都对应创建一个新类，是因为向僵尸对象发送消息后，系统可知道该对象原来所属的类。否则所有僵尸对象对属于<strong><em>NSZombie</em></strong>类，就没法调试了。创建新类的工作由运行时函数<strong>objc_destructInstance()</strong>完成，它会把整个<strong><em>NSZombie</em></strong>类结构拷贝一份，并赋予新的名字。副本的父类、实例变量和方法都和复制之前相同。还有种方法也能保留旧类名，就是继承自<strong><em>NSZombie</em></strong>类，但是效率没有直接拷贝高。</p>
+<p>僵尸类的作用会在消息转发的过程中体现出来。<strong><em>NSZombie</em></strong>类没有实现任何方法，也没有父类。只有一个实例变量<strong>isa</strong>（所有的<strong>OC</strong>根类比如<strong>NSObject</strong>都必须有此变量）。由于这个类没有实现任何方法，所有发给它的消息都会经过<strong>full forwarding mechanism</strong>。</p>
+<p>在完整的消息转发机制中，<strong><strong><em>forwarding</em></strong></strong>是核心，调试程序时，可以在调用栈中看到这个函数。它首先做的就是包括检查接受消息的对象所属的类名。若名称前缀为<strong><em>NSZombie</em></strong>则表明消息接受者是僵尸对象，需要特殊处理。此时会打印一条消息：</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line">*** -[Person respondsToSelector]: message sent to deallocated instance <span class="number">0x1004064c0</span></div></pre></td></tr></table></figure>
+<p>如未启用Zombie模式，这时会出现<strong>EXC_BAD_ACCESS</strong>崩溃，需要借助断点反复逐步的进行调试。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="/2017/06/07/iOS-Essence-Animation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -283,7 +463,7 @@
               
                 
                 <a class="post-title-link" href="/2017/06/07/iOS-Essence-Animation/" itemprop="url">
-                  关于CoreAnimation
+                  仿Kik实现的简易动画
                 </a>
               
             
@@ -351,7 +531,7 @@
 
           
           
-             <span id="/2017/06/07/iOS-Essence-Animation/" class="leancloud_visitors" data-flag-title="关于CoreAnimation">
+             <span id="/2017/06/07/iOS-Essence-Animation/" class="leancloud_visitors" data-flag-title="仿Kik实现的简易动画">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1386,7 +1566,7 @@
 
       
         
-          <h2 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h2><p><strong>单例模式</strong>（Singleton）：保证一个类仅有一个实例，并提供一个访问它的全局访问点。</p>
+          <h2 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h2><p><strong>单例模式</strong>（<strong>Singleton</strong>）：保证一个类仅有一个实例，并提供一个访问它的全局访问点。</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2016/12/23/iOS-DesignMode-Singleton/#more" rel="contents">
@@ -1635,7 +1815,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1644,7 +1824,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>

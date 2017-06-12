@@ -90,7 +90,7 @@
 <meta name="description" content="由于一直对iOS的CoreAnimation富有浓厚的兴趣，在花费5刀拜读了KittenYang的A Guide To iOS Animation后。无意中看到了一款名为Kik的社交软件。">
 <meta name="keywords" content="Essence">
 <meta property="og:type" content="article">
-<meta property="og:title" content="关于CoreAnimation">
+<meta property="og:title" content="仿Kik实现的简易动画">
 <meta property="og:url" content="/2017/06/07/iOS-Essence-Animation/index.html">
 <meta property="og:site_name" content="FatOfYoung">
 <meta property="og:description" content="由于一直对iOS的CoreAnimation富有浓厚的兴趣，在花费5刀拜读了KittenYang的A Guide To iOS Animation后。无意中看到了一款名为Kik的社交软件。">
@@ -98,9 +98,9 @@
 <meta property="og:image" content="/img/animation_2.png">
 <meta property="og:image" content="/img/animation_3.png">
 <meta property="og:image" content="/img/animation_4.png">
-<meta property="og:updated_time" content="2017-06-12T07:00:27.000Z">
+<meta property="og:updated_time" content="2017-06-12T07:04:44.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="关于CoreAnimation">
+<meta name="twitter:title" content="仿Kik实现的简易动画">
 <meta name="twitter:description" content="由于一直对iOS的CoreAnimation富有浓厚的兴趣，在花费5刀拜读了KittenYang的A Guide To iOS Animation后。无意中看到了一款名为Kik的社交软件。">
 <meta name="twitter:image" content="/img/animation_1.gif">
 
@@ -136,7 +136,7 @@
 
 
 
-  <title> 关于CoreAnimation | FatOfYoung </title>
+  <title> 仿Kik实现的简易动画 | FatOfYoung </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -286,7 +286,7 @@
             
             
               
-                关于CoreAnimation
+                仿Kik实现的简易动画
               
             
           </h1>
@@ -353,7 +353,7 @@
 
           
           
-             <span id="/2017/06/07/iOS-Essence-Animation/" class="leancloud_visitors" data-flag-title="关于CoreAnimation">
+             <span id="/2017/06/07/iOS-Essence-Animation/" class="leancloud_visitors" data-flag-title="仿Kik实现的简易动画">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -382,7 +382,8 @@
       
 
       
-        <p>由于一直对iOS的<strong>CoreAnimation</strong>富有浓厚的兴趣，在花费5刀拜读了KittenYang的<a href="https://gumroad.com/l/JnWS/519856549qqcom" target="_blank" rel="external">A Guide To iOS Animation</a>后。无意中看到了一款名为<a href="https://itunes.apple.com/us/app/kik/id357218860?mt=8" target="_blank" rel="external">Kik</a>的社交软件。 <a id="more"></a><br>在其中的注册界面出现了检测邮箱的动画。经研究，此动画的关键点在于<strong>CoreAnimation</strong>之间的协调切换，以及简单三角函数的应用。<br>于是准备仿造其作为学习<strong>Animation</strong>之后的练手。     </p>
+        <p>由于一直对iOS的<strong>CoreAnimation</strong>富有浓厚的兴趣，在花费5刀拜读了KittenYang的<a href="https://gumroad.com/l/JnWS/519856549qqcom" target="_blank" rel="external">A Guide To iOS Animation</a>后。无意中看到了一款名为<a href="https://itunes.apple.com/us/app/kik/id357218860?mt=8" target="_blank" rel="external">Kik</a>的社交软件。 <a id="more"></a>   </p>
+<p>在其中的注册界面出现了检测邮箱的动画。经研究，此动画的关键点在于<strong>CoreAnimation</strong>之间的协调切换，以及简单三角函数的应用。<br>于是准备仿造其作为学习<strong>Animation</strong>之后的练手。     </p>
 <p>附<strong>demo</strong>截图:<br><img src="/img/animation_1.gif" alt=""></p>
 <h2 id="确定CAShapeLayer"><a href="#确定CAShapeLayer" class="headerlink" title="确定CAShapeLayer"></a>确定CAShapeLayer</h2><p><strong>CAShapeLayer</strong>是<strong>CALayer</strong>的子类，拥有众多丰富的属性。所以通常使用<strong>CAShapeLayer</strong>来创建动画及配合<strong>Bezier</strong>曲线的运用。<br>因为涉及到三种不同的状态（加载，成功，失败），所以需要创建三个<strong>CAShapeLayer</strong>便于管理动画的状态。</p>
 <figure class="highlight objc"><table><tr><td class="code"><pre><div class="line">- (<span class="built_in">CAShapeLayer</span> *)commonLayer</div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span> (_commonLayer == <span class="literal">nil</span>) &#123;</div><div class="line">        _commonLayer = [<span class="built_in">CAShapeLayer</span> layer];</div><div class="line">        _commonLayer.lineWidth = MCLineWidth;</div><div class="line">        _commonLayer.strokeColor = [<span class="built_in">UIColor</span> blueColor].CGColor;</div><div class="line">        _commonLayer.fillColor = [<span class="built_in">UIColor</span> clearColor].CGColor;</div><div class="line">        _commonLayer.lineCap = kCALineCapRound;</div><div class="line">        _commonLayer.lineJoin = kCALineJoinRound;</div><div class="line">        [<span class="keyword">self</span>.layer addSublayer:_commonLayer];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> _commonLayer;</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="built_in">CAShapeLayer</span> *)errorLayer</div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span> (_errorLayer == <span class="literal">nil</span>) &#123;</div><div class="line">        _errorLayer = [<span class="built_in">CAShapeLayer</span> layer];</div><div class="line">        _errorLayer.lineWidth = MCLineWidth;</div><div class="line">        _errorLayer.strokeColor = [<span class="built_in">UIColor</span> blueColor].CGColor;</div><div class="line">        _errorLayer.fillColor = [<span class="built_in">UIColor</span> clearColor].CGColor;</div><div class="line">        _errorLayer.lineCap = kCALineCapRound;</div><div class="line">        _errorLayer.lineJoin = kCALineJoinRound;</div><div class="line">        [<span class="keyword">self</span>.layer addSublayer:_errorLayer];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> _errorLayer;</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="built_in">CAShapeLayer</span> *)loadingLayer</div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span> (_loadingLayer == <span class="literal">nil</span>) &#123;</div><div class="line">        _loadingLayer = [<span class="built_in">CAShapeLayer</span> layer];</div><div class="line">        _loadingLayer.lineWidth = MCLineWidth;</div><div class="line">        _loadingLayer.lineCap = kCALineCapRound;</div><div class="line">        _loadingLayer.strokeColor = [<span class="built_in">UIColor</span> blueColor].CGColor;</div><div class="line">        _loadingLayer.strokeColor = [<span class="built_in">UIColor</span> colorWithRed:<span class="number">87</span>/<span class="number">255.0</span>f green:<span class="number">192</span>/<span class="number">255.0</span>f blue:<span class="number">255</span>/<span class="number">255.0</span>f alpha:<span class="number">1</span>].CGColor;</div><div class="line">        _loadingLayer.fillColor = [<span class="built_in">UIColor</span> clearColor].CGColor;</div><div class="line">        [<span class="keyword">self</span>.layer addSublayer:_loadingLayer];</div><div class="line"></div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> _loadingLayer;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -479,6 +480,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2017/06/12/iOS-Essence-Zombie/" rel="prev" title="僵尸对象调试工具">
+                僵尸对象调试工具 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -551,7 +556,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">9</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -560,7 +565,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
