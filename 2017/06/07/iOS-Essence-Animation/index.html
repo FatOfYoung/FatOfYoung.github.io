@@ -71,7 +71,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Essence," />
 
 
 
@@ -87,17 +87,21 @@
 
 
 
-<meta name="description" content="由于一直对iOS的CoreAnimation富有浓厚的兴趣，在花费5刀拜读了KittenYang的A Guide To iOS Animation后。无意中看到了一款名为Kik的社交软件。在其中的注册界面出现了一个动画的实现，于是准备仿造其作为学习Animation之后的练手。由于想更深入的实践，所以接下来的demo比Kik原有的动画会复杂一些。   附图:">
+<meta name="description" content="由于一直对iOS的CoreAnimation富有浓厚的兴趣，在花费5刀拜读了KittenYang的A Guide To iOS Animation后。无意中看到了一款名为Kik的社交软件。">
+<meta name="keywords" content="Essence">
 <meta property="og:type" content="article">
 <meta property="og:title" content="关于CoreAnimation">
 <meta property="og:url" content="/2017/06/07/iOS-Essence-Animation/index.html">
 <meta property="og:site_name" content="FatOfYoung">
-<meta property="og:description" content="由于一直对iOS的CoreAnimation富有浓厚的兴趣，在花费5刀拜读了KittenYang的A Guide To iOS Animation后。无意中看到了一款名为Kik的社交软件。在其中的注册界面出现了一个动画的实现，于是准备仿造其作为学习Animation之后的练手。由于想更深入的实践，所以接下来的demo比Kik原有的动画会复杂一些。   附图:">
+<meta property="og:description" content="由于一直对iOS的CoreAnimation富有浓厚的兴趣，在花费5刀拜读了KittenYang的A Guide To iOS Animation后。无意中看到了一款名为Kik的社交软件。">
 <meta property="og:image" content="/img/animation_1.gif">
-<meta property="og:updated_time" content="2017-06-07T06:25:07.000Z">
+<meta property="og:image" content="/img/animation_2.png">
+<meta property="og:image" content="/img/animation_3.png">
+<meta property="og:image" content="/img/animation_4.png">
+<meta property="og:updated_time" content="2017-06-12T07:00:27.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于CoreAnimation">
-<meta name="twitter:description" content="由于一直对iOS的CoreAnimation富有浓厚的兴趣，在花费5刀拜读了KittenYang的A Guide To iOS Animation后。无意中看到了一款名为Kik的社交软件。在其中的注册界面出现了一个动画的实现，于是准备仿造其作为学习Animation之后的练手。由于想更深入的实践，所以接下来的demo比Kik原有的动画会复杂一些。   附图:">
+<meta name="twitter:description" content="由于一直对iOS的CoreAnimation富有浓厚的兴趣，在花费5刀拜读了KittenYang的A Guide To iOS Animation后。无意中看到了一款名为Kik的社交软件。">
 <meta name="twitter:image" content="/img/animation_1.gif">
 
 
@@ -308,6 +312,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Animation/" itemprop="url" rel="index">
+                    <span itemprop="name">Animation</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -356,8 +382,57 @@
       
 
       
-        <p>由于一直对iOS的<strong>CoreAnimation</strong>富有浓厚的兴趣，在花费5刀拜读了KittenYang的<a href="https://gumroad.com/l/JnWS/519856549qqcom" target="_blank" rel="external">A Guide To iOS Animation</a>后。无意中看到了一款名为<a href="https://itunes.apple.com/us/app/kik/id357218860?mt=8" target="_blank" rel="external">Kik</a>的社交软件。<br>在其中的注册界面出现了一个动画的实现，于是准备仿造其作为学习<strong>Animation</strong>之后的练手。<br>由于想更深入的实践，所以接下来的demo比Kik原有的动画会复杂一些。  </p>
-<p>附图:<br><img src="/img/animation_1.gif" alt=""></p>
+        <p>由于一直对iOS的<strong>CoreAnimation</strong>富有浓厚的兴趣，在花费5刀拜读了KittenYang的<a href="https://gumroad.com/l/JnWS/519856549qqcom" target="_blank" rel="external">A Guide To iOS Animation</a>后。无意中看到了一款名为<a href="https://itunes.apple.com/us/app/kik/id357218860?mt=8" target="_blank" rel="external">Kik</a>的社交软件。 <a id="more"></a><br>在其中的注册界面出现了检测邮箱的动画。经研究，此动画的关键点在于<strong>CoreAnimation</strong>之间的协调切换，以及简单三角函数的应用。<br>于是准备仿造其作为学习<strong>Animation</strong>之后的练手。     </p>
+<p>附<strong>demo</strong>截图:<br><img src="/img/animation_1.gif" alt=""></p>
+<h2 id="确定CAShapeLayer"><a href="#确定CAShapeLayer" class="headerlink" title="确定CAShapeLayer"></a>确定CAShapeLayer</h2><p><strong>CAShapeLayer</strong>是<strong>CALayer</strong>的子类，拥有众多丰富的属性。所以通常使用<strong>CAShapeLayer</strong>来创建动画及配合<strong>Bezier</strong>曲线的运用。<br>因为涉及到三种不同的状态（加载，成功，失败），所以需要创建三个<strong>CAShapeLayer</strong>便于管理动画的状态。</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line">- (<span class="built_in">CAShapeLayer</span> *)commonLayer</div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span> (_commonLayer == <span class="literal">nil</span>) &#123;</div><div class="line">        _commonLayer = [<span class="built_in">CAShapeLayer</span> layer];</div><div class="line">        _commonLayer.lineWidth = MCLineWidth;</div><div class="line">        _commonLayer.strokeColor = [<span class="built_in">UIColor</span> blueColor].CGColor;</div><div class="line">        _commonLayer.fillColor = [<span class="built_in">UIColor</span> clearColor].CGColor;</div><div class="line">        _commonLayer.lineCap = kCALineCapRound;</div><div class="line">        _commonLayer.lineJoin = kCALineJoinRound;</div><div class="line">        [<span class="keyword">self</span>.layer addSublayer:_commonLayer];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> _commonLayer;</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="built_in">CAShapeLayer</span> *)errorLayer</div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span> (_errorLayer == <span class="literal">nil</span>) &#123;</div><div class="line">        _errorLayer = [<span class="built_in">CAShapeLayer</span> layer];</div><div class="line">        _errorLayer.lineWidth = MCLineWidth;</div><div class="line">        _errorLayer.strokeColor = [<span class="built_in">UIColor</span> blueColor].CGColor;</div><div class="line">        _errorLayer.fillColor = [<span class="built_in">UIColor</span> clearColor].CGColor;</div><div class="line">        _errorLayer.lineCap = kCALineCapRound;</div><div class="line">        _errorLayer.lineJoin = kCALineJoinRound;</div><div class="line">        [<span class="keyword">self</span>.layer addSublayer:_errorLayer];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> _errorLayer;</div><div class="line">&#125;</div><div class="line"></div><div class="line">- (<span class="built_in">CAShapeLayer</span> *)loadingLayer</div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span> (_loadingLayer == <span class="literal">nil</span>) &#123;</div><div class="line">        _loadingLayer = [<span class="built_in">CAShapeLayer</span> layer];</div><div class="line">        _loadingLayer.lineWidth = MCLineWidth;</div><div class="line">        _loadingLayer.lineCap = kCALineCapRound;</div><div class="line">        _loadingLayer.strokeColor = [<span class="built_in">UIColor</span> blueColor].CGColor;</div><div class="line">        _loadingLayer.strokeColor = [<span class="built_in">UIColor</span> colorWithRed:<span class="number">87</span>/<span class="number">255.0</span>f green:<span class="number">192</span>/<span class="number">255.0</span>f blue:<span class="number">255</span>/<span class="number">255.0</span>f alpha:<span class="number">1</span>].CGColor;</div><div class="line">        _loadingLayer.fillColor = [<span class="built_in">UIColor</span> clearColor].CGColor;</div><div class="line">        [<span class="keyword">self</span>.layer addSublayer:_loadingLayer];</div><div class="line"></div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> _loadingLayer;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="创建加载动画"><a href="#创建加载动画" class="headerlink" title="创建加载动画"></a>创建加载动画</h2><p>首先，根据示例图所示。加载动画需分为四个步骤：  </p>
+<ul>
+<li>创建<strong>CAShapeLayer</strong>的<strong>stokeEnd</strong>属性从0到1由点形成一个闭环的<strong>Animation</strong></li>
+<li>创建<strong>CAShapeLayer</strong>的<strong>stokeStart</strong>属性从0到1由闭环形成一个点的<strong>Animation</strong></li>
+<li>将以上两步骤添加至<strong>AnimationGroup</strong>控制其参数</li>
+<li>创建<strong>Bezier</strong>圆形曲线，限定动画的运行轨迹</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"><span class="built_in">CABasicAnimation</span> * AnimationFirst = [<span class="built_in">CABasicAnimation</span> animationWithKeyPath:<span class="string">@"strokeEnd"</span>];</div><div class="line">AnimationFirst.fromValue = @(<span class="number">0.0</span>);</div><div class="line">AnimationFirst.toValue = @(<span class="number">1.0</span>);</div><div class="line">AnimationFirst.duration = <span class="number">1.0</span>f;</div><div class="line">AnimationFirst.beginTime = <span class="number">0.0</span>f;</div><div class="line">AnimationFirst.timingFunction = [<span class="built_in">CAMediaTimingFunction</span> functionWithName:kCAMediaTimingFunctionEaseIn];</div></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"><span class="built_in">CABasicAnimation</span> * AnimationSecond = [<span class="built_in">CABasicAnimation</span> animationWithKeyPath:<span class="string">@"strokeStart"</span>];</div><div class="line">AnimationSecond.fromValue = @(<span class="number">0.0</span>);</div><div class="line">AnimationSecond.toValue = @(<span class="number">1.0</span>);</div><div class="line">AnimationSecond.duration = <span class="number">1.0</span>f;</div><div class="line">AnimationSecond.beginTime = <span class="number">1.0</span>f;</div><div class="line">AnimationSecond.timingFunction = [<span class="built_in">CAMediaTimingFunction</span> functionWithName:kCAMediaTimingFunctionEaseOut];</div></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"></div><div class="line"><span class="built_in">CAAnimationGroup</span> * animationGroup = [<span class="built_in">CAAnimationGroup</span> animation];</div><div class="line">animationGroup.duration = <span class="number">2.0</span>f;</div><div class="line">animationGroup.repeatCount = HUGE;</div><div class="line">animationGroup.fillMode = kCAFillModeForwards;</div><div class="line">animationGroup.animations = @[AnimationFirst,AnimationSecond];</div></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"><span class="built_in">UIBezierPath</span> * loadingBezier = [<span class="built_in">UIBezierPath</span> bezierPathWithArcCenter:<span class="built_in">CGPointMake</span>(bezierCenter, bezierCenter) radius:circleRadius startAngle:- M_PI_2 endAngle:- M_PI_2 + <span class="number">2</span> * M_PI clockwise:<span class="literal">YES</span>];</div><div class="line"><span class="keyword">self</span>.loadingLayer.path = loadingBezier.CGPath;</div><div class="line">[animationGroup setValue:<span class="string">@"loadingAnimation"</span> forKey:<span class="string">@"Animation"</span>];</div><div class="line">[<span class="keyword">self</span>.loadingLayer addAnimation:animationGroup forKey:<span class="literal">nil</span>];</div></pre></td></tr></table></figure>
+<blockquote>
+<p>在尾部的代码中，给<strong>Animation</strong>进行了<strong>setValue</strong>操作的目的是便于在<strong>CAAnimationDelegate</strong>的方法<strong>animationDidStop</strong>中对各项动画任务进行转换的处理。  </p>
+</blockquote>
+<p>由于从圆形的最顶端开始且顺时针。所以<code>startAngle</code>为 - <strong>M_PI_2</strong>，<code>closewise</code>为<strong>YES</strong>  </p>
+<p>如图所示<br><img src="/img/animation_2.png" alt="">  </p>
+<h2 id="创建成功动画"><a href="#创建成功动画" class="headerlink" title="创建成功动画"></a>创建成功动画</h2><p>成功的动画主要由两部分组成   </p>
+<ul>
+<li>类似加载动画，绕圆周运动</li>
+<li>显示<strong>nike</strong>的标志</li>
+</ul>
+<p>如图所示：<br><img src="/img/animation_3.png" alt="">  </p>
+<p><strong>第一步,如红线所示</strong></p>
+<p>使用<code>strokeEnd</code>属性，绕圆周3/4。</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"><span class="built_in">UIBezierPath</span> * successBezier = [<span class="built_in">UIBezierPath</span> bezierPathWithArcCenter:<span class="built_in">CGPointMake</span>(bezierCenter, bezierCenter) radius:circleRadius startAngle:- M_PI_2 endAngle:-M_PI_2 + <span class="number">1.5</span> * M_PI clockwise:<span class="literal">YES</span>];</div><div class="line"><span class="built_in">CAKeyframeAnimation</span> * successAnimation = [<span class="built_in">CAKeyframeAnimation</span> animationWithKeyPath:<span class="string">@"strokeEnd"</span>];</div><div class="line"><span class="keyword">self</span>.loadingLayer.path = successBezier.CGPath;</div><div class="line">successAnimation.delegate = <span class="keyword">self</span>;</div><div class="line">successAnimation.values = @[@(<span class="number">0.0</span>),@(<span class="number">1.0</span>)];</div><div class="line">successAnimation.removedOnCompletion = <span class="literal">NO</span>;</div><div class="line">successAnimation.fillMode = kCAFillModeForwards;</div><div class="line">successAnimation.duration = animationDuration * <span class="number">0.33</span>;</div><div class="line">successAnimation.timingFunction = [<span class="built_in">CAMediaTimingFunction</span> functionWithName:kCAMediaTimingFunctionEaseOut];</div><div class="line">[successAnimation setValue:<span class="string">@"successAnimationFirst"</span> forKey:<span class="string">@"Animation"</span>];</div><div class="line">[<span class="keyword">self</span>.loadingLayer addAnimation:successAnimation forKey:<span class="literal">nil</span>];</div></pre></td></tr></table></figure>
+<blockquote>
+<p><code>(bezierCenter，bezierCenter)</code>为P点坐标值</p>
+</blockquote>
+<p> <strong>第二步,如绿线所示</strong></p>
+<p> 从第一步的的终点B进入O，A点。即绿线所示的轨迹。PA的长度为半径的一半<code>0.5*Radius</code>，OC的长度为半径的1.25倍<code>1.25*Radius</code>，CA的长度为<code>1.25*Radius*cot(65)</code>。   </p>
+<p> 由上述数据，可算出关键点B，O，A的坐标。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">//B</div><div class="line">[successBezier moveToPoint:CGPointMake(bezierCenter - circleRadius, bezierCenter)];</div><div class="line">//O</div><div class="line">[successBezier addLineToPoint:CGPointMake(bezierCenter, bezierCenter+ circleRadius * 0.5)];</div><div class="line">//A</div><div class="line">[successBezier addLineToPoint:CGPointMake(bezierCenter + circleRadius * 1.25 * atan(M_PI_4 * (65.0/90.0)),  bezierCenter - circleRadius * 0.75)];</div></pre></td></tr></table></figure>
+<blockquote>
+<p> 在iOS中余切使用<strong>atan</strong>表示</p>
+</blockquote>
+<p>创建<code>CAKeyframeAnimation</code>使用<code>strokeEnd</code>属性</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"><span class="built_in">CAKeyframeAnimation</span> * successAnimation = [<span class="built_in">CAKeyframeAnimation</span> animationWithKeyPath:<span class="string">@"strokeEnd"</span>];</div><div class="line">successAnimation.values = @[@(<span class="number">0.0</span>),@(<span class="number">1.0</span>)];</div><div class="line">successAnimation.duration = animationDuration * <span class="number">0.33</span>;</div><div class="line">successAnimation.removedOnCompletion = <span class="literal">NO</span>;</div><div class="line">successAnimation.fillMode = kCAFillModeForwards;</div><div class="line">successAnimation.timingFunction = [<span class="built_in">CAMediaTimingFunction</span> functionWithName:kCAMediaTimingFunctionEaseIn];</div><div class="line">[successAnimation setValue:<span class="string">@"successAnimationSecond"</span> forKey:<span class="string">@"Animation"</span>];</div><div class="line">[<span class="keyword">self</span>.commonLayer addAnimation:successAnimation forKey:<span class="literal">nil</span>];</div></pre></td></tr></table></figure>
+<h2 id="创建失败动画"><a href="#创建失败动画" class="headerlink" title="创建失败动画"></a>创建失败动画</h2><p>同样创建失败动画由两部分构成   </p>
+<ul>
+<li>类似加载动画，绕圆周13/16运动</li>
+<li>创建两条直线动画，交叉运动 </li>
+</ul>
+<p>如图所示<br><img src="/img/animation_4.png" alt=""></p>
+<p>仅需A，B，C，D各点坐标即可绘制出轨迹。</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"><span class="built_in">UIBezierPath</span> * errorBezierFirst = [<span class="built_in">UIBezierPath</span> bezierPath];</div><div class="line"><span class="built_in">UIBezierPath</span> * errorBezierSecond = [<span class="built_in">UIBezierPath</span> bezierPath];</div><div class="line"><span class="comment">//A</span></div><div class="line">[errorBezierFirst moveToPoint:<span class="built_in">CGPointMake</span>(bezierCenter - circleRadius * cos(M_PI_4), bezierCenter - circleRadius * sin(M_PI_4))];</div><div class="line"><span class="comment">//D</span></div><div class="line">[errorBezierFirst addLineToPoint:<span class="built_in">CGPointMake</span>(bezierCenter + circleRadius * cos(M_PI_4), bezierCenter + circleRadius * sin(M_PI_4))];</div><div class="line"><span class="comment">//B</span></div><div class="line">[errorBezierSecond moveToPoint:<span class="built_in">CGPointMake</span>(bezierCenter + circleRadius * cos(M_PI_4), bezierCenter -  circleRadius * sin(M_PI_4))];</div><div class="line"><span class="comment">//C</span></div><div class="line">[errorBezierSecond addLineToPoint:<span class="built_in">CGPointMake</span>(bezierCenter - circleRadius * cos(M_PI_4), bezierCenter + circleRadius * sin(M_PI_4))];</div></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>关于此<strong>demo</strong>，实现虽然没有太大的难度，但是却需要注意诸多细节。再则需要对角度的多次试验，才能获取出最佳的动画效果。  </p>
+<p><strong>附<a href="https://github.com/Mornchan/loginStatus" target="_blank" rel="external">Github</a></strong>源码</p>
 
       
     </div>
@@ -378,6 +453,12 @@
 
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Essence/" rel="tag"># Essence</a>
+          
+        </div>
       
 
       
@@ -445,8 +526,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/uploads/icon.png"
@@ -470,7 +560,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -518,6 +608,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#确定CAShapeLayer"><span class="nav-number">1.</span> <span class="nav-text">确定CAShapeLayer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建加载动画"><span class="nav-number">2.</span> <span class="nav-text">创建加载动画</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建成功动画"><span class="nav-number">3.</span> <span class="nav-text">创建成功动画</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建失败动画"><span class="nav-number">4.</span> <span class="nav-text">创建失败动画</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
