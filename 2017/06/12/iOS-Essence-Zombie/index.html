@@ -87,18 +87,18 @@
 
 
 
-<meta name="description" content="NSZombie ObjectCocoa提供了“僵尸对象（NSZombie Object）”功能。启用这个功能之后，运行期系统会把所有已经回收的实例转化成为特殊的“僵尸对象”，而不会真正回收它们（大概就是死而不僵，相当形象了）。这种对象所在的核心内存无法重用，因此不可能早到覆写。僵尸对象收到消息后，会抛出异常，其中准确说明了发送过来的消息，并描述了回收之前的那个对象。 当我们对已回收的对象发送消息">
+<meta name="description" content="NSZombie ObjectCocoa提供了“僵尸对象（NSZombie Object）”功能。启用这个功能之后，运行期系统会把所有已经回收的实例转化成为特殊的“僵尸对象”，而不会真正回收它们。这种对象所在的核心内存无法重用，因此不可能早到覆写。僵尸对象收到消息后，会抛出异常，其中准确说明了发送过来的消息，并描述了回收之前的那个对象。">
 <meta name="keywords" content="Essence">
 <meta property="og:type" content="article">
 <meta property="og:title" content="僵尸对象调试工具">
 <meta property="og:url" content="/2017/06/12/iOS-Essence-Zombie/index.html">
 <meta property="og:site_name" content="FatOfYoung">
-<meta property="og:description" content="NSZombie ObjectCocoa提供了“僵尸对象（NSZombie Object）”功能。启用这个功能之后，运行期系统会把所有已经回收的实例转化成为特殊的“僵尸对象”，而不会真正回收它们（大概就是死而不僵，相当形象了）。这种对象所在的核心内存无法重用，因此不可能早到覆写。僵尸对象收到消息后，会抛出异常，其中准确说明了发送过来的消息，并描述了回收之前的那个对象。 当我们对已回收的对象发送消息">
+<meta property="og:description" content="NSZombie ObjectCocoa提供了“僵尸对象（NSZombie Object）”功能。启用这个功能之后，运行期系统会把所有已经回收的实例转化成为特殊的“僵尸对象”，而不会真正回收它们。这种对象所在的核心内存无法重用，因此不可能早到覆写。僵尸对象收到消息后，会抛出异常，其中准确说明了发送过来的消息，并描述了回收之前的那个对象。">
 <meta property="og:image" content="/img/zombie_1.png">
-<meta property="og:updated_time" content="2017-06-12T12:08:53.000Z">
+<meta property="og:updated_time" content="2017-06-12T12:10:47.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="僵尸对象调试工具">
-<meta name="twitter:description" content="NSZombie ObjectCocoa提供了“僵尸对象（NSZombie Object）”功能。启用这个功能之后，运行期系统会把所有已经回收的实例转化成为特殊的“僵尸对象”，而不会真正回收它们（大概就是死而不僵，相当形象了）。这种对象所在的核心内存无法重用，因此不可能早到覆写。僵尸对象收到消息后，会抛出异常，其中准确说明了发送过来的消息，并描述了回收之前的那个对象。 当我们对已回收的对象发送消息">
+<meta name="twitter:description" content="NSZombie ObjectCocoa提供了“僵尸对象（NSZombie Object）”功能。启用这个功能之后，运行期系统会把所有已经回收的实例转化成为特殊的“僵尸对象”，而不会真正回收它们。这种对象所在的核心内存无法重用，因此不可能早到覆写。僵尸对象收到消息后，会抛出异常，其中准确说明了发送过来的消息，并描述了回收之前的那个对象。">
 <meta name="twitter:image" content="/img/zombie_1.png">
 
 
@@ -379,7 +379,7 @@
       
 
       
-        <h2 id="NSZombie-Object"><a href="#NSZombie-Object" class="headerlink" title="NSZombie Object"></a>NSZombie Object</h2><p><strong>Cocoa</strong>提供了“僵尸对象（<strong>NSZombie Object</strong>）”功能。启用这个功能之后，运行期系统会把所有已经回收的实例转化成为特殊的“僵尸对象”，而不会真正回收它们（大概就是死而不僵，相当形象了）。这种对象所在的核心内存无法重用，因此不可能早到覆写。僵尸对象收到消息后，会抛出异常，其中准确说明了发送过来的消息，并描述了回收之前的那个对象。</p>
+        <h2 id="NSZombie-Object"><a href="#NSZombie-Object" class="headerlink" title="NSZombie Object"></a>NSZombie Object</h2><p><strong>Cocoa</strong>提供了“僵尸对象（<strong>NSZombie Object</strong>）”功能。启用这个功能之后，运行期系统会把所有已经回收的实例转化成为特殊的“僵尸对象”，而不会真正回收它们。这种对象所在的核心内存无法重用，因此不可能早到覆写。僵尸对象收到消息后，会抛出异常，其中准确说明了发送过来的消息，并描述了回收之前的那个对象。<a id="more"></a></p>
 <p>当我们对已回收的对象发送消息时，崩溃不是每次都会发生的：具体是否会崩溃取决于对象所占内存有没有被其他内容所覆写。</p>
 <h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><p>在Xcode中打开<strong>Edit Scheme</strong>。  </p>
 <p>勾选 <strong>Zombie Object</strong></p>
