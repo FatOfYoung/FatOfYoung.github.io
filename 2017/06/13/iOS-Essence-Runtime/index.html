@@ -1,0 +1,912 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Runtime," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="Runtime之前断断续续的接触过一些Runtime方面的零散知识，但平时开发中对其使用的频率并不高，或是第三方框架的使用量较大。所以对Runtime缺乏清晰的认知。所以这次借助blog，对Runtime知识进行一个系统的梳理。">
+<meta name="keywords" content="Runtime">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Objective-C Runtime">
+<meta property="og:url" content="/2017/06/13/iOS-Essence-Runtime/index.html">
+<meta property="og:site_name" content="FatOfYoung">
+<meta property="og:description" content="Runtime之前断断续续的接触过一些Runtime方面的零散知识，但平时开发中对其使用的频率并不高，或是第三方框架的使用量较大。所以对Runtime缺乏清晰的认知。所以这次借助blog，对Runtime知识进行一个系统的梳理。">
+<meta property="og:image" content="/img/runtime_1.png">
+<meta property="og:updated_time" content="2017-06-13T15:19:49.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Objective-C Runtime">
+<meta name="twitter:description" content="Runtime之前断断续续的接触过一些Runtime方面的零散知识，但平时开发中对其使用的频率并不高，或是第三方框架的使用量较大。所以对Runtime缺乏清晰的认知。所以这次借助blog，对Runtime知识进行一个系统的梳理。">
+<meta name="twitter:image" content="/img/runtime_1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="/2017/06/13/iOS-Essence-Runtime/"/>
+
+
+
+
+
+  <title> Objective-C Runtime | FatOfYoung </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">FatOfYoung</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Time and tide wait for no man</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="/2017/06/13/iOS-Essence-Runtime/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="fatofyoung@yeah.net">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/icon.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="FatOfYoung">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Objective-C Runtime
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-13T14:28:15+08:00">
+                2017-06-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOSDe/" itemprop="url" rel="index">
+                    <span itemprop="name">iOSDe</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            <!--noindex-->
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/06/13/iOS-Essence-Runtime/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count hc-comment-count" data-xid="2017/06/13/iOS-Essence-Runtime/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+              <!--/noindex-->
+            
+          
+
+          
+          
+             <span id="/2017/06/13/iOS-Essence-Runtime/" class="leancloud_visitors" data-flag-title="Objective-C Runtime">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Runtime"><a href="#Runtime" class="headerlink" title="Runtime"></a>Runtime</h1><p>之前断断续续的接触过一些<strong>Runtime</strong>方面的零散知识，但平时开发中对其使用的频率并不高，或是第三方框架的使用量较大。所以对<strong>Runtime</strong>缺乏清晰的认知。所以这次借助<strong>blog</strong>，对<strong>Runtime</strong>知识进行一个系统的梳理。<a id="more"></a></p>
+<p><strong>Objective-C</strong>是一个动态语言，这意味着它不仅需要一个编译器，也需要一个运行时系统来动态得创建类和对象、进行消息传递和转发。理解 <strong>Objective-C</strong>的<strong>Runtime</strong>机制可以帮我们更好的了解这个语言，适当的时候还能对语言进行扩展，从系统层面解决项目中的一些设计或技术问题。了解<strong>Runtime</strong>，要先了解它的核心 - 消息传递。 </p>
+<h1 id="消息传递"><a href="#消息传递" class="headerlink" title="消息传递"></a>消息传递</h1><blockquote>
+<p>I’m sorry that I long ago coined the term “objects” for this topic because it gets many people to focus on the lesser idea. <strong>The big idea is “Messaging”</strong> – that is what the kernal[sic] of Smalltalk is all about… The key in making great and growable systems is much more to design how its modules communicate rather than what their internal properties and behaviors should be.  </p>
+</blockquote>
+<p><strong>Alan Kay</strong>曾多次强调<strong>Smalltalk</strong>的核心不是面向对象，面向对象只是<strong>the lesser ideas</strong>，消息传递才是<strong>the big idea</strong>。  </p>
+<p>在很多语言，调用一个方法其实就是跳到内存中的某一点并开始执行一段代码。没有任何动态的特性，因为这在编译时就决定好了。而在 <strong>Objective-C</strong> 中，<strong>[object selectorMethod]</strong>语法并不会立即执行 <strong>selectorMethod</strong> 这个方法的代码。它是在运行时给 <strong>object</strong> 发送一条叫 <strong>selectorMethod</strong>的消息。这个消息，也许会由<strong>object</strong>来处理，也许会被转发给另一个对象，或者不予理睬假装没收到这个消息。多条不同的消息也可以对应同一个方法实现。这些都是在程序运行的时候决定的。</p>
+<p>比如：</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line">[object selectorMethod:arg1];</div></pre></td></tr></table></figure>
+<p>在<strong>Runtime</strong>中会编译成：</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line">objc_msgSend(object,<span class="keyword">@selector</span>(selectorMethod:), arg1);</div></pre></td></tr></table></figure>
+<p>在<strong>Objective-C</strong>中，类、对象和方法都是一个<strong>C</strong>的结构体，从 <code>objc/runtime.h</code> 头文件中，可以找到其定义：</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"><span class="keyword">struct</span> objc_object &#123;  </div><div class="line">    Class isa  OBJC_ISA_AVAILABILITY;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">struct</span> objc_class &#123;  </div><div class="line">    Class isa  OBJC_ISA_AVAILABILITY;</div><div class="line"><span class="meta">#if !__OBJC2__</span></div><div class="line">    Class super_class;</div><div class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *name;</div><div class="line">    <span class="keyword">long</span> version;</div><div class="line">    <span class="keyword">long</span> info;</div><div class="line">    <span class="keyword">long</span> instance_size;</div><div class="line">    <span class="keyword">struct</span> objc_ivar_list *ivars;</div><div class="line">    **<span class="keyword">struct</span> objc_method_list **methodLists**;</div><div class="line">    **<span class="keyword">struct</span> objc_cache *cache**;</div><div class="line">    <span class="keyword">struct</span> objc_protocol_list *protocols;</div><div class="line"><span class="meta">#endif</span></div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">struct</span> objc_method_list &#123;  </div><div class="line">    <span class="keyword">struct</span> objc_method_list *obsolete;</div><div class="line">    <span class="keyword">int</span> method_count;</div><div class="line"></div><div class="line"><span class="meta">#ifdef __LP64__</span></div><div class="line">    <span class="keyword">int</span> space;</div><div class="line"><span class="meta">#endif</span></div><div class="line"></div><div class="line">    <span class="comment">/* variable length structure */</span></div><div class="line">    <span class="keyword">struct</span> objc_method method_list[<span class="number">1</span>];</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">struct</span> objc_method &#123;  </div><div class="line">    SEL method_name;</div><div class="line">    <span class="keyword">char</span> *method_types;  </div><div class="line">    IMP method_imp;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p><img src="/img/runtime_1.png" alt="">  </p>
+<p>关于实现一个类的方法调用机制，也就是消息发送大体分为三个步骤。<br>举例说明，比如<code>objc_msgSend(obj,method)</code>：</p>
+<ul>
+<li>首先通过<strong>obj</strong>的<strong>isa</strong>指针找到其<strong>class</strong>。</li>
+<li>然后在<strong>class</strong>中的<strong>objc_method_list</strong>进行遍历，查询是否有<strong>method</strong>方法。此时有两种情况：</li>
+</ul>
+<ol>
+<li>如果找查到<strong>method</strong>方法，<strong>IMP</strong>执行。并将此方法加入至<strong>objc_cache</strong>便于下次高效的利用。</li>
+<li>如果没有查找到，此时将进入<strong>superclass</strong>，重复上述第二个步骤继续执行。</li>
+</ol>
+<ul>
+<li>如果在<strong>superclass</strong>中查找到后，立即<strong>IMP</strong>执行。如查询未果，此时将进入<strong>NSObject</strong>中进行最后一次查询。  </li>
+</ul>
+<p>在上述过程中，如果在最后一步<strong>NSObject</strong>中依然查询未果。此时<strong>Runtime</strong>将启用消息转发机制。</p>
+<h1 id="消息转发"><a href="#消息转发" class="headerlink" title="消息转发"></a>消息转发</h1><p>在正常的开发中，如果<code>[obj method]</code>中的<strong>method</strong>并未实现，此时控制台会报出<strong>[obj method]: unrecognized selector sent to instance 0x10404941</strong>异常。但是在此之前，<strong>Runtime</strong>机制依次提供了三种应急的措施：   </p>
+<ul>
+<li><strong>Method resolution</strong></li>
+<li><strong>Fast forwarding</strong></li>
+<li><strong>Normal forwarding</strong></li>
+</ul>
+<h2 id="Method-resolution"><a href="#Method-resolution" class="headerlink" title="Method resolution"></a>Method resolution</h2><p><code>[obj method]</code>，如果此时在类obj中未实现<strong>method</strong>方法，这时<strong>Objective-C</strong>会调用<code>+ resolveInstanceMethod:</code>。在此方法中，可以实现新增方法的跳转。</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"><span class="keyword">void</span> newMethod(<span class="keyword">id</span> obj, SEL _cmd)</div><div class="line">&#123;</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"just do it"</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line">+ (<span class="built_in">BOOL</span>)resolveInstanceMethod:(SEL)sel</div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span> (sel == <span class="keyword">@selector</span>(method)) &#123;</div><div class="line">        class_addMethod([<span class="keyword">self</span> <span class="keyword">class</span>], sel, (IMP)newMethod, <span class="string">"v"</span>);</div><div class="line">        <span class="keyword">return</span> <span class="literal">YES</span>;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="keyword">return</span> [<span class="keyword">super</span> resolveInstanceMethod:sel];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>关于<code>class_addMethod</code>最后的参数规则，可参照<br><a href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtTypeEncodings.html" target="_blank" rel="external">Type Encoding</a>。</p>
+<p>上述新增的方法可写成：</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line">IMP newMethod = imp_implementationWithBlock(^(<span class="keyword">id</span> _<span class="keyword">self</span>) &#123;  </div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"just do it"</span>);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>如果在<code>+ resolveInstanceMethod:</code>中<strong>Return No</strong>，<strong>Runtime</strong>将进行下一步转发。</p>
+<h2 id="Fast-forwarding"><a href="#Fast-forwarding" class="headerlink" title="Fast forwarding"></a>Fast forwarding</h2><p><strong>Runtime</strong>将转发至<code>-forwardingTargetForSelector:</code>方法中，此时可以将消息转发到其他的类中。  </p>
+<p>如下所示：</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line">- (<span class="keyword">id</span>)forwardingTargetForSelector:(SEL)aSelector</div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span>(aSelector == <span class="keyword">@selector</span>(foo:))&#123;</div><div class="line">        <span class="keyword">return</span> [[Object alloc] init];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> [<span class="keyword">super</span> forwardingTargetForSelector:aSelector];</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="meta">#import <span class="meta-string">"Object.h"</span></span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">@implementation</span></span></div><div class="line">- (<span class="keyword">void</span>)method</div><div class="line">&#123;</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"just do it!"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"><span class="number">2017</span><span class="number">-06</span><span class="number">-13</span> <span class="number">19</span>:<span class="number">48</span>:<span class="number">20.006927</span> OCConsole[<span class="number">26824</span>:<span class="number">4972520</span>] just <span class="keyword">do</span> it!</div></pre></td></tr></table></figure>
+<p>如果在<code>-forwardingTargetForSelector:</code>方法中<strong>Return Nil</strong>，<strong>Runtime</strong>将给予最后一次机会。</p>
+<h2 id="Normal-forwarding"><a href="#Normal-forwarding" class="headerlink" title="Normal forwarding"></a>Normal forwarding</h2><p>同<strong>Fast forwarding</strong>一样，<strong>Normal forwarding</strong>也是将消息转发至其它类中实现。<br>但不同的是<strong>Normal forwarding</strong>会分别执行两个方法：</p>
+<ul>
+<li><code>- methodSignatureForSelector</code></li>
+<li><code>- forwardInvocation</code></li>
+</ul>
+<p>首先进入到<code>- methodSignatureForSelector</code>方法中，需要注册所转发出类及方法名。</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line">- (<span class="built_in">NSMethodSignature</span> *)methodSignatureForSelector:(SEL)aSelector</div><div class="line">&#123;</div><div class="line">    <span class="built_in">NSMethodSignature</span>  *signature = [Object instanceMethodSignatureForSelector:<span class="keyword">@selector</span>(method)];</div><div class="line">    </div><div class="line">    <span class="keyword">return</span> signature;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>如果返回<strong>nil</strong>，且实现了<code>- doesNotRecognizeSelector</code>方法。此时不会报出<strong>[obj method]: unrecognized selector sent to instance 0x10404941</strong>异常。  </p>
+</blockquote>
+<p>接着<strong>Runtime</strong>将注册的信息封装成<strong>Invocation</strong>进入到<code>- forwardInvocation</code>方法中。</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)forwardInvocation:(<span class="built_in">NSInvocation</span> *)anInvocation</div><div class="line">&#123;</div><div class="line">    SEL sel = anInvocation.selector;</div><div class="line">    <span class="keyword">if</span> ([Object instancesRespondToSelector:sel]) &#123;</div><div class="line">        [anInvocation invokeWithTarget:[Object new]];</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>至此，完成了消息最后的转发。</p>
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><p><a href="https://developer.apple.com/documentation/objectivec/objective_c_runtime" target="_blank" rel="external">Objective-C Runtime Reference</a><br><a href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Introduction/Introduction.html" target="_blank" rel="external">Objective-C Runtime Programming Guide</a><br><a href="http://www.opensource.apple.com/source/objc4/" target="_blank" rel="external">RuntimeSource</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Runtime/" rel="tag"># Runtime</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/12/iOS-Essence-Zombie/" rel="next" title="僵尸对象调试工具">
+                <i class="fa fa-chevron-left"></i> 僵尸对象调试工具
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="hypercomments_widget"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/icon.png"
+               alt="fatofyoung@yeah.net" />
+          <p class="site-author-name" itemprop="name">fatofyoung@yeah.net</p>
+           
+              <p class="site-description motion-element" itemprop="description">sense and simplicity</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-block">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://masterxsec.github.io/" title="masterxsec" target="_blank">masterxsec</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Runtime"><span class="nav-number">1.</span> <span class="nav-text">Runtime</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#消息传递"><span class="nav-number">2.</span> <span class="nav-text">消息传递</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#消息转发"><span class="nav-number">3.</span> <span class="nav-text">消息转发</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Method-resolution"><span class="nav-number">3.1.</span> <span class="nav-text">Method resolution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fast-forwarding"><span class="nav-number">3.2.</span> <span class="nav-text">Fast forwarding</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Normal-forwarding"><span class="nav-number">3.3.</span> <span class="nav-text">Normal forwarding</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#References"><span class="nav-number">4.</span> <span class="nav-text">References</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">fatofyoung@yeah.net</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+		<script type="text/javascript">
+		_hcwp = window._hcwp || [];
+
+		_hcwp.push({widget:"Bloggerstream", widget_id: 90927, selector:".hc-comment-count", label: "{\%COUNT%\}" });
+
+		
+		_hcwp.push({widget:"Stream", widget_id: 90927, xid: "2017/06/13/iOS-Essence-Runtime/"});
+		
+
+		(function() {
+		if("HC_LOAD_INIT" in window)return;
+		HC_LOAD_INIT = true;
+		var lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || "en").substr(0, 2).toLowerCase();
+		var hcc = document.createElement("script"); hcc.type = "text/javascript"; hcc.async = true;
+		hcc.src = ("https:" == document.location.protocol ? "https" : "http")+"://w.hypercomments.com/widget/hc/90927/"+lang+"/widget.js";
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(hcc, s.nextSibling);
+		})();
+		</script>
+
+	
+
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("Q5c2wbabt2gxiK3PeguF7uiV-gzGzoHsz", "07WmtXiVS6blhhfSiulJGO2v");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+
+  
+
+</body>
+</html>
