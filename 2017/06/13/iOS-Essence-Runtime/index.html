@@ -87,18 +87,18 @@
 
 
 
-<meta name="description" content="Runtime之前断断续续的接触过一些Runtime方面的零散知识，但平时开发中对其使用的频率并不高，或是第三方框架的使用量较大。所以对Runtime缺乏清晰的认知。所以这次借助blog，对Runtime知识进行一个系统的梳理。">
+<meta name="description" content="Runtime之前断断续续的接触过一些Runtime方面的零散知识，但平时开发中对其使用的频率并不高，或是第三方框架的使用量较大。对Runtime缺乏清晰的认知。所以这次借助blog对Runtime知识进行一个系统的梳理。">
 <meta name="keywords" content="Runtime">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Objective-C Runtime">
 <meta property="og:url" content="/2017/06/13/iOS-Essence-Runtime/index.html">
 <meta property="og:site_name" content="FatOfYoung">
-<meta property="og:description" content="Runtime之前断断续续的接触过一些Runtime方面的零散知识，但平时开发中对其使用的频率并不高，或是第三方框架的使用量较大。所以对Runtime缺乏清晰的认知。所以这次借助blog，对Runtime知识进行一个系统的梳理。">
+<meta property="og:description" content="Runtime之前断断续续的接触过一些Runtime方面的零散知识，但平时开发中对其使用的频率并不高，或是第三方框架的使用量较大。对Runtime缺乏清晰的认知。所以这次借助blog对Runtime知识进行一个系统的梳理。">
 <meta property="og:image" content="/img/runtime_1.png">
-<meta property="og:updated_time" content="2017-06-13T15:19:49.000Z">
+<meta property="og:updated_time" content="2017-06-14T00:39:47.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Objective-C Runtime">
-<meta name="twitter:description" content="Runtime之前断断续续的接触过一些Runtime方面的零散知识，但平时开发中对其使用的频率并不高，或是第三方框架的使用量较大。所以对Runtime缺乏清晰的认知。所以这次借助blog，对Runtime知识进行一个系统的梳理。">
+<meta name="twitter:description" content="Runtime之前断断续续的接触过一些Runtime方面的零散知识，但平时开发中对其使用的频率并不高，或是第三方框架的使用量较大。对Runtime缺乏清晰的认知。所以这次借助blog对Runtime知识进行一个系统的梳理。">
 <meta name="twitter:image" content="/img/runtime_1.png">
 
 
@@ -379,7 +379,7 @@
       
 
       
-        <h1 id="Runtime"><a href="#Runtime" class="headerlink" title="Runtime"></a>Runtime</h1><p>之前断断续续的接触过一些<strong>Runtime</strong>方面的零散知识，但平时开发中对其使用的频率并不高，或是第三方框架的使用量较大。所以对<strong>Runtime</strong>缺乏清晰的认知。所以这次借助<strong>blog</strong>，对<strong>Runtime</strong>知识进行一个系统的梳理。<a id="more"></a></p>
+        <h1 id="Runtime"><a href="#Runtime" class="headerlink" title="Runtime"></a>Runtime</h1><p>之前断断续续的接触过一些<strong>Runtime</strong>方面的零散知识，但平时开发中对其使用的频率并不高，或是第三方框架的使用量较大。对<strong>Runtime</strong>缺乏清晰的认知。所以这次借助<strong>blog</strong>对<strong>Runtime</strong>知识进行一个系统的梳理。<a id="more"></a></p>
 <p><strong>Objective-C</strong>是一个动态语言，这意味着它不仅需要一个编译器，也需要一个运行时系统来动态得创建类和对象、进行消息传递和转发。理解 <strong>Objective-C</strong>的<strong>Runtime</strong>机制可以帮我们更好的了解这个语言，适当的时候还能对语言进行扩展，从系统层面解决项目中的一些设计或技术问题。了解<strong>Runtime</strong>，要先了解它的核心 - 消息传递。 </p>
 <h1 id="消息传递"><a href="#消息传递" class="headerlink" title="消息传递"></a>消息传递</h1><blockquote>
 <p>I’m sorry that I long ago coined the term “objects” for this topic because it gets many people to focus on the lesser idea. <strong>The big idea is “Messaging”</strong> – that is what the kernal[sic] of Smalltalk is all about… The key in making great and growable systems is much more to design how its modules communicate rather than what their internal properties and behaviors should be.  </p>
