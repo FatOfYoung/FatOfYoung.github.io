@@ -95,7 +95,7 @@
 <meta property="og:site_name" content="FatOfYoung">
 <meta property="og:description" content="Runtime之前断断续续的接触过一些Runtime方面的零散知识，但平时开发中对其使用的频率并不高，或是第三方框架的使用量较大。对Runtime缺乏清晰的认知。所以这次借助blog对Runtime知识进行一个系统的梳理。">
 <meta property="og:image" content="/img/runtime_1.png">
-<meta property="og:updated_time" content="2017-06-14T00:39:47.000Z">
+<meta property="og:updated_time" content="2017-06-19T06:41:58.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Objective-C Runtime">
 <meta name="twitter:description" content="Runtime之前断断续续的接触过一些Runtime方面的零散知识，但平时开发中对其使用的频率并不高，或是第三方框架的使用量较大。对Runtime缺乏清晰的认知。所以这次借助blog对Runtime知识进行一个系统的梳理。">
@@ -417,13 +417,13 @@
 <p>关于<code>class_addMethod</code>最后的参数规则，可参照<br><a href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtTypeEncodings.html" target="_blank" rel="external">Type Encoding</a>。</p>
 <p>上述新增的方法可写成：</p>
 <figure class="highlight objc"><table><tr><td class="code"><pre><div class="line">IMP newMethod = imp_implementationWithBlock(^(<span class="keyword">id</span> _<span class="keyword">self</span>) &#123;  </div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"just do it"</span>);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
-<p>如果在<code>+ resolveInstanceMethod:</code>中<strong>Return No</strong>，<strong>Runtime</strong>将进行下一步转发。</p>
+<p>如果在<code>+ resolveInstanceMethod:</code>中<code>return NO</code>，<strong>Runtime</strong>将进行下一步转发。</p>
 <h2 id="Fast-forwarding"><a href="#Fast-forwarding" class="headerlink" title="Fast forwarding"></a>Fast forwarding</h2><p><strong>Runtime</strong>将转发至<code>-forwardingTargetForSelector:</code>方法中，此时可以将消息转发到其他的类中。  </p>
 <p>如下所示：</p>
-<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line">- (<span class="keyword">id</span>)forwardingTargetForSelector:(SEL)aSelector</div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span>(aSelector == <span class="keyword">@selector</span>(foo:))&#123;</div><div class="line">        <span class="keyword">return</span> [[Object alloc] init];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> [<span class="keyword">super</span> forwardingTargetForSelector:aSelector];</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="meta">#import <span class="meta-string">"Object.h"</span></span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">@implementation</span></span></div><div class="line">- (<span class="keyword">void</span>)method</div><div class="line">&#123;</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"just do it!"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line">- (<span class="keyword">id</span>)forwardingTargetForSelector:(SEL)aSelector</div><div class="line">&#123;</div><div class="line">    <span class="keyword">if</span>(aSelector == <span class="keyword">@selector</span>(method))&#123;</div><div class="line">        <span class="keyword">return</span> [Object method];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> [<span class="keyword">super</span> forwardingTargetForSelector:aSelector];</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="meta">#import <span class="meta-string">"Object.h"</span></span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">@implementation</span></span></div><div class="line">- (<span class="keyword">void</span>)method</div><div class="line">&#123;</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"just do it!"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>输出：</p>
 <figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"><span class="number">2017</span><span class="number">-06</span><span class="number">-13</span> <span class="number">19</span>:<span class="number">48</span>:<span class="number">20.006927</span> OCConsole[<span class="number">26824</span>:<span class="number">4972520</span>] just <span class="keyword">do</span> it!</div></pre></td></tr></table></figure>
-<p>如果在<code>-forwardingTargetForSelector:</code>方法中<strong>Return Nil</strong>，<strong>Runtime</strong>将给予最后一次机会。</p>
+<p>如果在<code>-forwardingTargetForSelector:</code>方法中<code>return nil</code>，<strong>Runtime</strong>将给予最后一次机会。</p>
 <h2 id="Normal-forwarding"><a href="#Normal-forwarding" class="headerlink" title="Normal forwarding"></a>Normal forwarding</h2><p>同<strong>Fast forwarding</strong>一样，<strong>Normal forwarding</strong>也是将消息转发至其它类中实现。<br>但不同的是<strong>Normal forwarding</strong>会分别执行两个方法：</p>
 <ul>
 <li><code>- methodSignatureForSelector</code></li>
@@ -560,7 +560,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">12</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -578,7 +578,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
