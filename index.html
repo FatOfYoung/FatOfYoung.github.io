@@ -381,33 +381,14 @@
 
       
         
-          
-            <p>之前在查阅<strong>Runtime</strong>文档中，在第三种消息转发时<code>- forwardInvocation</code>使用了基于<strong>NSProxy</strong>类进行了实现。于是查询通过官网文档，边学习边整理一些关于<strong>NSProxy</strong>的知识。  </p>
-<h1 id="NSProxy"><a href="#NSProxy" class="headerlink" title="NSProxy"></a>NSProxy</h1><blockquote>
-<p>An abstract superclass defining an API for objects that act as stand-ins for other objects or for objects that don’t exist yet.  </p>
-<p>Typically, a message to a proxy is forwarded to the real object or causes the proxy to load (or transform itself into) the real object. Subclasses of NSProxy can be used to implement transparent distributed messaging (for example,<br><a href="https://developer.apple.com/documentation/foundation/nsdistantobject?language=objc" target="_blank" rel="external">NSDistantObject</a><br>) or for lazy instantiation of objects that are expensive to create.  </p>
-</blockquote>
-<p>通过<a href="https://developer.apple.com/documentation/foundation/nsproxy?language=objc" target="_blank" rel="external">官网文档</a>得知，<strong>NSProxy</strong>是一个抽象的类，可以通过其转发消息或加载到一个真实的对象。  </p>
-<p><img src="/img/proxy_1.png" alt=""></p>
-<p>如图，<strong>ClassA</strong>若要实现<strong>methodB</strong>和<strong>methodC</strong>，需创建一个继承<strong>NSProxy</strong>的类，在此中实现对消息的转发。<br>就如其名字一样，<strong>Proxy</strong>主要作用是代理，以此来连接各类获取其方法，类似于多继承制。</p>
-<h1 id="implementation"><a href="#implementation" class="headerlink" title="implementation"></a>implementation</h1><p>首先需要使用<strong>Runtime</strong>在<strong>Proxy</strong>中实现遍历需要被代理的类中的方法，也就是上图中的<strong>ClassB</strong>和<strong>ClassC</strong>。  </p>
-<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)addMethodWithTarget:(<span class="keyword">id</span>)target</div><div class="line">&#123;</div><div class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> count = <span class="number">0</span>;</div><div class="line">    </div><div class="line">    Method * methodList = class_copyMethodList([target <span class="keyword">class</span>], &amp;count);</div><div class="line">    </div><div class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; count; i++) &#123;</div><div class="line">        Method method = methodList[i];</div><div class="line">        SEL methodSel = method_getName(method);</div><div class="line">        <span class="keyword">const</span> <span class="keyword">char</span> * methodName = sel_getName(methodSel);</div><div class="line">        [<span class="keyword">self</span>.methodDic setObject:target forKey:[<span class="built_in">NSString</span> stringWithUTF8String:methodName]];</div><div class="line">    &#125;</div><div class="line">    free(methodList);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>实现<strong>NSProxy</strong>时需遵守两个方法实现消息的转发：  </p>
-<ul>
-<li><code>- (void)forwardInvocation:(NSInvocation *)invocation</code></li>
-<li><code>- (NSMethodSignature *)methodSignatureForSelector:(SEL)sel</code></li>
-</ul>
-<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)forwardInvocation:(<span class="built_in">NSInvocation</span> *)invocation</div><div class="line">&#123;</div><div class="line">    SEL sel = invocation.selector;</div><div class="line">    </div><div class="line">    <span class="built_in">NSString</span> * selName = <span class="built_in">NSStringFromSelector</span>(sel);</div><div class="line">    </div><div class="line">    <span class="keyword">id</span> target = <span class="keyword">self</span>.methodDic[selName];</div><div class="line">    </div><div class="line">    <span class="keyword">if</span> ([target &amp;&amp; target respondsToSelector:sel]) &#123;</div><div class="line">        <span class="keyword">return</span> [invocation invokeWithTarget:target];</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">return</span> [<span class="keyword">super</span> invokeWithTarget:invocation.target];</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line">- (<span class="built_in">NSMethodSignature</span> *)methodSignatureForSelector:(SEL)sel</div><div class="line">&#123;</div><div class="line">    <span class="built_in">NSString</span> * selName = <span class="built_in">NSStringFromSelector</span>(sel);</div><div class="line">    </div><div class="line">    <span class="keyword">id</span> target = <span class="keyword">self</span>.methodDic[selName];</div><div class="line">    </div><div class="line">    <span class="keyword">if</span> (target &amp;&amp; [target respondsToSelector:sel]) &#123;</div><div class="line">        <span class="keyword">return</span> [target methodSignatureForSelector:sel];</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">return</span> [<span class="keyword">super</span> methodSignatureForSelector:sel];</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p><strong>ClassB</strong>和<strong>ClassC</strong></p>
-<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"><span class="meta">#import <span class="meta-string">"ClassB.h"</span></span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">ClassB</span></span></div><div class="line">- (<span class="keyword">void</span>)methodB</div><div class="line">&#123;</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"MethodB"</span>);</div><div class="line">&#125;</div><div class="line"><span class="keyword">@end</span></div><div class="line"></div><div class="line"><span class="meta">#import <span class="meta-string">"ClassC.h"</span></span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">ClassC</span></span></div><div class="line">- (<span class="keyword">void</span>)methodC</div><div class="line">&#123;</div><div class="line">    <span class="built_in">NSLog</span>(<span class="string">@"MethodC"</span>);</div><div class="line">&#125;</div><div class="line"><span class="keyword">@end</span></div></pre></td></tr></table></figure>
-<p>在<strong>ClassA</strong>类中实现方法的调用</p>
-<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line">Proxy * proxy = [Proxy getProxy];</div><div class="line">[proxy methodB];</div><div class="line">[proxy methodC];</div></pre></td></tr></table></figure>
-<p>打印  </p>
-<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"><span class="number">2017</span><span class="number">-06</span><span class="number">-19</span> <span class="number">23</span>:<span class="number">38</span>:<span class="number">07.244084</span> OCConsole[<span class="number">3773</span>:<span class="number">332728</span>] MethodB</div><div class="line"><span class="number">2017</span><span class="number">-06</span><span class="number">-19</span> <span class="number">23</span>:<span class="number">38</span>:<span class="number">07.244250</span> OCConsole[<span class="number">3773</span>:<span class="number">332728</span>] MethodC</div></pre></td></tr></table></figure>
-<p>在<strong>ClassA</strong>调用<code>[proxy methodA]``[proxy methodB]</code>方法时可能会报出警告，此时可以选择将<code>methodA``methodB</code>分别定义在<code>@Protocol</code>中，然后在<strong>Proxy</strong>中遵守其代理即可。</p>
-
-          
+          <p>之前在查阅<strong>Runtime</strong>文档中，在第三种消息转发时<code>- forwardInvocation</code>使用了基于<strong>NSProxy</strong>类进行了实现。于是查询通过官网文档，边学习边整理一些关于<strong>NSProxy</strong>的知识。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/06/19/iOS-Essence-NSProxy/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>

@@ -87,18 +87,18 @@
 
 
 
-<meta name="description" content="之前在查阅Runtime文档中，在第三种消息转发时- forwardInvocation使用了基于NSProxy类进行了实现。于是查询通过官网文档，边学习边整理一些关于NSProxy的知识。   NSProxy An abstract superclass defining an API for objects that act as stand-ins for other objects or">
+<meta name="description" content="之前在查阅Runtime文档中，在第三种消息转发时- forwardInvocation使用了基于NSProxy类进行了实现。于是查询通过官网文档，边学习边整理一些关于NSProxy的知识。">
 <meta name="keywords" content="NSProxy">
 <meta property="og:type" content="article">
 <meta property="og:title" content="NSProxy">
 <meta property="og:url" content="/2017/06/19/iOS-Essence-NSProxy/index.html">
 <meta property="og:site_name" content="FatOfYoung">
-<meta property="og:description" content="之前在查阅Runtime文档中，在第三种消息转发时- forwardInvocation使用了基于NSProxy类进行了实现。于是查询通过官网文档，边学习边整理一些关于NSProxy的知识。   NSProxy An abstract superclass defining an API for objects that act as stand-ins for other objects or">
+<meta property="og:description" content="之前在查阅Runtime文档中，在第三种消息转发时- forwardInvocation使用了基于NSProxy类进行了实现。于是查询通过官网文档，边学习边整理一些关于NSProxy的知识。">
 <meta property="og:image" content="/img/proxy_1.png">
-<meta property="og:updated_time" content="2017-06-19T15:57:58.000Z">
+<meta property="og:updated_time" content="2017-06-19T16:01:09.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="NSProxy">
-<meta name="twitter:description" content="之前在查阅Runtime文档中，在第三种消息转发时- forwardInvocation使用了基于NSProxy类进行了实现。于是查询通过官网文档，边学习边整理一些关于NSProxy的知识。   NSProxy An abstract superclass defining an API for objects that act as stand-ins for other objects or">
+<meta name="twitter:description" content="之前在查阅Runtime文档中，在第三种消息转发时- forwardInvocation使用了基于NSProxy类进行了实现。于是查询通过官网文档，边学习边整理一些关于NSProxy的知识。">
 <meta name="twitter:image" content="/img/proxy_1.png">
 
 
@@ -379,7 +379,7 @@
       
 
       
-        <p>之前在查阅<strong>Runtime</strong>文档中，在第三种消息转发时<code>- forwardInvocation</code>使用了基于<strong>NSProxy</strong>类进行了实现。于是查询通过官网文档，边学习边整理一些关于<strong>NSProxy</strong>的知识。  </p>
+        <p>之前在查阅<strong>Runtime</strong>文档中，在第三种消息转发时<code>- forwardInvocation</code>使用了基于<strong>NSProxy</strong>类进行了实现。于是查询通过官网文档，边学习边整理一些关于<strong>NSProxy</strong>的知识。  <a id="more"></a></p>
 <h1 id="NSProxy"><a href="#NSProxy" class="headerlink" title="NSProxy"></a>NSProxy</h1><blockquote>
 <p>An abstract superclass defining an API for objects that act as stand-ins for other objects or for objects that don’t exist yet.  </p>
 <p>Typically, a message to a proxy is forwarded to the real object or causes the proxy to load (or transform itself into) the real object. Subclasses of NSProxy can be used to implement transparent distributed messaging (for example,<br><a href="https://developer.apple.com/documentation/foundation/nsdistantobject?language=objc" target="_blank" rel="external">NSDistantObject</a><br>) or for lazy instantiation of objects that are expensive to create.  </p>
@@ -402,7 +402,7 @@
 <figure class="highlight objc"><table><tr><td class="code"><pre><div class="line">Proxy * proxy = [Proxy getProxy];</div><div class="line">[proxy methodB];</div><div class="line">[proxy methodC];</div></pre></td></tr></table></figure>
 <p>打印  </p>
 <figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"><span class="number">2017</span><span class="number">-06</span><span class="number">-19</span> <span class="number">23</span>:<span class="number">38</span>:<span class="number">07.244084</span> OCConsole[<span class="number">3773</span>:<span class="number">332728</span>] MethodB</div><div class="line"><span class="number">2017</span><span class="number">-06</span><span class="number">-19</span> <span class="number">23</span>:<span class="number">38</span>:<span class="number">07.244250</span> OCConsole[<span class="number">3773</span>:<span class="number">332728</span>] MethodC</div></pre></td></tr></table></figure>
-<p>在<strong>ClassA</strong>调用<code>[proxy methodA]``[proxy methodB]</code>方法时可能会报出警告，此时可以选择将<code>methodA``methodB</code>分别定义在<code>@Protocol</code>中，然后在<strong>Proxy</strong>中遵守其代理即可。</p>
+<p>在<strong>ClassA</strong>调用<code>[proxy methodA] [proxy methodB]</code>方法时可能会报出警告，此时可以选择将<code>methodA methodB</code>分别定义在<code>@Protocol</code>中，然后在<strong>Proxy</strong>中遵守其代理即可。</p>
 
       
     </div>
