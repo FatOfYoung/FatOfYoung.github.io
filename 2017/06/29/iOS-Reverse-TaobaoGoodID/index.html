@@ -87,17 +87,17 @@
 
 
 
-<meta name="description" content="当然最简单的方法是直接从淘宝商品的URL中截取，方法虽然直接但有两个限制。首先必须得在天猫中浏览商品，其次如果使用App将无法获取URL值。    所以此时逆向工作派上了用场。 准备工作砸壳按照常规，首先对ipa文件进行砸壳操作。   使用SSH进入到系统中：   $ ssh root@192.168.2.11 此时需输入密码默认为alpine 使用Clutch查看当前所安装App的BundleI">
+<meta name="description" content="当然最简单的方法是直接从淘宝商品的URL中截取，方法虽然直接但有两个限制。首先必须得在天猫中浏览商品，其次如果使用App虽可通过抓包的方式获取，但无法在App中体现。   所以此时得借助逆向方式进行探究。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="iOS逆向获取淘宝商品id">
+<meta property="og:title" content="iOS逆向获取淘宝商品ID">
 <meta property="og:url" content="/2017/06/29/iOS-Reverse-TaobaoGoodID/index.html">
 <meta property="og:site_name" content="FatOfYoung">
-<meta property="og:description" content="当然最简单的方法是直接从淘宝商品的URL中截取，方法虽然直接但有两个限制。首先必须得在天猫中浏览商品，其次如果使用App将无法获取URL值。    所以此时逆向工作派上了用场。 准备工作砸壳按照常规，首先对ipa文件进行砸壳操作。   使用SSH进入到系统中：   $ ssh root@192.168.2.11 此时需输入密码默认为alpine 使用Clutch查看当前所安装App的BundleI">
+<meta property="og:description" content="当然最简单的方法是直接从淘宝商品的URL中截取，方法虽然直接但有两个限制。首先必须得在天猫中浏览商品，其次如果使用App虽可通过抓包的方式获取，但无法在App中体现。   所以此时得借助逆向方式进行探究。">
 <meta property="og:image" content="/img/TaobaoGoodID_1.png">
-<meta property="og:updated_time" content="2017-06-30T07:47:01.000Z">
+<meta property="og:updated_time" content="2017-06-30T07:58:01.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="iOS逆向获取淘宝商品id">
-<meta name="twitter:description" content="当然最简单的方法是直接从淘宝商品的URL中截取，方法虽然直接但有两个限制。首先必须得在天猫中浏览商品，其次如果使用App将无法获取URL值。    所以此时逆向工作派上了用场。 准备工作砸壳按照常规，首先对ipa文件进行砸壳操作。   使用SSH进入到系统中：   $ ssh root@192.168.2.11 此时需输入密码默认为alpine 使用Clutch查看当前所安装App的BundleI">
+<meta name="twitter:title" content="iOS逆向获取淘宝商品ID">
+<meta name="twitter:description" content="当然最简单的方法是直接从淘宝商品的URL中截取，方法虽然直接但有两个限制。首先必须得在天猫中浏览商品，其次如果使用App虽可通过抓包的方式获取，但无法在App中体现。   所以此时得借助逆向方式进行探究。">
 <meta name="twitter:image" content="/img/TaobaoGoodID_1.png">
 
 
@@ -132,7 +132,7 @@
 
 
 
-  <title> iOS逆向获取淘宝商品id | FatOfYoung </title>
+  <title> iOS逆向获取淘宝商品ID | FatOfYoung </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -282,7 +282,7 @@
             
             
               
-                iOS逆向获取淘宝商品id
+                iOS逆向获取淘宝商品ID
               
             
           </h1>
@@ -349,7 +349,7 @@
 
           
           
-             <span id="/2017/06/29/iOS-Reverse-TaobaoGoodID/" class="leancloud_visitors" data-flag-title="iOS逆向获取淘宝商品id">
+             <span id="/2017/06/29/iOS-Reverse-TaobaoGoodID/" class="leancloud_visitors" data-flag-title="iOS逆向获取淘宝商品ID">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -378,14 +378,14 @@
       
 
       
-        <p>当然最简单的方法是直接从淘宝商品的URL中截取，方法虽然直接但有两个限制。首先必须得在天猫中浏览商品，其次如果使用<strong>App</strong>将无法获取<strong>URL</strong>值。   </p>
-<p>所以此时逆向工作派上了用场。</p>
+        <p>当然最简单的方法是直接从淘宝商品的<strong>URL</strong>中截取，方法虽然直接但有两个限制。首先必须得在天猫中浏览商品，其次如果使用<strong>App</strong>虽可通过抓包的方式获取，但无法在<strong>App</strong>中体现。  </p>
+<p>所以此时得借助逆向方式进行探究。<a id="more"></a></p>
 <h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><h2 id="砸壳"><a href="#砸壳" class="headerlink" title="砸壳"></a>砸壳</h2><p>按照常规，首先对<strong>ipa</strong>文件进行砸壳操作。  </p>
 <p>使用<strong>SSH</strong>进入到系统中：  </p>
-<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line">$ ssh root@<span class="number">192.168</span><span class="number">.2</span><span class="number">.11</span></div></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line">$ ssh root@[ip]</div></pre></td></tr></table></figure>
 <p>此时需输入密码默认为<strong>alpine</strong></p>
 <p>使用<strong>Clutch</strong>查看当前所安装<strong>App</strong>的<strong>BundleID</strong></p>
-<p>使用<code>clutch -d com.taobao.taobao4iphone</code>对淘宝<strong>ipa</strong>进行砸壳</p>
+<p><code>clutch -d com.taobao.taobao4iphone</code>对<strong>ipa</strong>进行砸壳</p>
 <p>之后借助<strong>iTools</strong>将目录中的已被砸壳的<strong>ipa</strong>文件复制到<strong>Mac</strong>中</p>
 <h2 id="导出头文件"><a href="#导出头文件" class="headerlink" title="导出头文件"></a>导出头文件</h2><p>将已被<strong>Clutch</strong>的<strong>ipa</strong>文件进行解压，并<strong>cd</strong>到其<strong>.app</strong>目录中。使用<strong>class-dump</strong>进行对头文件进行导出操作：  </p>
 <figure class="highlight objc"><table><tr><td class="code"><pre><div class="line"><span class="keyword">class</span>-dump -s -S -H xxx.decrypted -o /pathTo/file</div></pre></td></tr></table></figure>
@@ -395,7 +395,7 @@
 <li>Cycript</li>
 <li>Reveal</li>
 </ul>
-<p><strong>cycript</strong>是基于层级所返回的代码显示，当然这只是它其中的一个简单功能。但使用<strong>Reveal</strong>会更佳快速直观。因为是需要获取商品的详细<strong>ID</strong>，所以直接跳转至商品详情界面使用<strong>Reveal</strong>查看。  </p>
+<p><strong>cycript</strong>是基于层级所返回的代码显示，当然这只是它其中的一个简单功能。但使用<strong>Reveal</strong>会更加快速直观。因为是需要获取商品的详细<strong>ID</strong>，所以直接跳转至商品详情界面进行查看。  </p>
 <p><img src="/img/TaobaoGoodID_1.png" alt=""></p>
 <p>如图所示，显示商品详情的控制器为<code>AliTradeSKUView</code>，所以在刚才所导出的头文件夹中找到<code>AliTradeSKUView.h</code>文件。<br>根据iOS正向的开发经验结合当前的显示界面，有嫌疑出现商品<strong>id</strong>的方法：  </p>
 <ul>
@@ -407,13 +407,13 @@
 <p>选择<code>[11.] iphone/tweak</code>  </p>
 <p>需要注意的是填写此项时需输入所要注入<strong>App</strong>的<strong>BundleID</strong>值<br><code>[iphone/tweak] MobileSubstrate Bundle filter [com.apple.springboard]:</code><br>否则<strong>Theos</strong>将无法正常<strong>Hook</strong>到所对应的程序。</p>
 <h1 id="转换目标"><a href="#转换目标" class="headerlink" title="转换目标"></a>转换目标</h1><p>根据<strong>Theos</strong>的打印信息，以及借助<strong>HopperDisassembler</strong>对这个两方法进行深入的研究，最终没能使商品<strong>ID</strong>浮出水面。  </p>
-<p>正在一筹莫展时，通过使用<strong>MitmProxy</strong>对<strong>App</strong>进行抓包，发现从商品详情界面跳转至到商品购买确认界面中，此过程并没有向服务器发送商品<strong>ID</strong>的数据的迹象。于是乎猜测信息是通过界面的普通正向传值所实现。  </p>
-<p>接下来打开商品购买确认界面<code>TBBuyViewController.h</code>，发现<code>- (id)initWithNavigatorURL:(id)arg1 query:(id)arg2</code>较为可疑。  </p>
+<p>正在一筹莫展时，通过使用<strong>MitmProxy</strong>对<strong>App</strong>进行抓包，发现从商品详情界面跳转至到商品购买确认界面中，此过程并没有向服务器发送商品<strong>ID</strong>的数据的迹象。于是乎猜测信息在这里是通过界面普通正向的传值所实现。  </p>
+<p>接下来打开商品购买确认界面<code>TBBuyViewController.h</code>，发现<code>- (id)initWithNavigatorURL:(id)arg1 query:(id)arg2</code>尤为可疑。  </p>
 <p>使用<strong>Tweak</strong>将其勾入并注入</p>
 <figure class="highlight objc"><table><tr><td class="code"><pre><div class="line">%hook TBBuyViewController</div><div class="line">- (<span class="keyword">id</span>)initWithNavigatorURL:(<span class="keyword">id</span>)arg1 query:(<span class="keyword">id</span>)arg2</div><div class="line">&#123;</div><div class="line">	%log;</div><div class="line">	%orig;</div><div class="line">	<span class="keyword">return</span> <span class="literal">nil</span>;</div><div class="line">&#125;</div><div class="line">%end</div></pre></td></tr></table></figure>
 <p>使用<strong>Socat</strong>进行打印输出</p>
-<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line">[&lt;TBBuyViewController: <span class="number">0x157b1b3d0</span>&gt; initWithNavigatorURL:taobao:<span class="comment">//go/tradebuildorder?quantity=1&amp;itemId=538584614564&amp;buyNow=true&amp;serviceId=&amp;skuId=3281880609539&amp;exParams=%7B%7D query:&#123;</span></div><div class="line">	    buyNow = <span class="literal">true</span>;</div><div class="line">	    exParams = <span class="string">"&#123;&#125;"</span>;</div><div class="line">	    itemId = <span class="number">538584614564</span>;</div><div class="line">	    quantity = <span class="number">1</span>;</div><div class="line">	    skuId = <span class="number">3281880609539</span>;</div><div class="line">	&#125;]</div></pre></td></tr></table></figure>
-<p>此时关键信息<strong>skuId</strong>及<strong>itemId</strong>均显示出。</p>
+<figure class="highlight objc"><table><tr><td class="code"><pre><div class="line">query:&#123;</div><div class="line">	    buyNow = <span class="literal">true</span>;</div><div class="line">	    exParams = <span class="string">"&#123;&#125;"</span>;</div><div class="line">	    itemId = <span class="number">538584614564</span>;</div><div class="line">	    quantity = <span class="number">1</span>;</div><div class="line">	    skuId = <span class="number">3281880609539</span>;</div><div class="line">	&#125;</div></pre></td></tr></table></figure>
+<p>此时商品的关键信息<strong>skuId</strong>及<strong>itemId</strong>一目了然～</p>
 
       
     </div>
