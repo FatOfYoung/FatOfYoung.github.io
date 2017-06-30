@@ -386,7 +386,7 @@
         <p>关于Hexo在Mac下的配置，百度上可以搜出大量的教程。<br>虽然并不复杂，但作为第一次的配置，不免会犯下了一些错误。<a id="more"></a>所以本文将记录此次操作中遇到的一些<strong>issue</strong></p>
 <h2 id="node版本不足"><a href="#node版本不足" class="headerlink" title="node版本不足"></a>node版本不足</h2><ul>
 <li><p>首先在终端输入执行安装hexo命令</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> sudo npm install -g hexo-cli</span></div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">$ sudo npm install -g hexo-cli</div></pre></td></tr></table></figure>
 </li>
 <li><p>报错如下</p>
 <p><img src="/img/1_1.png" alt=""></p>
@@ -396,14 +396,14 @@
 <ul>
 <li><p>于是更新最新版node  </p>
 <p>输入命令如下</p>
-  <figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> sudo n lastest</span></div></pre></td></tr></table></figure>
+  <figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">$ sudo n lastest</div></pre></td></tr></table></figure>
 </li>
 </ul>
 <p>安装完毕后再次输入安装命令即可  </p>
 <h2 id="Hexo-config文件格式错误"><a href="#Hexo-config文件格式错误" class="headerlink" title="Hexo config文件格式错误"></a>Hexo config文件格式错误</h2><ul>
 <li><p>在配置_config.yml完毕后，  </p>
 <p>输入</p>
- <figure class="highlight shell"><table><tr><td class="code"><pre><div class="line"><span class="meta">$</span><span class="bash"> sudo hexo s</span></div></pre></td></tr></table></figure>
+ <figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">$ sudo hexo s</div></pre></td></tr></table></figure>
 </li>
 <li><p>出现错误如下  </p>
 <p> <img src="/img/1_2.png" alt=""> </p>
@@ -419,13 +419,13 @@
 </li>
 <li><p>关于第一种可以自行百度,尝试使用第二种方式解决。  </p>
 <p>输入</p>
-  <figure class="highlight elixir"><table><tr><td class="code"><pre><div class="line"><span class="variable">$ </span>ls -al [<span class="regexp">/path/file</span>Name]</div></pre></td></tr></table></figure>
+  <figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">$ ls -al [/path/fileName]</div></pre></td></tr></table></figure>
 <p>  <img src="/img/1_3.png" alt="">  </p>
 <p>  发现 .md文件及文件夹针对admin用户组仅提供Read权限。和我目前登陆的用户属于同一组别，于是提升组别权限即可。  </p>
 </li>
 <li><p>分别针对.md文件及.md所在文件夹  </p>
 <p>输入命令</p>
-  <figure class="highlight elixir"><table><tr><td class="code"><pre><div class="line"><span class="variable">$ </span>sudo chmod <span class="number">771</span> [<span class="regexp">/path/file</span>Name]</div></pre></td></tr></table></figure>
+  <figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">$ sudo chmod 771 [/path/fileName]</div></pre></td></tr></table></figure>
 <p>  <img src="/img/1_4.png" alt="">  </p>
 <p>  即可。</p>
 </li>
@@ -555,7 +555,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
