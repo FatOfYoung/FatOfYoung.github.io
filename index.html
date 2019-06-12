@@ -81,13 +81,13 @@
 
 <meta name="description" content="sense and simplicity">
 <meta property="og:type" content="website">
-<meta property="og:title" content="FatOfYoung`s Blog">
+<meta property="og:title" content="FatOfYoung">
 <meta property="og:url" content="http://yoursite.com/index.html">
-<meta property="og:site_name" content="FatOfYoung`s Blog">
+<meta property="og:site_name" content="FatOfYoung">
 <meta property="og:description" content="sense and simplicity">
 <meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="FatOfYoung`s Blog">
+<meta name="twitter:title" content="FatOfYoung">
 <meta name="twitter:description" content="sense and simplicity">
 
 
@@ -124,7 +124,7 @@
 
 
 
-  <title>FatOfYoung`s Blog</title>
+  <title>FatOfYoung</title>
   
 
 
@@ -155,7 +155,7 @@
     <div class="custom-logo-site-title">
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">FatOfYoung`s Blog</span>
+        <span class="site-title">FatOfYoung</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
@@ -241,7 +241,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="FatOfYoung`s Blog">
+      <meta itemprop="name" content="FatOfYoung">
     </span>
 
     
@@ -360,7 +360,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="FatOfYoung`s Blog">
+      <meta itemprop="name" content="FatOfYoung">
     </span>
 
     
@@ -423,8 +423,8 @@
         
           
             <h2 id="结构体的定义"><a href="#结构体的定义" class="headerlink" title="结构体的定义"></a>结构体的定义</h2><p>不同类型的结合称为 <strong>结构体</strong>，相当于数组。但数组中的每个元素都是同一个类型，但结构体中的成员可以是不同类型。</p>
-<p>同类型的两个结构体变量可以直接赋值，相当于 <strong>浅拷贝</strong> <strong>memcpy()</strong> ….</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> 结构的类型名称</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    类型名<span class="number">1</span> 成员名<span class="number">1</span>; </span><br><span class="line">    ....</span><br><span class="line">    类型名<span class="number">2</span> 成员名<span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同类型的两个结构体变量可以直接赋值，相当于 <strong>浅拷贝</strong> <strong>memcpy()</strong> </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">```c</span><br><span class="line">struct 结构的类型名称</span><br><span class="line">&#123;</span><br><span class="line">    类型名1 成员名1; </span><br><span class="line">    ....</span><br><span class="line">    类型名2 成员名2;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li><p>结构体的定义只是类型的定义，不占内存的空间。</p>
