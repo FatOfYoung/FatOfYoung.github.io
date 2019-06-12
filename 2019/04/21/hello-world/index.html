@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="description" content="结构体的定义不同类型的结合称为 结构体，相当于数组。但数组中的每个元素都是同一个类型，但结构体中的成员可以是不同类型。 同类型的两个结构体变量可以直接赋值，相当于 浅拷贝 memcpy() 123456struct 结构的类型名称&amp;#123;    类型名1 成员名1;     ....    类型名2 成员名2;&amp;#125;   结构体的定义只是类型的定义，不占内存的空间。  只有在描述具体的结">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
+<meta property="og:title" content="结构体及其偏移量的计算">
 <meta property="og:url" content="http://yoursite.com/2019/04/21/hello-world/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="结构体的定义不同类型的结合称为 结构体，相当于数组。但数组中的每个元素都是同一个类型，但结构体中的成员可以是不同类型。 同类型的两个结构体变量可以直接赋值，相当于 浅拷贝 memcpy() 123456struct 结构的类型名称&amp;#123;    类型名1 成员名1;     ....    类型名2 成员名2;&amp;#125;   结构体的定义只是类型的定义，不占内存的空间。  只有在描述具体的结">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-04-21T14:03:33.067Z">
+<meta property="og:updated_time" content="2019-06-12T08:42:03.915Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="twitter:title" content="结构体及其偏移量的计算">
+<meta name="twitter:description" content="结构体的定义不同类型的结合称为 结构体，相当于数组。但数组中的每个元素都是同一个类型，但结构体中的成员可以是不同类型。 同类型的两个结构体变量可以直接赋值，相当于 浅拷贝 memcpy() 123456struct 结构的类型名称&amp;#123;    类型名1 成员名1;     ....    类型名2 成员名2;&amp;#125;   结构体的定义只是类型的定义，不占内存的空间。  只有在描述具体的结">
 
 
 
@@ -125,7 +125,7 @@
 
 
 
-  <title>Hello World | Hexo</title>
+  <title>结构体及其偏移量的计算 | Hexo</title>
   
 
 
@@ -249,7 +249,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Hello World</h1>
+          <h1 class="post-title" itemprop="name headline">结构体及其偏移量的计算</h1>
         
 
         <div class="post-meta">
@@ -299,19 +299,142 @@
       
 
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+        <h2 id="结构体的定义"><a href="#结构体的定义" class="headerlink" title="结构体的定义"></a>结构体的定义</h2><p>不同类型的结合称为 <strong>结构体</strong>，相当于数组。但数组中的每个元素都是同一个类型，但结构体中的成员可以是不同类型。</p>
+<p>同类型的两个结构体变量可以直接赋值，相当于 <strong>浅拷贝</strong> <strong>memcpy()</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> 结构的类型名称</span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    类型名<span class="number">1</span> 成员名<span class="number">1</span>; </span><br><span class="line">    ....</span><br><span class="line">    类型名<span class="number">2</span> 成员名<span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>结构体的定义只是类型的定义，不占内存的空间。</p>
+</li>
+<li><p>只有在描述具体的结构体实体时，才会占用内存。 </p>
+</li>
+<li><p>结构体的内存占用是线性的，但可能不是连续的。</p>
+</li>
+</ul>
+<p> <del><strong>szName</strong> 和 <strong>nAge</strong> 是连续的，但是 <strong>szName</strong> 和 <strong>nAge</strong> 之间相隔2个字节的初始值<strong>CC</strong> ，因为结构体的数据对称性原理，以4个字节为一个单位</del></p>
+<p><del>例如结构体中定义的成员 <strong>cGender</strong> 虽然是 <strong>char</strong> 型但依然占用4个字节</del></p>
+<h2 id="结构体的偏移地址-Offset"><a href="#结构体的偏移地址-Offset" class="headerlink" title="结构体的偏移地址 Offset"></a>结构体的偏移地址 <strong>Offset</strong></h2><p>结构体的 <strong>.</strong> 运算访问结构体成员变量，相当于对结构体进行偏移地址的计算</p>
+<p>结构体的首个成员的偏移地址 <strong>offset</strong> 为0</p>
+<p>在 <strong>VC6</strong> 中 <strong>Struct member alignment</strong> 中设置 <strong>对齐地址</strong>，默认为 <strong>8byte</strong></p>
+<p>如果编译器为 <strong>VS2013</strong> 则在  <u>属性类容-C/C++-代码生成-结构体成员对齐</u> 中设置</p>
+<h3 id="计算偏移地址"><a href="#计算偏移地址" class="headerlink" title="计算偏移地址"></a>计算偏移地址</h3><h4 id="计算公式"><a href="#计算公式" class="headerlink" title="计算公式"></a>计算公式</h4><blockquote>
+<p>设编译选项设定的对齐值为 <strong>Zp</strong>(默认8byte)，每个结构体成员的偏移量为 <strong>Offset</strong></p>
+<p>必须满足 (上一个成员的offset + 上一个成员的size) % <strong>min(sizeof(member type),Zp)</strong> == 0 </p>
+<blockquote>
+<p>如果为嵌套结构体，结构体名为 <strong>StruAli1</strong>  则<strong>Offset</strong>  % <strong>min(StruAli1 ,Zp)</strong> == 0</p>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>结构体<strong>StruAli1</strong> 的对齐值为 *<em>max(sizeof(member1 type),sizeof(member2 type)…sizeof(memberNtype)) *</em></p>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>member1,member2,member3 为 StruAli1 的成员</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>如果 <strong>offset + size</strong> 不满足 取模运算 == 0</p>
+<p>则 <strong>offset + size</strong> +1 直到可以 == 0 </p>
+</blockquote>
+<h4 id="计算过程"><a href="#计算过程" class="headerlink" title="计算过程"></a>计算过程</h4><ol>
+<li>定义结构体</li>
+</ol>
+<p>​         设置对齐地址为 <strong>4</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Person</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">char</span> szName[<span class="number">6</span>];    </span><br><span class="line">    <span class="keyword">int</span> nAge;          </span><br><span class="line">    <span class="keyword">float</span> fHeight;     </span><br><span class="line">    <span class="keyword">double</span> dblWeight;  </span><br><span class="line">    <span class="keyword">char</span> cGender;     <span class="comment">//Male Female Unknow Other</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>计算偏移量</li>
+</ol>
+<ul>
+<li><p>计算首个成员 <strong>szName</strong> 的偏移量为 <strong>0</strong> ，大小为 <strong>6</strong></p>
+</li>
+<li><p>计算成员 <strong>nAge</strong> 的偏移量: ( 0(szName的偏移量) +  6(szName的大小))  % min(sizeof(nAge) , 4(对齐地址))  == 6 % min(4, 4)</p>
+<p>6 % 4 ! = 0，则6 + 1 % 4</p>
+<p>7 % 4 != 0，则7 + 1 % 4 == 0</p>
+<p>所以成员 <strong>nAge</strong> 的偏移量为 <strong>8</strong></p>
+</li>
+<li><p>计算成员 <strong>fHeight</strong> 的 偏移量:( 8(nAge的偏移量) +  4(nAge的大小)) % min (sizeof(float) , 4) == 12 % min(4, 4)</p>
+<p>12 % 4 == 0</p>
+<p>所以成员 <strong>fHeight</strong> 的偏移量为 <strong>12</strong></p>
+</li>
+<li><p>计算 <strong>dblWeight</strong> 的偏移量:(12+4) % min(8, 4) == 16 % 4 == 0</p>
+<p>成员 <strong>dblWeight</strong> 的偏移量为 <strong>16</strong></p>
+</li>
+<li><p>计算 <strong>cGender</strong> 的偏移量:(16+8) % min(1, 8) == 24 % 1 == 0</p>
+<p>成员 <strong>cGender</strong>  的偏移量为 <strong>24</strong></p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">成员</th>
+<th align="center">偏移量 offset</th>
+<th align="center">大小 size</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">szName[6]</td>
+<td align="center">0</td>
+<td align="center">6</td>
+</tr>
+<tr>
+<td align="center">nAge</td>
+<td align="center">8</td>
+<td align="center">4</td>
+</tr>
+<tr>
+<td align="center">fHeight</td>
+<td align="center">12</td>
+<td align="center">4</td>
+</tr>
+<tr>
+<td align="center">dblWeight</td>
+<td align="center">16</td>
+<td align="center">8</td>
+</tr>
+<tr>
+<td align="center">cGender</td>
+<td align="center">24</td>
+<td align="center">1</td>
+</tr>
+</tbody></table>
+<h3 id="计算结构体的大小sizeof-struct"><a href="#计算结构体的大小sizeof-struct" class="headerlink" title="计算结构体的大小sizeof(struct)"></a>计算结构体的大小sizeof(struct)</h3><h4 id="计算公式-1"><a href="#计算公式-1" class="headerlink" title="计算公式"></a>计算公式</h4><p>设 <strong>Zp</strong> 为设定的对齐值为 <strong>4</strong></p>
+<p>MaxValue= max(sizeof(member1 type),sizeof(member2 type)……sizeof(member3 type))</p>
+<p>MinValue  = min(MaxValue,Zp)</p>
+<p>Size % MinValue  == 0 </p>
+<blockquote>
+<p><strong>Size</strong> 为结构体最后一个成员的偏移量 +  最后一个成员的大小</p>
+<p>如果 Size % MinValue  != 0 则Size ++</p>
+</blockquote>
+<p>最终的 <strong>Size</strong> 为结构体的大小</p>
+<h4 id="计算过程-1"><a href="#计算过程-1" class="headerlink" title="计算过程"></a>计算过程</h4><p>例如 <strong>Person</strong> 结构体</p>
+<p>MaxValue = max(sizeof(szName), sizeof(nAge), sizeof(fHeight), sizeof(dblWeight), sizeof(cGender)) == sizeof(dblWeight) == 8</p>
+<p>MinValue  = min(8,4) == 4</p>
+<p>Size % MinValue == (24 + 1) % 4 != 0</p>
+<p>Size ++</p>
+<p>(25 + 1) % 4 != 0</p>
+<p>Size ++</p>
+<p>(26+ 1) % 4 != 0</p>
+<p>Size ++</p>
+<p>(27+ 1) % 4 == 0</p>
+<p>所以在对齐值为 <strong>4</strong> 时，<strong>Person</strong> 的大小为 <strong>28</strong></p>
+<h3 id="计算结构体成员的地址"><a href="#计算结构体成员的地址" class="headerlink" title="计算结构体成员的地址"></a>计算结构体成员的地址</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Person</span> <span class="title">s</span>:</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Person</span> *<span class="title">s</span>:</span></span><br><span class="line"></span><br><span class="line"> s.member address:  *(member type*) (<span class="keyword">int</span>)&amp;s + member offset</span><br><span class="line"> s-&gt;member address: *(member type*) (<span class="keyword">int</span>)&amp;s + member offset</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<h3 id="结构体指针"><a href="#结构体指针" class="headerlink" title="结构体指针"></a>结构体指针</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Person</span> *<span class="title">ptr</span> = <span class="title">NULL</span>;</span></span><br><span class="line">ptr = &amp;per;</span><br><span class="line"></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%c"</span>,&amp;ptr-&gt;cGender);<span class="comment">// == &amp;*(char*) (int)ptr + 24</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d"</span>, &amp;(*ptr).dblWeight);<span class="comment">// == &amp;*(double*) (int)ptr + 16</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> getoffset (s,m)  (size_t)&amp;((s* ) NULL)-&gt;m <span class="comment">// == offsetof()</span></span></span><br><span class="line">getoffset(struct Person, dlbWeight);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Person</span> *<span class="title">ptr</span> = &amp;<span class="title">per</span>;</span></span><br><span class="line"></span><br><span class="line">(*ptr).nAge == ptr-&gt;nAge;</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+<h2 id="Main函数的参数"><a href="#Main函数的参数" class="headerlink" title="Main函数的参数"></a>Main函数的参数</h2><p>*<em>Main *</em>函数的环境参数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> *envp[]</span><br></pre></td></tr></table></figure>
+
+<h2 id="对数组进行求和"><a href="#对数组进行求和" class="headerlink" title="对数组进行求和"></a>对数组进行求和</h2><h3 id="常规方法"><a href="#常规方法" class="headerlink" title="常规方法"></a>常规方法</h3><p>有指定的长度</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">GetSum</span><span class="params">(<span class="keyword">int</span> ary[], <span class="keyword">int</span> nCount)</span> <span class="comment">//传入数组和数组总长</span></span></span><br><span class="line"><span class="function"></span>&#123;<span class="comment">//sizeof(ary) == 4 ary[]实际传入的是指针而不是数组</span></span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="特殊方法"><a href="#特殊方法" class="headerlink" title="特殊方法"></a>特殊方法</h3><p>没有指定长度，但需要有指定的约定</p>
+<p>此种方法增加了代码的耦合性</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">GetSum</span><span class="params">(<span class="keyword">int</span> ary[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> nSum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>	(<span class="keyword">int</span> i = <span class="number">0</span>; ary[i] != <span class="number">0</span>; i++)<span class="comment">//以\0结尾</span></span><br><span class="line">    &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="一维指针数组"><a href="#一维指针数组" class="headerlink" title="一维指针数组"></a>一维指针数组</h2><p>用于可变长的字符串更加便捷</p>
+<h2 id="调试命令行"><a href="#调试命令行" class="headerlink" title="调试命令行"></a>调试命令行</h2><p>setting -&gt; debug -&gt;Program arguments 中增加参数即可</p>
+<h2 id="堆地址"><a href="#堆地址" class="headerlink" title="堆地址"></a>堆地址</h2><p>堆地址的顶端数据通常是<strong>FDFDFDFD</strong>开头</p>
 
       
     </div>
@@ -458,7 +581,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#结构体的定义"><span class="nav-number">1.</span> <span class="nav-text">结构体的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结构体的偏移地址-Offset"><span class="nav-number">2.</span> <span class="nav-text">结构体的偏移地址 Offset</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#计算偏移地址"><span class="nav-number">2.1.</span> <span class="nav-text">计算偏移地址</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#计算公式"><span class="nav-number">2.1.1.</span> <span class="nav-text">计算公式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#计算过程"><span class="nav-number">2.1.2.</span> <span class="nav-text">计算过程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计算结构体的大小sizeof-struct"><span class="nav-number">2.2.</span> <span class="nav-text">计算结构体的大小sizeof(struct)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#计算公式-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">计算公式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#计算过程-1"><span class="nav-number">2.2.2.</span> <span class="nav-text">计算过程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计算结构体成员的地址"><span class="nav-number">2.3.</span> <span class="nav-text">计算结构体成员的地址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结构体指针"><span class="nav-number">2.4.</span> <span class="nav-text">结构体指针</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Main函数的参数"><span class="nav-number">3.</span> <span class="nav-text">Main函数的参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对数组进行求和"><span class="nav-number">4.</span> <span class="nav-text">对数组进行求和</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常规方法"><span class="nav-number">4.1.</span> <span class="nav-text">常规方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特殊方法"><span class="nav-number">4.2.</span> <span class="nav-text">特殊方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一维指针数组"><span class="nav-number">5.</span> <span class="nav-text">一维指针数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调试命令行"><span class="nav-number">6.</span> <span class="nav-text">调试命令行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#堆地址"><span class="nav-number">7.</span> <span class="nav-text">堆地址</span></a></li></ol></div>
             
 
           </div>
