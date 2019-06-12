@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="FatOfYoung">
 <meta property="og:description" content="结构体的定义不同类型的结合称为 结构体，相当于数组。但数组中的每个元素都是同一个类型，但结构体中的成员可以是不同类型。 同类型的两个结构体变量可以直接赋值，相当于 浅拷贝 memcpy()">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-06-12T09:04:22.954Z">
+<meta property="og:updated_time" content="2019-06-12T09:13:40.477Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="结构体及其偏移量的计算">
 <meta name="twitter:description" content="结构体的定义不同类型的结合称为 结构体，相当于数组。但数组中的每个元素都是同一个类型，但结构体中的成员可以是不同类型。 同类型的两个结构体变量可以直接赋值，相当于 浅拷贝 memcpy()">
@@ -272,6 +272,28 @@
           </span>
 
           
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C-C/" itemprop="url" rel="index">
+                    <span itemprop="name">C/C++</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -424,19 +446,6 @@
 
 <h3 id="结构体指针"><a href="#结构体指针" class="headerlink" title="结构体指针"></a>结构体指针</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Person</span> *<span class="title">ptr</span> = <span class="title">NULL</span>;</span></span><br><span class="line">ptr = &amp;per;</span><br><span class="line"></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%c"</span>,&amp;ptr-&gt;cGender);<span class="comment">// == &amp;*(char*) (int)ptr + 24</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d"</span>, &amp;(*ptr).dblWeight);<span class="comment">// == &amp;*(double*) (int)ptr + 16</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> getoffset (s,m)  (size_t)&amp;((s* ) NULL)-&gt;m <span class="comment">// == offsetof()</span></span></span><br><span class="line">getoffset(struct Person, dlbWeight);</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Person</span> *<span class="title">ptr</span> = &amp;<span class="title">per</span>;</span></span><br><span class="line"></span><br><span class="line">(*ptr).nAge == ptr-&gt;nAge;</span><br></pre></td></tr></table></figure>
 
-<h2 id="Main函数的参数"><a href="#Main函数的参数" class="headerlink" title="Main函数的参数"></a>Main函数的参数</h2><p>*<em>Main *</em>函数的环境参数</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> *envp[]</span><br></pre></td></tr></table></figure>
-
-<h2 id="对数组进行求和"><a href="#对数组进行求和" class="headerlink" title="对数组进行求和"></a>对数组进行求和</h2><h3 id="常规方法"><a href="#常规方法" class="headerlink" title="常规方法"></a>常规方法</h3><p>有指定的长度</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">GetSum</span><span class="params">(<span class="keyword">int</span> ary[], <span class="keyword">int</span> nCount)</span> <span class="comment">//传入数组和数组总长</span></span></span><br><span class="line"><span class="function"></span>&#123;<span class="comment">//sizeof(ary) == 4 ary[]实际传入的是指针而不是数组</span></span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="特殊方法"><a href="#特殊方法" class="headerlink" title="特殊方法"></a>特殊方法</h3><p>没有指定长度，但需要有指定的约定</p>
-<p>此种方法增加了代码的耦合性</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">GetSum</span><span class="params">(<span class="keyword">int</span> ary[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> nSum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>	(<span class="keyword">int</span> i = <span class="number">0</span>; ary[i] != <span class="number">0</span>; i++)<span class="comment">//以\0结尾</span></span><br><span class="line">    &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="一维指针数组"><a href="#一维指针数组" class="headerlink" title="一维指针数组"></a>一维指针数组</h2><p>用于可变长的字符串更加便捷</p>
-<h2 id="调试命令行"><a href="#调试命令行" class="headerlink" title="调试命令行"></a>调试命令行</h2><p>setting -&gt; debug -&gt;Program arguments 中增加参数即可</p>
-<h2 id="堆地址"><a href="#堆地址" class="headerlink" title="堆地址"></a>堆地址</h2><p>堆地址的顶端数据通常是<strong>FDFDFDFD</strong>开头</p>
 
       
     </div>
@@ -553,6 +562,15 @@
             
 
             
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
 
             
 
@@ -583,7 +601,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#结构体的定义"><span class="nav-number">1.</span> <span class="nav-text">结构体的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结构体的偏移地址-Offset"><span class="nav-number">2.</span> <span class="nav-text">结构体的偏移地址 Offset</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#计算偏移地址"><span class="nav-number">2.1.</span> <span class="nav-text">计算偏移地址</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#计算公式"><span class="nav-number">2.1.1.</span> <span class="nav-text">计算公式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#计算过程"><span class="nav-number">2.1.2.</span> <span class="nav-text">计算过程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计算结构体的大小sizeof-struct"><span class="nav-number">2.2.</span> <span class="nav-text">计算结构体的大小sizeof(struct)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#计算公式-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">计算公式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#计算过程-1"><span class="nav-number">2.2.2.</span> <span class="nav-text">计算过程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计算结构体成员的地址"><span class="nav-number">2.3.</span> <span class="nav-text">计算结构体成员的地址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结构体指针"><span class="nav-number">2.4.</span> <span class="nav-text">结构体指针</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Main函数的参数"><span class="nav-number">3.</span> <span class="nav-text">Main函数的参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对数组进行求和"><span class="nav-number">4.</span> <span class="nav-text">对数组进行求和</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常规方法"><span class="nav-number">4.1.</span> <span class="nav-text">常规方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特殊方法"><span class="nav-number">4.2.</span> <span class="nav-text">特殊方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一维指针数组"><span class="nav-number">5.</span> <span class="nav-text">一维指针数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调试命令行"><span class="nav-number">6.</span> <span class="nav-text">调试命令行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#堆地址"><span class="nav-number">7.</span> <span class="nav-text">堆地址</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#结构体的定义"><span class="nav-number">1.</span> <span class="nav-text">结构体的定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结构体的偏移地址-Offset"><span class="nav-number">2.</span> <span class="nav-text">结构体的偏移地址 Offset</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#计算偏移地址"><span class="nav-number">2.1.</span> <span class="nav-text">计算偏移地址</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#计算公式"><span class="nav-number">2.1.1.</span> <span class="nav-text">计算公式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#计算过程"><span class="nav-number">2.1.2.</span> <span class="nav-text">计算过程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计算结构体的大小sizeof-struct"><span class="nav-number">2.2.</span> <span class="nav-text">计算结构体的大小sizeof(struct)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#计算公式-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">计算公式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#计算过程-1"><span class="nav-number">2.2.2.</span> <span class="nav-text">计算过程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计算结构体成员的地址"><span class="nav-number">2.3.</span> <span class="nav-text">计算结构体成员的地址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结构体指针"><span class="nav-number">2.4.</span> <span class="nav-text">结构体指针</span></a></li></ol></li></ol></div>
             
 
           </div>
