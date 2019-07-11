@@ -86,13 +86,13 @@
 <meta property="og:site_name" content="FatOfYoung">
 <meta property="og:description" content="一个NSObject对象占用多少内存例如，定义如下代码 1NSObject *obj = [[NSObject alloc] init];  使用 clang -rewrite-objc filename.m -o filename.cpp  使用 xcrun -sdk iphoneos clang -arch arm64 -rewrite-objc main.c -o main-arm64.cp">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/2019/07/11/OC_EssenceOfObject/OC_EssenceOfObject_1.jpeg">
+<meta property="og:image" content="http://yoursite.com/2019/07/11/OC_EssenceOfObject/OC_EssenceOfObject_1.jpg">
 <meta property="og:image" content="https://pan.baidu.com/s/198jRb6qOx9CHUuQmLTmWQQ">
-<meta property="og:updated_time" content="2019-07-11T12:55:21.803Z">
+<meta property="og:updated_time" content="2019-07-11T12:57:24.803Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OC对象本质">
 <meta name="twitter:description" content="一个NSObject对象占用多少内存例如，定义如下代码 1NSObject *obj = [[NSObject alloc] init];  使用 clang -rewrite-objc filename.m -o filename.cpp  使用 xcrun -sdk iphoneos clang -arch arm64 -rewrite-objc main.c -o main-arm64.cp">
-<meta name="twitter:image" content="http://yoursite.com/2019/07/11/OC_EssenceOfObject/OC_EssenceOfObject_1.jpeg">
+<meta name="twitter:image" content="http://yoursite.com/2019/07/11/OC_EssenceOfObject/OC_EssenceOfObject_1.jpg">
 
 
 
@@ -341,7 +341,7 @@
 <p>为一个结构体指针，而结构体指针在 <strong>Mac</strong> <strong>64bit</strong> 环境中占用 <strong>8</strong> 个字节，所以 <code>NSObject_IMPL</code> 结构体只占用了 <strong>8</strong> 个字节</p>
 <p>为了验证此结构体是否只申请了个 <strong>8</strong> 个字节，使用 <code>malloc_size((__bridge const void *)(obj))</code> 函数来确定</p>
 <p>但此时的返回值却为 <strong>16</strong> 个字节，为了进一步验证申请的内存大小，可以使用内存进行探究</p>
-<p><img src="//yoursite.com/2019/07/11/OC_EssenceOfObject/OC_EssenceOfObject_1.jpeg" alt="OC对象本质_1"></p>
+<p><img src="//yoursite.com/2019/07/11/OC_EssenceOfObject/OC_EssenceOfObject_1.jpg" alt="OC对象本质_1"></p>
 <p>找到 <strong>obj</strong> 的内存地址为 <code>0x100709980</code> ，打开其地址所指向的位置</p>
 <p><img src="https://pan.baidu.com/s/198jRb6qOx9CHUuQmLTmWQQ" alt="OC_EssenceOfObject_2"></p>
 <p>似乎验证了<code>NSObject</code> 的成员所占的空间为  <strong>8</strong> 个字节，但申请的内存为 <strong>16</strong> 个字节，多出的 <strong>8</strong> 个字节暂时未被利用</p>
