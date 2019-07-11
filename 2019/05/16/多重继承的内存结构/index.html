@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="../../../../lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="../../../../lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="../../../../css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../../images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../../images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="../../../../images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="../../../../images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="单重虚继承无虚函数1234567891011121314151617181920class BaseClass&amp;#123;public:int v1 = 0xaaaaaaaa;int v2 = 0xbbbbbbbb;&amp;#125;;class MyClass : virtual public BaseClass&amp;#123;public:int v3 = 0xcccccccc;int v4 = 0xd">
+<meta property="og:type" content="article">
+<meta property="og:title" content="多重继承的内存结构">
+<meta property="og:url" content="http://yoursite.com/2019/05/16/多重继承的内存结构/index.html">
+<meta property="og:site_name" content="FatOfYoung">
+<meta property="og:description" content="单重虚继承无虚函数1234567891011121314151617181920class BaseClass&amp;#123;public:int v1 = 0xaaaaaaaa;int v2 = 0xbbbbbbbb;&amp;#125;;class MyClass : virtual public BaseClass&amp;#123;public:int v3 = 0xcccccccc;int v4 = 0xd">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-07-11T14:06:53.662Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="多重继承的内存结构">
+<meta name="twitter:description" content="单重虚继承无虚函数1234567891011121314151617181920class BaseClass&amp;#123;public:int v1 = 0xaaaaaaaa;int v2 = 0xbbbbbbbb;&amp;#125;;class MyClass : virtual public BaseClass&amp;#123;public:int v3 = 0xcccccccc;int v4 = 0xd">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/05/16/多重继承的内存结构/">
+
+
+
+
+
+  <title>多重继承的内存结构 | FatOfYoung</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">FatOfYoung</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="fatofyoung@yeah.net">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="../../../../images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="FatOfYoung">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">多重继承的内存结构</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-16T21:32:06+08:00">
+                2019-05-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="../../../../categories/C-C/" itemprop="url" rel="index">
+                    <span itemprop="name">C/C++</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="单重虚继承无虚函数"><a href="#单重虚继承无虚函数" class="headerlink" title="单重虚继承无虚函数"></a>单重虚继承无虚函数</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BaseClass</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v1 = <span class="number">0xaaaaaaaa</span>;</span><br><span class="line"><span class="keyword">int</span> v2 = <span class="number">0xbbbbbbbb</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyClass</span> :</span> <span class="keyword">virtual</span> <span class="keyword">public</span> BaseClass</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v3 = <span class="number">0xcccccccc</span>;</span><br><span class="line"><span class="keyword">int</span> v4 = <span class="number">0xdddddddd</span>;</span><br><span class="line"><span class="keyword">int</span> v5 = <span class="number">0xeeeeeeee</span>;</span><br><span class="line"><span class="keyword">int</span> v6 = <span class="number">0xffffffff</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">MyClass myClass;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在内存窗口中查看 <code>myClass</code> </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x0019FEF4</span>  <span class="number">58</span> <span class="number">58</span> <span class="number">41</span> <span class="number">00</span>  XXA. -----子类</span><br><span class="line"><span class="number">0x0019FEF8</span>  cc cc cc cc  ????</span><br><span class="line"><span class="number">0x0019FEFC</span>  dd dd dd dd  ????</span><br><span class="line"><span class="number">0x0019FF00</span>  ee ee ee ee  ????</span><br><span class="line"><span class="number">0x0019FF04</span>  ff ff ff ff  .... -----子类</span><br><span class="line"><span class="number">0x0019FF08</span>  aa aa aa aa  ???? -----基类</span><br><span class="line"><span class="number">0x0019FF0C</span>  bb bb bb bb  ???? -----基类</span><br></pre></td></tr></table></figure>
+
+<p>可以看到此时的内存结构和非虚继承有差别，基类的内存位于子类的内存之下</p>
+<p>此外在内存结构的顶端，出现了一个额外的指针，此指针指向的位置为基类的偏移表</p>
+<p>打开<code>0x00415858</code> </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x00415858</span>  <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>  ....</span><br><span class="line"><span class="number">0x0041585C</span>  <span class="number">14</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>  ....</span><br></pre></td></tr></table></figure>
+
+<p>首地址为保留区域，第二项所保存的内存值为 <strong>0x14</strong> ，即为在子类内存中的基类区域到子类首地址的偏移量，也就是在第一个内存窗口中 <code>0x0019FF04</code>  - <code>0x0019FEF4</code> 的值</p>
+
+
+<h2 id="单重虚继承有虚函数"><a href="#单重虚继承有虚函数" class="headerlink" title="单重虚继承有虚函数"></a>单重虚继承有虚函数</h2><h3 id="父类有虚函数"><a href="#父类有虚函数" class="headerlink" title="父类有虚函数"></a>父类有虚函数</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BaseClass</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v1 = <span class="number">0xaaaaaaaa</span>;</span><br><span class="line"><span class="keyword">int</span> v2 = <span class="number">0xbbbbbbbb</span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyClass</span> :</span> <span class="keyword">virtual</span> <span class="keyword">public</span> BaseClass</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v3 = <span class="number">0xcccccccc</span>;</span><br><span class="line"><span class="keyword">int</span> v4 = <span class="number">0xdddddddd</span>;</span><br><span class="line"><span class="keyword">int</span> v5 = <span class="number">0xeeeeeeee</span>;</span><br><span class="line"><span class="keyword">int</span> v6 = <span class="number">0xffffffff</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">MyClass myClass;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>myClass</code>的内存结构为</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x0019FEF0</span>  <span class="number">70</span> <span class="number">58</span> <span class="number">41</span> <span class="number">00</span>  pXA.-----子类(基类偏移区指针)</span><br><span class="line"><span class="number">0x0019FEF4</span>  cc cc cc cc  ????</span><br><span class="line"><span class="number">0x0019FEF8</span>  dd dd dd dd  ????</span><br><span class="line"><span class="number">0x0019FEFC</span>  ee ee ee ee  ????</span><br><span class="line"><span class="number">0x0019FF00</span>  ff ff ff ff  ....-----子类</span><br><span class="line"><span class="number">0x0019FF04</span>  <span class="number">68</span> <span class="number">58</span> <span class="number">41</span> <span class="number">00</span>  hXA.-----基类(基类虚函数指针)</span><br><span class="line"><span class="number">0x0019FF08</span>  aa aa aa aa  ????</span><br><span class="line"><span class="number">0x0019FF0C</span>  bb bb bb bb  ????-----基类</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="子类重写父类虚函数"><a href="#子类重写父类虚函数" class="headerlink" title="子类重写父类虚函数"></a>子类重写父类虚函数</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BaseClass</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v1 = <span class="number">0xaaaaaaaa</span>;</span><br><span class="line"><span class="keyword">int</span> v2 = <span class="number">0xbbbbbbbb</span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyClass</span> :</span> <span class="keyword">virtual</span> <span class="keyword">public</span> BaseClass</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v3 = <span class="number">0xcccccccc</span>;</span><br><span class="line"><span class="keyword">int</span> v4 = <span class="number">0xdddddddd</span>;</span><br><span class="line"><span class="keyword">int</span> v5 = <span class="number">0xeeeeeeee</span>;</span><br><span class="line"><span class="keyword">int</span> v6 = <span class="number">0xffffffff</span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">MyClass myClass;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打开 <code>myClass</code> 的内存窗口</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x0019FEF0</span>  <span class="number">70</span> <span class="number">68</span> <span class="number">41</span> <span class="number">00</span>  phA.</span><br><span class="line"><span class="number">0x0019FEF4</span>  cc cc cc cc  ????</span><br><span class="line"><span class="number">0x0019FEF8</span>  dd dd dd dd  ????</span><br><span class="line"><span class="number">0x0019FEFC</span>  ee ee ee ee  ????</span><br><span class="line"><span class="number">0x0019FF00</span>  ff ff ff ff  ....</span><br><span class="line"><span class="number">0x0019FF04</span>  <span class="number">68</span> <span class="number">68</span> <span class="number">41</span> <span class="number">00</span>  hhA.</span><br><span class="line"><span class="number">0x0019FF08</span>  aa aa aa aa  ????</span><br><span class="line"><span class="number">0x0019FF0C</span>  bb bb bb bb  ????</span><br></pre></td></tr></table></figure>
+
+<p>内存结构同上</p>
+<h3 id="子类添加虚函数"><a href="#子类添加虚函数" class="headerlink" title="子类添加虚函数"></a>子类添加虚函数</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BaseClass</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v1 = <span class="number">0xaaaaaaaa</span>;</span><br><span class="line"><span class="keyword">int</span> v2 = <span class="number">0xbbbbbbbb</span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyClass</span> :</span> <span class="keyword">virtual</span> <span class="keyword">public</span> BaseClass</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v3 = <span class="number">0xcccccccc</span>;</span><br><span class="line"><span class="keyword">int</span> v4 = <span class="number">0xdddddddd</span>;</span><br><span class="line"><span class="keyword">int</span> v5 = <span class="number">0xeeeeeeee</span>;</span><br><span class="line"><span class="keyword">int</span> v6 = <span class="number">0xffffffff</span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func1</span><span class="params">()</span></span>&#123;&#125;; <span class="comment">//新增</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">MyClass myClass;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打开 <code>myClass</code> 的内存</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x0019FEEC</span>  <span class="number">68</span> <span class="number">68</span> <span class="number">41</span> <span class="number">00</span>  hhA. ---子类虚函数指针</span><br><span class="line"><span class="number">0x0019FEF0</span>  <span class="number">78</span> <span class="number">68</span> <span class="number">41</span> <span class="number">00</span>  xhA. ---子类偏移指针 </span><br><span class="line"><span class="number">0x0019FEF4</span>  cc cc cc cc  ???? ---子类数据</span><br><span class="line"><span class="number">0x0019FEF8</span>  dd dd dd dd  ???? ---子类数据</span><br><span class="line"><span class="number">0x0019FEFC</span>  ee ee ee ee  ???? ---子类数据</span><br><span class="line"><span class="number">0x0019FF00</span>  ff ff ff ff  .... ---子类数据</span><br><span class="line"><span class="number">0x0019FF04</span>  <span class="number">74</span> <span class="number">68</span> <span class="number">41</span> <span class="number">00</span>  thA. ---父类偏移指针(其中包含虚函数表)</span><br><span class="line"><span class="number">0x0019FF08</span>  aa aa aa aa  ???? ---父类数据</span><br><span class="line"><span class="number">0x0019FF0C</span>  bb bb bb bb  ???? ---父类数据</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h2 id="多重继承有虚函数"><a href="#多重继承有虚函数" class="headerlink" title="多重继承有虚函数"></a>多重继承有虚函数</h2><h3 id="父类有虚函数-1"><a href="#父类有虚函数-1" class="headerlink" title="父类有虚函数"></a>父类有虚函数</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BaseClass1</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v1 = <span class="number">0xaaaaaaaa</span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func1</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BaseClass2</span> </span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v2 = <span class="number">0xbbbbbbbb</span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func2</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyClass</span> :</span> <span class="keyword">public</span> BaseClass1, <span class="keyword">public</span> BaseClass2</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v3 = <span class="number">0xcccccccc</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">MyClass myClass;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打开 <code>myClass</code>的内存窗口</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x0019FEFC</span>  <span class="number">74</span> <span class="number">68</span> <span class="number">41</span> <span class="number">00</span>  thA.---父类BaseClass1 的虚函数表指针</span><br><span class="line"><span class="number">0x0019FF00</span>  aa aa aa aa  ????---父类BaseClass1 内存</span><br><span class="line"><span class="number">0x0019FF04</span>  <span class="number">7</span>c <span class="number">68</span> <span class="number">41</span> <span class="number">00</span>  |hA. ---父类BaseClass2 的虚函数表指针</span><br><span class="line"><span class="number">0x0019FF08</span>  bb bb bb bb  ?????---父类BaseClass2 内存</span><br><span class="line"><span class="number">0x0019FF0C</span>  cc cc cc cc  ???? ---子类 内存</span><br></pre></td></tr></table></figure>
+
+<p>其中，父类 <code>BaseClass1</code> 的虚函数表中包含了 <code>BaseClass2</code> 的虚函数</p>
+<p>打开 <code>BaseClass1</code>  的虚函数指针 <code>0x00416874</code> </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x00416874</span>  <span class="number">2b</span> <span class="number">12</span> <span class="number">41</span> <span class="number">00</span>  +.A. ---BaseClass1::fun1()</span><br><span class="line"><span class="number">0x00416878</span>  <span class="number">48</span> <span class="number">7</span>a <span class="number">41</span> <span class="number">00</span>  HzA. ---未知值</span><br><span class="line"><span class="number">0x0041687C</span>  <span class="number">35</span> <span class="number">12</span> <span class="number">41</span> <span class="number">00</span>  <span class="number">5.</span>A. ---BaseClass2::fun2()</span><br><span class="line"><span class="number">0x00416880</span>  <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>  ....</span><br></pre></td></tr></table></figure>
+
+<h3 id="只有一个父类有虚函数"><a href="#只有一个父类有虚函数" class="headerlink" title="只有一个父类有虚函数"></a>只有一个父类有虚函数</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BaseClass1</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v1 = <span class="number">0xaaaaaaaa</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BaseClass2</span> </span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v2 = <span class="number">0xbbbbbbbb</span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func2</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyClass</span> :</span> <span class="keyword">public</span> BaseClass1, <span class="keyword">public</span> BaseClass2</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v3 = <span class="number">0xcccccccc</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">MyClass myClass;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打开 <code>myClass</code>的内存窗口</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x0019FF00</span>  <span class="number">68</span> <span class="number">68</span> <span class="number">41</span> <span class="number">00</span>  hhA. ---父类BaseClass2 的虚函数表指针</span><br><span class="line"><span class="number">0x0019FF04</span>  bb bb bb bb  ???? ---父类BaseClass2 内存</span><br><span class="line"><span class="number">0x0019FF08</span>  aa aa aa aa  ???? ---父类BaseClass1 内存</span><br><span class="line"><span class="number">0x0019FF0C</span>  cc cc cc cc  ???? ---子类 内存</span><br></pre></td></tr></table></figure>
+
+<p>发现此时的内存顺序并不是按照继承顺序来排列，而是按照父类中有无虚函数的状态进行排序</p>
+<p><strong>即有虚函数的父类优先</strong></p>
+<h3 id="子类重写父类的虚函数"><a href="#子类重写父类的虚函数" class="headerlink" title="子类重写父类的虚函数"></a>子类重写父类的虚函数</h3><p>子类重写的虚函数会覆盖父类虚表中的对应虚函数的位置，内存结构无差异</p>
+<h3 id="子类新加虚函数"><a href="#子类新加虚函数" class="headerlink" title="子类新加虚函数"></a>子类新加虚函数</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BaseClass1</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v1 = <span class="number">0xaaaaaaaa</span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func1</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BaseClass2</span> </span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v2 = <span class="number">0xbbbbbbbb</span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func2</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyClass</span> :</span> <span class="keyword">public</span> BaseClass1, <span class="keyword">public</span> BaseClass2</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v3 = <span class="number">0xcccccccc</span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func3</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">MyClass myClass;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打开 <code>myClass</code>的内存窗口</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x0019FEFC</span>  <span class="number">70</span> <span class="number">68</span> <span class="number">41</span> <span class="number">00</span>  phA.</span><br><span class="line"><span class="number">0x0019FF00</span>  aa aa aa aa  ????</span><br><span class="line"><span class="number">0x0019FF04</span>  <span class="number">7</span>c <span class="number">68</span> <span class="number">41</span> <span class="number">00</span>  |hA.</span><br><span class="line"><span class="number">0x0019FF08</span>  bb bb bb bb  ????</span><br><span class="line"><span class="number">0x0019FF0C</span>  cc cc cc cc  ????</span><br></pre></td></tr></table></figure>
+
+<p>此时并未给子类添加虚函数表指针</p>
+<p>打开第一父类 <code>BaseClass1</code> 的虚函数表指针</p>
+<p>其中除了第一父类 <code>BaseClass1</code> 的虚函数，依次包含了子类新添加的虚函数，以及 <code>BaseClass2</code> 的虚函数</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x00416870</span>  <span class="number">3f</span> <span class="number">12</span> <span class="number">41</span> <span class="number">00</span>  ?.A. ---BaseClass1::func1()</span><br><span class="line"><span class="number">0x00416874</span>  <span class="number">44</span> <span class="number">12</span> <span class="number">41</span> <span class="number">00</span>  D.A. ---MyClass::func3()</span><br><span class="line"><span class="number">0x00416878</span>  <span class="number">48</span> <span class="number">7</span>a <span class="number">41</span> <span class="number">00</span>  HzA.</span><br><span class="line"><span class="number">0x0041687C</span>  <span class="number">35</span> <span class="number">12</span> <span class="number">41</span> <span class="number">00</span>  <span class="number">5.</span>A. ---BaseClass2::func3()</span><br><span class="line"><span class="number">0x00416880</span>  <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>  ....</span><br></pre></td></tr></table></figure>
+
+<p>### </p>
+<h2 id="多重虚继承-菱形继承-无虚函数"><a href="#多重虚继承-菱形继承-无虚函数" class="headerlink" title="多重虚继承(菱形继承)无虚函数"></a>多重虚继承(菱形继承)无虚函数</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BaseClass</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v1 = <span class="number">0xaaaaaaaa</span>;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FatherClassA</span> :</span> <span class="keyword">virtual</span> <span class="keyword">public</span> BaseClass</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v2 = <span class="number">0xbbbbbbbb</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FatherClassB</span> :</span> <span class="keyword">virtual</span> <span class="keyword">public</span> BaseClass</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v3 = <span class="number">0xcccccccc</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SonClass</span> :</span> <span class="keyword">public</span> FatherClassA, <span class="keyword">public</span> FatherClassB</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v4 = <span class="number">0xdddddddd</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">SonClass sonClass;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打开 <code>sonClass</code>的内存窗口</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x0019FEF8</span>  <span class="number">70</span> <span class="number">58</span> <span class="number">41</span> <span class="number">00</span>  pXA.---父类FatherClassA 的偏移量指针</span><br><span class="line"><span class="number">0x0019FEFC</span>  bb bb bb bb  ????---父类FatherClassA 的内存</span><br><span class="line"><span class="number">0x0019FF00</span>  <span class="number">7</span>c <span class="number">58</span> <span class="number">41</span> <span class="number">00</span>  |XA.---父类FatherClassB 的偏移量指针</span><br><span class="line"><span class="number">0x0019FF04</span>  cc cc cc cc  ????---父类FatherClassB 的内存</span><br><span class="line"><span class="number">0x0019FF08</span>  dd dd dd dd  ????---子类 的内存</span><br><span class="line"><span class="number">0x0019FF0C</span>  aa aa aa aa  ????---基类BaseClass 的内存</span><br></pre></td></tr></table></figure>
+
+<p>打开 <code>FatherClassA</code> 的偏移量指针 <code>0x00415870</code> </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x00415870</span>  <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>  ....</span><br><span class="line"><span class="number">0x00415874</span>  <span class="number">14</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>  ....</span><br></pre></td></tr></table></figure>
+
+<p>其中偏移值为 <strong>0x14</strong> </p>
+<p>偏移值的含义为基类的内存到第一父类 <strong>FatherClassA</strong> 的偏移量</p>
+<p>也就是 <strong>0x0019FF0C</strong> - <strong>0x0019FEF8</strong> = <strong>0x00000014</strong></p>
+<p>打开 <code>FatherClassB</code> 的偏移量指针 <code>0x0041587c</code> </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x0041587C</span>  <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>  ....</span><br><span class="line"><span class="number">0x00415880</span>  <span class="number">0</span>c <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>  ....</span><br></pre></td></tr></table></figure>
+
+<p>其中偏移值为 <strong>0x0c</strong></p>
+<p>偏移值的含义为基类的内存到第二父类 <strong>FatherClassB</strong> 的偏移量</p>
+<p>也就是 <strong>0x0019FF0C</strong> - <strong>0x0019FF00</strong>= <strong>0x0000000C</strong></p>
+<h2 id="多重虚继承-菱形继承-有虚函数"><a href="#多重虚继承-菱形继承-有虚函数" class="headerlink" title="多重虚继承(菱形继承)有虚函数"></a>多重虚继承(菱形继承)有虚函数</h2><h3 id="只有虚基类有虚函数"><a href="#只有虚基类有虚函数" class="headerlink" title="只有虚基类有虚函数"></a>只有虚基类有虚函数</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BaseClass</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v1 = <span class="number">0xaaaaaaaa</span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FatherClassA</span> :</span> <span class="keyword">virtual</span> <span class="keyword">public</span> BaseClass</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v2 = <span class="number">0xbbbbbbbb</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FatherClassB</span> :</span> <span class="keyword">virtual</span> <span class="keyword">public</span> BaseClass</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v3 = <span class="number">0xcccccccc</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SonClass</span> :</span> <span class="keyword">public</span> FatherClassA, <span class="keyword">public</span> FatherClassB</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v4 = <span class="number">0xdddddddd</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">SonClass sonClass;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打开 <code>sonClass</code>的内存窗口</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x0019FEF4</span>  a0 <span class="number">68</span> <span class="number">41</span> <span class="number">00</span>  ?hA.---父类FatherClassA 的偏移量指针</span><br><span class="line"><span class="number">0x0019FEF8</span>  bb bb bb bb  ????---父类FatherClassA 的内存</span><br><span class="line"><span class="number">0x0019FEFC</span>  ac <span class="number">68</span> <span class="number">41</span> <span class="number">00</span>  ?hA.---父类FatherClassB 的偏移量指针</span><br><span class="line"><span class="number">0x0019FF00</span>  cc cc cc cc  ????---父类FatherClassB 的内存</span><br><span class="line"><span class="number">0x0019FF04</span>  dd dd dd dd  ????---子类内存</span><br><span class="line"><span class="number">0x0019FF08</span>  <span class="number">98</span> <span class="number">68</span> <span class="number">41</span> <span class="number">00</span>  ?hA.---基类虚函数表指针</span><br><span class="line"><span class="number">0x0019FF0C</span>  aa aa aa aa  ????---基类内存</span><br></pre></td></tr></table></figure>
+
+<h3 id="中间类重写虚基类的虚函数"><a href="#中间类重写虚基类的虚函数" class="headerlink" title="中间类重写虚基类的虚函数"></a>中间类重写虚基类的虚函数</h3><p>此时允许两个中间类同时重写基类中的虚函数，因为中间类都是虚继承基类，相当于它们共享了唯一一份基类</p>
+<p>所以如果同时重写无异于重复定义，在子类中会报错</p>
+<h4 id="仅允许其中一个中间类重写虚基类的虚函数"><a href="#仅允许其中一个中间类重写虚基类的虚函数" class="headerlink" title="仅允许其中一个中间类重写虚基类的虚函数"></a>仅允许其中一个中间类重写虚基类的虚函数</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BaseClass</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v1 = <span class="number">0xaaaaaaaa</span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FatherClassA</span> :</span> <span class="keyword">virtual</span> <span class="keyword">public</span> BaseClass</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v2 = <span class="number">0xbbbbbbbb</span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FatherClassB</span> :</span> <span class="keyword">virtual</span> <span class="keyword">public</span> BaseClass</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v3 = <span class="number">0xcccccccc</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SonClass</span> :</span> <span class="keyword">public</span> FatherClassA, <span class="keyword">public</span> FatherClassB</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v4 = <span class="number">0xdddddddd</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>内存结构同 <strong>只有虚基类有虚函数</strong> 的内存结构</p>
+<h3 id="中间类新加虚函数"><a href="#中间类新加虚函数" class="headerlink" title="中间类新加虚函数"></a>中间类新加虚函数</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BaseClass</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v1 = <span class="number">0xaaaaaaaa</span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FatherClassA</span> :</span> <span class="keyword">virtual</span> <span class="keyword">public</span> BaseClass</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v2 = <span class="number">0xbbbbbbbb</span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func1</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FatherClassB</span> :</span> <span class="keyword">virtual</span> <span class="keyword">public</span> BaseClass</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v3 = <span class="number">0xcccccccc</span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func1</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SonClass</span> :</span> <span class="keyword">public</span> FatherClassA, <span class="keyword">public</span> FatherClassB</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v4 = <span class="number">0xdddddddd</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">SonClass sonClass;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打开 <code>sonClass</code>的内存窗口</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x0019FEEC</span>  b0 <span class="number">68</span> <span class="number">41</span> <span class="number">00</span>  ?hA. ---父类FatherClassA的虚函数表指针</span><br><span class="line"><span class="number">0x0019FEF0</span>  <span class="number">20</span> <span class="number">69</span> <span class="number">41</span> <span class="number">00</span>   iA. ---父类FatherClassA的偏移量指针</span><br><span class="line"><span class="number">0x0019FEF4</span>  bb bb bb bb  ???? ---父类FatherClassA内存</span><br><span class="line"><span class="number">0x0019FEF8</span>  c4 <span class="number">68</span> <span class="number">41</span> <span class="number">00</span>  ?hA. ---父类FatherClassB的虚函数表指针</span><br><span class="line"><span class="number">0x0019FEFC</span>  <span class="number">88</span> <span class="number">69</span> <span class="number">41</span> <span class="number">00</span>  ?iA. ---父类FatherClassB的偏移量指针</span><br><span class="line"><span class="number">0x0019FF00</span>  cc cc cc cc  ???? ---父类FatherClassB内存</span><br><span class="line"><span class="number">0x0019FF04</span>  dd dd dd dd  ???? ---子类内存</span><br><span class="line"><span class="number">0x0019FF08</span>  <span class="number">1</span>c <span class="number">69</span> <span class="number">41</span> <span class="number">00</span>  .iA. ---基类SonClass的虚函数表指针</span><br><span class="line"><span class="number">0x0019FF0C</span>  aa aa aa aa  ???? ---基类内存</span><br></pre></td></tr></table></figure>
+
+<p>对比只有 <strong>只有虚基类有虚函数</strong> 的内存结构发现，仅仅只是在前者的基础上添加了每个类对应的虚函数表指针</p>
+<p>但偏移指针所指向的偏移值有所变化</p>
+<p>打开 <strong>FatherClassA</strong> 中的偏移表指针</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x00416920</span>  fc ff ff ff  ?...</span><br><span class="line"><span class="number">0x00416924</span>  <span class="number">18</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>  ....</span><br></pre></td></tr></table></figure>
+
+<p>第二个值为 <strong>0x18</strong> ，根据之前的推论经验，此为基类到首地址的偏移量</p>
+<p>但现在的内存首地址为 <strong>0x0019FEEC</strong> ，而 <strong>0x0019FF08</strong> - <strong>0x18</strong> 为 <strong>0x0019FEF0</strong> </p>
+<p>所以在此猜测偏移量 <strong>0x18</strong> 是基类到父类的偏移表指针的偏移量，不包括父类虚函数表指针</p>
+<p>于是打开 <strong>FatherClassB</strong> 中的偏移指针 <strong>0x00416988</strong> 进行验证</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x00416988</span>  fc ff ff ff  ?...</span><br><span class="line"><span class="number">0x0041698C</span>  <span class="number">0</span>c <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>  ....</span><br></pre></td></tr></table></figure>
+
+<p>第二个值为 <strong>0x0c</strong> 正好为 <strong>0x0019FF08</strong> - <strong>0x0019FEFC</strong> 的值，猜想得到验证</p>
+<h3 id="子类重写虚基类的虚函数"><a href="#子类重写虚基类的虚函数" class="headerlink" title="子类重写虚基类的虚函数"></a>子类重写虚基类的虚函数</h3><p>内存结构无变化</p>
+<h3 id="子类重写中间类的虚函数"><a href="#子类重写中间类的虚函数" class="headerlink" title="子类重写中间类的虚函数"></a>子类重写中间类的虚函数</h3><p>内存结构无变化，但重写的虚函数加入到了基类的虚函数表中</p>
+<h3 id="子类新加虚函数-1"><a href="#子类新加虚函数-1" class="headerlink" title="子类新加虚函数"></a>子类新加虚函数</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BaseClass</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v1 = <span class="number">0xaaaaaaaa</span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FatherClassA</span> :</span> <span class="keyword">virtual</span> <span class="keyword">public</span> BaseClass</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v2 = <span class="number">0xbbbbbbbb</span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func1</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FatherClassB</span> :</span> <span class="keyword">virtual</span> <span class="keyword">public</span> BaseClass</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v3 = <span class="number">0xcccccccc</span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func2</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SonClass</span> :</span> <span class="keyword">public</span> FatherClassA, <span class="keyword">public</span> FatherClassB</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"><span class="keyword">int</span> v4 = <span class="number">0xdddddddd</span>;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func3</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">SonClass sonClass;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打开 <code>sonClass</code>的内存窗口</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x0019FEEC</span>  ac <span class="number">68</span> <span class="number">41</span> <span class="number">00</span>  ?hA. ---父类FatherClassA的虚函数表指针</span><br><span class="line"><span class="number">0x0019FEF0</span>  <span class="number">20</span> <span class="number">69</span> <span class="number">41</span> <span class="number">00</span>   iA. </span><br><span class="line"><span class="number">0x0019FEF4</span>  bb bb bb bb  ????</span><br><span class="line"><span class="number">0x0019FEF8</span>  c4 <span class="number">68</span> <span class="number">41</span> <span class="number">00</span>  ?hA. ---父类FatherClassB的虚函数表指针</span><br><span class="line"><span class="number">0x0019FEFC</span>  <span class="number">88</span> <span class="number">69</span> <span class="number">41</span> <span class="number">00</span>  ?iA.</span><br><span class="line"><span class="number">0x0019FF00</span>  cc cc cc cc  ????</span><br><span class="line"><span class="number">0x0019FF04</span>  dd dd dd dd  ????</span><br><span class="line"><span class="number">0x0019FF08</span>  <span class="number">1</span>c <span class="number">69</span> <span class="number">41</span> <span class="number">00</span>  .iA. ---基类SonClass的虚函数表指针</span><br><span class="line"><span class="number">0x0019FF0C</span>  aa aa aa aa  ????</span><br></pre></td></tr></table></figure>
+
+<p>根据之前的经验，子类新添加的虚函数应该加入到第一父类中的<strong>虚函数表中</strong></p>
+<p>打开 <strong>FatherClassA</strong> 的虚函数表指针 <code>0x004168ac</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x004168AC</span>  <span class="number">21</span> <span class="number">12</span> <span class="number">41</span> <span class="number">00</span>  !.A.</span><br><span class="line"><span class="number">0x004168B0</span>  <span class="number">3</span>a <span class="number">12</span> <span class="number">41</span> <span class="number">00</span>  :.A.</span><br><span class="line"><span class="number">0x004168B4</span>  <span class="number">00</span> <span class="number">00</span> <span class="number">01</span> <span class="number">00</span>  ....</span><br></pre></td></tr></table></figure>
+
+<p>打开汇编窗口</p>
+<p><code>0x00411221</code> 的确为 <code>SonClass::func3()</code></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="../../14/虚函数原理/" rel="next" title="虚函数原理">
+                <i class="fa fa-chevron-left"></i> 虚函数原理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">fatofyoung@yeah.net</p>
+              <p class="site-description motion-element" itemprop="description">sense and simplicity</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="../../../../archives/">
+              
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#单重虚继承无虚函数"><span class="nav-number">1.</span> <span class="nav-text">单重虚继承无虚函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单重虚继承有虚函数"><span class="nav-number">2.</span> <span class="nav-text">单重虚继承有虚函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#父类有虚函数"><span class="nav-number">2.1.</span> <span class="nav-text">父类有虚函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子类重写父类虚函数"><span class="nav-number">2.2.</span> <span class="nav-text">子类重写父类虚函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子类添加虚函数"><span class="nav-number">2.3.</span> <span class="nav-text">子类添加虚函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多重继承有虚函数"><span class="nav-number">3.</span> <span class="nav-text">多重继承有虚函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#父类有虚函数-1"><span class="nav-number">3.1.</span> <span class="nav-text">父类有虚函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#只有一个父类有虚函数"><span class="nav-number">3.2.</span> <span class="nav-text">只有一个父类有虚函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子类重写父类的虚函数"><span class="nav-number">3.3.</span> <span class="nav-text">子类重写父类的虚函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子类新加虚函数"><span class="nav-number">3.4.</span> <span class="nav-text">子类新加虚函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多重虚继承-菱形继承-无虚函数"><span class="nav-number">4.</span> <span class="nav-text">多重虚继承(菱形继承)无虚函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多重虚继承-菱形继承-有虚函数"><span class="nav-number">5.</span> <span class="nav-text">多重虚继承(菱形继承)有虚函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#只有虚基类有虚函数"><span class="nav-number">5.1.</span> <span class="nav-text">只有虚基类有虚函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#中间类重写虚基类的虚函数"><span class="nav-number">5.2.</span> <span class="nav-text">中间类重写虚基类的虚函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#仅允许其中一个中间类重写虚基类的虚函数"><span class="nav-number">5.2.1.</span> <span class="nav-text">仅允许其中一个中间类重写虚基类的虚函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#中间类新加虚函数"><span class="nav-number">5.3.</span> <span class="nav-text">中间类新加虚函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子类重写虚基类的虚函数"><span class="nav-number">5.4.</span> <span class="nav-text">子类重写虚基类的虚函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子类重写中间类的虚函数"><span class="nav-number">5.5.</span> <span class="nav-text">子类重写中间类的虚函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#子类新加虚函数-1"><span class="nav-number">5.6.</span> <span class="nav-text">子类新加虚函数</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">fatofyoung@yeah.net</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="../../../../lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="../../../../js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="../../../../js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="../../../../js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="../../../../js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

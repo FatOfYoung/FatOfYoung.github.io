@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="../../../../lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="../../../../lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="../../../../css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../../images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../../images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="../../../../images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="../../../../images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="定义 如果没有使用关键字 virtual ，程序将根据引用类型或指针类型选择方法；如果使用了 virtual 关键字，程序将根据引用或指针指向的对象的类型来选择方法(C++ Primer Plus)  例如 不使用关键字 virtual 123456789101112131415161718192021class Father&amp;#123;void func1()&amp;#123;&amp;#125;;void">
+<meta property="og:type" content="article">
+<meta property="og:title" content="虚函数原理">
+<meta property="og:url" content="http://yoursite.com/2019/05/14/虚函数原理/index.html">
+<meta property="og:site_name" content="FatOfYoung">
+<meta property="og:description" content="定义 如果没有使用关键字 virtual ，程序将根据引用类型或指针类型选择方法；如果使用了 virtual 关键字，程序将根据引用或指针指向的对象的类型来选择方法(C++ Primer Plus)  例如 不使用关键字 virtual 123456789101112131415161718192021class Father&amp;#123;void func1()&amp;#123;&amp;#125;;void">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-07-11T14:02:53.521Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="虚函数原理">
+<meta name="twitter:description" content="定义 如果没有使用关键字 virtual ，程序将根据引用类型或指针类型选择方法；如果使用了 virtual 关键字，程序将根据引用或指针指向的对象的类型来选择方法(C++ Primer Plus)  例如 不使用关键字 virtual 123456789101112131415161718192021class Father&amp;#123;void func1()&amp;#123;&amp;#125;;void">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/05/14/虚函数原理/">
+
+
+
+
+
+  <title>虚函数原理 | FatOfYoung</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">FatOfYoung</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="fatofyoung@yeah.net">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="../../../../images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="FatOfYoung">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">虚函数原理</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-14T15:10:12+08:00">
+                2019-05-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="../../../../categories/C-C/" itemprop="url" rel="index">
+                    <span itemprop="name">C/C++</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><blockquote>
+<p>如果没有使用关键字 <strong>virtual</strong> ，程序将根据引用类型或指针类型选择方法；如果使用了 <strong>virtual</strong> 关键字，程序将根据引用或指针指向的对象的类型来选择方法(C++ Primer Plus)</p>
+</blockquote>
+<p>例如 不使用关键字 <strong>virtual</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Father</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func1</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func2</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Son</span>:</span><span class="keyword">public</span> Father</span><br><span class="line">&#123;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func1</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">func2</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">Father father;</span><br><span class="line">Son son;</span><br><span class="line">Father *pFather1 = &amp;father;</span><br><span class="line">Father *pFather2 = &amp;son;</span><br><span class="line">pFather1-&gt;func1(); <span class="comment">//call Father::func1()</span></span><br><span class="line">pFather2-&gt;func1(); <span class="comment">//call Father::func1()</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用关键字  <strong>virtual</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Father</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func1</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func2</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Son</span>:</span><span class="keyword">public</span> Father</span><br><span class="line">&#123;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func1</span><span class="params">()</span></span>&#123;&#125;; <span class="comment">//virtual可省略</span></span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func2</span><span class="params">()</span></span>&#123;&#125;; <span class="comment">//同上</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">Father father;</span><br><span class="line">Son son;</span><br><span class="line">Father *pFather1 = &amp;father;</span><br><span class="line">Father *pFather2 = &amp;son;</span><br><span class="line">pFather1-&gt;func1(); <span class="comment">//call Father::func1()</span></span><br><span class="line">pFather2-&gt;func1(); <span class="comment">//call Son::func1()</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>所以如果要在派生类中重新定义基类的方法，通常应将基类方法声明为虚的</p>
+<p>这样，程序将根据对象类型而不是引用或指针的类型来选择方法版本</p>
+</blockquote>
+<h2 id="虚函数的原理"><a href="#虚函数的原理" class="headerlink" title="虚函数的原理"></a>虚函数的原理</h2><h3 id="虚函数表"><a href="#虚函数表" class="headerlink" title="虚函数表"></a>虚函数表</h3><p>只有在拥有关键字 <strong>virtual</strong> 修饰的方法才会产生虚函数表</p>
+<ul>
+<li>虚函数表的地址存放在对象的首地址中</li>
+<li>存放虚函数地址的数组称之为虚表，对象中指向虚表的地址称之为虚表指针</li>
+<li>一般虚表放在全局数据区</li>
+<li>含有虚表指针的类比没有虚表指针的类大4个字节</li>
+<li>虚函数调用，首先拿到对象的首地址，从对象的首地址取出虚表指针，然后从虚表取出对应的虚函数的地址，调用虚函数，这种调用方式称之为虚调用(间接调用)。</li>
+<li>每个类都有自己的虚表，每个类都在自己的构造函数中填入自己的虚表指针，这个实际构造函数执行时间早</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Father</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func1</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func2</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Son</span>:</span><span class="keyword">public</span> Father</span><br><span class="line">&#123;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func3</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func4</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">Son son;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>创建 <code>Son</code> 实例，打开内存窗口查看 <strong>son</strong> 内存</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x0019FF0C</span>  <span class="number">6</span>c <span class="number">68</span> <span class="number">41</span> <span class="number">00</span>  lhA.</span><br><span class="line"><span class="number">0x0019FF10</span>  cc cc cc cc  ????</span><br></pre></td></tr></table></figure>
+
+<p>首地址为虚表指针并指向 <code>0x0041686c</code></p>
+<p>打开 <code>0x0041686c</code></p>
+<p>以下为虚函数表</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x0041686C</span>  <span class="number">2</span>d <span class="number">10</span> <span class="number">41</span> <span class="number">00</span>  -.A.</span><br><span class="line"><span class="number">0x00416870</span>  <span class="number">77</span> <span class="number">11</span> <span class="number">41</span> <span class="number">00</span>  w.A.</span><br><span class="line"><span class="number">0x00416874</span>  cd <span class="number">10</span> <span class="number">41</span> <span class="number">00</span>  ?.A.</span><br><span class="line"><span class="number">0x00416878</span>  <span class="number">6</span>e <span class="number">10</span> <span class="number">41</span> <span class="number">00</span>  n.A.</span><br><span class="line"><span class="number">0x0041687C</span>  <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>  ....</span><br></pre></td></tr></table></figure>
+
+<p>最后的 <code>0x00000000</code> 为虚函数表终止符</p>
+<p>打开反汇编窗口输入地址，分别找到它们对应基类和子类的成员函数</p>
+<table>
+<thead>
+<tr>
+<th align="center">0x0041102d</th>
+<th align="center">0x00411177</th>
+<th align="center">0x004110cd</th>
+<th align="center">0x0041106e</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Father:func1()</td>
+<td align="center">Father:func2()</td>
+<td align="center">Son::func3()</td>
+<td align="center">Son::func4()</td>
+</tr>
+</tbody></table>
+<p>如果将类 <code>Son</code> 中的成员函数 <code>func3()</code> 改为 <code>func1()</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Father</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func1</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func2</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Son</span>:</span>Father</span><br><span class="line">&#123;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func1</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line"><span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">func3</span><span class="params">()</span></span>&#123;&#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>此时虚函数表的内容为</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0x0041686C</span>  <span class="number">17</span> <span class="number">12</span> <span class="number">41</span> <span class="number">00</span>  ..A.</span><br><span class="line"><span class="number">0x00416870</span>  <span class="number">77</span> <span class="number">11</span> <span class="number">41</span> <span class="number">00</span>  w.A.</span><br><span class="line"><span class="number">0x00416874</span>  <span class="number">6</span>e <span class="number">10</span> <span class="number">41</span> <span class="number">00</span>  n.A.</span><br><span class="line"><span class="number">0x00416878</span>  <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> <span class="number">00</span>  ....</span><br></pre></td></tr></table></figure>
+
+<p>对应的方法为</p>
+<table>
+<thead>
+<tr>
+<th align="center">0x00411217</th>
+<th align="center">0x00411177</th>
+<th align="center">0x0041106e</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Son::func1()</td>
+<td align="center">Father:func2()</td>
+<td align="center">Son::func3()</td>
+</tr>
+</tbody></table>
+<p>可以看到 <code>Son</code> 的虚函数表中，此时的 <code>fun1()</code> 不再是  <code>Father:func1()</code></p>
+<p>而是 <code>Son::func1()</code> 对其进行了覆盖</p>
+<h3 id="为何需要设置虚析构函数"><a href="#为何需要设置虚析构函数" class="headerlink" title="为何需要设置虚析构函数"></a>为何需要设置虚析构函数</h3><p>在使用delete释放由new分配的对象代码时，如果析构函数不是虚的，则将只调用对应于指针类型的析构函数</p>
+<p>例如</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Father</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">~Father()&#123;&#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Son</span> :</span> <span class="keyword">public</span> Father</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">~Son()&#123;&#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main</span><br><span class="line">&#123;</span><br><span class="line">Son *son = <span class="keyword">new</span> Son();</span><br><span class="line">Father *pFather = son;</span><br><span class="line"><span class="keyword">delete</span>(pFather); <span class="comment">//call Father::~Father()</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>此时仅调用了父类 <code>Father</code> 中的析构函数</p>
+<p>如果在析构函数中添加了 <strong>virtual</strong> 关键字，则析构将正常进行，顺序为先子类后父类</p>
+<h2 id="语法细节"><a href="#语法细节" class="headerlink" title="语法细节"></a>语法细节</h2><ul>
+<li><p>在子类的一般成员函数中调用虚函数，也存在多态效果</p>
+</li>
+<li><p>在父类的一般成员函数中调用虚函数，存在多态效果</p>
+</li>
+<li><p>在构造成员函数中调用虚函数，没有多态效果</p>
+</li>
+<li><p>在析构成员函数中调用虚函数，没有多态效果</p>
+</li>
+<li><p>构造成员函数不能设置为虚函数</p>
+</li>
+<li><p>析构成员函数必须是虚函数</p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="../../11/OC_EssenceOfObject/" rel="next" title="OC对象本质">
+                <i class="fa fa-chevron-left"></i> OC对象本质
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="../../16/多重继承的内存结构/" rel="prev" title="多重继承的内存结构">
+                多重继承的内存结构 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">fatofyoung@yeah.net</p>
+              <p class="site-description motion-element" itemprop="description">sense and simplicity</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="../../../../archives/">
+              
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义"><span class="nav-number">1.</span> <span class="nav-text">定义</span></a></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#虚函数的原理"><span class="nav-number"></span> <span class="nav-text">虚函数的原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#虚函数表"><span class="nav-number">1.</span> <span class="nav-text">虚函数表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为何需要设置虚析构函数"><span class="nav-number">2.</span> <span class="nav-text">为何需要设置虚析构函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#语法细节"><span class="nav-number"></span> <span class="nav-text">语法细节</span></a></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">fatofyoung@yeah.net</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="../../../../lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="../../../../js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="../../../../js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="../../../../js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="../../../../js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
