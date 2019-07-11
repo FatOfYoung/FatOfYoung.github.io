@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="../../../../lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="../../../../lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="../../../../css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="../../../../images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="../../../../images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="../../../../images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="../../../../images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="OC对象实例对象每次通过 alloc 产生出的对象，每个产生的对象都占用着不同内存 例如 1234567891011121314@interface MyClass:NSObejct&amp;#123;@public成员1;成员2;&amp;#125;@endint main()&amp;#123;MyClass *instanceClass = [[MyClass alloc] init];return 0;&amp;#125">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OC对象分类">
+<meta property="og:url" content="http://yoursite.com/2019/05/01/OC对象分类/index.html">
+<meta property="og:site_name" content="FatOfYoung">
+<meta property="og:description" content="OC对象实例对象每次通过 alloc 产生出的对象，每个产生的对象都占用着不同内存 例如 1234567891011121314@interface MyClass:NSObejct&amp;#123;@public成员1;成员2;&amp;#125;@endint main()&amp;#123;MyClass *instanceClass = [[MyClass alloc] init];return 0;&amp;#125">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/Users/daniel/Desktop/OC%E5%BA%95%E5%B1%82%E7%9F%A5%E8%AF%86/OC%E5%AF%B9%E8%B1%A1%E5%88%86%E7%B1%BB_1.png">
+<meta property="og:image" content="http://yoursite.com/Users/daniel/Desktop/OC%E5%BA%95%E5%B1%82%E7%9F%A5%E8%AF%86/OC%E5%AF%B9%E8%B1%A1%E5%88%86%E7%B1%BB_2.png">
+<meta property="og:image" content="http://yoursite.com/Users/daniel/Desktop/OC%E5%BA%95%E5%B1%82%E7%9F%A5%E8%AF%86/OC%E5%AF%B9%E8%B1%A1%E5%88%86%E7%B1%BB_3.png">
+<meta property="og:image" content="http://yoursite.com/Users/daniel/Desktop/OC%E5%BA%95%E5%B1%82%E7%9F%A5%E8%AF%86/OC%E5%AF%B9%E8%B1%A1%E5%88%86%E7%B1%BB_4.png">
+<meta property="og:image" content="http://yoursite.com/Users/daniel/Desktop/OC%E5%BA%95%E5%B1%82%E7%9F%A5%E8%AF%86/OC%E5%AF%B9%E8%B1%A1%E5%88%86%E7%B1%BB_5.png">
+<meta property="og:updated_time" content="2019-07-11T13:28:01.684Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OC对象分类">
+<meta name="twitter:description" content="OC对象实例对象每次通过 alloc 产生出的对象，每个产生的对象都占用着不同内存 例如 1234567891011121314@interface MyClass:NSObejct&amp;#123;@public成员1;成员2;&amp;#125;@endint main()&amp;#123;MyClass *instanceClass = [[MyClass alloc] init];return 0;&amp;#125">
+<meta name="twitter:image" content="http://yoursite.com/Users/daniel/Desktop/OC%E5%BA%95%E5%B1%82%E7%9F%A5%E8%AF%86/OC%E5%AF%B9%E8%B1%A1%E5%88%86%E7%B1%BB_1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/05/01/OC对象分类/">
+
+
+
+
+
+  <title>OC对象分类 | FatOfYoung</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">FatOfYoung</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="fatofyoung@yeah.net">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="../../../../images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="FatOfYoung">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">OC对象分类</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-01T21:24:28+08:00">
+                2019-05-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="../../../../categories/OC/" itemprop="url" rel="index">
+                    <span itemprop="name">OC</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="OC对象"><a href="#OC对象" class="headerlink" title="OC对象"></a>OC对象</h2><h3 id="实例对象"><a href="#实例对象" class="headerlink" title="实例对象"></a>实例对象</h3><p>每次通过 <strong>alloc</strong> 产生出的对象，每个产生的对象都占用着不同内存</p>
+<p>例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">@interface MyClass:NSObejct</span><br><span class="line">&#123;</span><br><span class="line">@public</span><br><span class="line">成员1;</span><br><span class="line">成员2;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">MyClass *instanceClass = [[MyClass alloc] init];</span><br><span class="line"></span><br><span class="line">return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a> 
+
+<p><code>perClass</code> 为实例对象，实例对象中只存储 <code>isa</code> 指针和各个类成员的值，不存储类的方法。</p>
+<p><img src="/Users/daniel/Desktop/OC%E5%BA%95%E5%B1%82%E7%9F%A5%E8%AF%86/OC%E5%AF%B9%E8%B1%A1%E5%88%86%E7%B1%BB_1.png" alt="OC对象分类_1"></p>
+<h3 id="类对象"><a href="#类对象" class="headerlink" title="类对象"></a>类对象</h3><p>一个类无论有多少个实例对象，有且仅有一份类对象</p>
+<p>使用三种方法获取类对象</p>
+<ul>
+<li>[类型名 class]</li>
+<li>[实例对象 class]</li>
+<li>object_getClass(实例对象)</li>
+</ul>
+<p>类对象在内存中所包含的信息有</p>
+<ul>
+<li>isa指针</li>
+<li>superclass指针</li>
+<li>类的属性信息 (property)</li>
+<li>类的对象方法信息 (instance method)</li>
+<li>类的协议信息 (protocol)</li>
+<li>类的成员变量信息 (ivar)</li>
+</ul>
+<p><img src="/Users/daniel/Desktop/OC%E5%BA%95%E5%B1%82%E7%9F%A5%E8%AF%86/OC%E5%AF%B9%E8%B1%A1%E5%88%86%E7%B1%BB_2.png" alt="OC对象分类_2"></p>
+<p>实例对象的方法调用转为C语言，例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[object MyFunc] == objec_msgSend(object, @selector(MyFunc));</span><br></pre></td></tr></table></figure>
+
+<h3 id="元类对象"><a href="#元类对象" class="headerlink" title="元类对象"></a>元类对象</h3><p><code>Class objectMetaClass = object_getClass([MyClass class])</code></p>
+<p>因为都是 <strong>class</strong> 类型，所以元类对象和类对象的内存结构是相同的</p>
+<p>元类对象中包含</p>
+<ul>
+<li>isa指针</li>
+<li>superclass指针</li>
+<li>类方法</li>
+</ul>
+<h2 id="对象的-isa-指针指向的位置"><a href="#对象的-isa-指针指向的位置" class="headerlink" title="对象的 isa 指针指向的位置"></a>对象的 isa 指针指向的位置</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">//实例对象</span><br><span class="line">MyClass * instanceClass1 = [[MyClass alloc] init];</span><br><span class="line">MyClass * instanceClass2 = [[MyClass alloc] init];</span><br><span class="line"></span><br><span class="line">//类对象</span><br><span class="line">Class class1 = object_getClass(instanceClass1);</span><br><span class="line">Class class2 = object_getClass(instanceClass1);</span><br><span class="line"></span><br><span class="line">//元类对象</span><br><span class="line">Class metaClass1 = object_getClass(class1);</span><br><span class="line">Class metaClass2 = object_getClass(class2);</span><br><span class="line"></span><br><span class="line">//打印地址</span><br><span class="line">printf(&quot;instanceClass1:%p\r\ninstanceClass2:%p\r\nclass1:%p\r\nclass2:%p\r\nmetaClass1:%p\r\nmetaClass2:%p\r\n&quot;, instanceClass1,instanceClass2,class1,class2,metaClass1,metaClass2);</span><br><span class="line"></span><br><span class="line">//输出</span><br><span class="line">instanceClass1:0x10281c900</span><br><span class="line">instanceClass2:0x10281c710</span><br><span class="line">class1:        0x1000013f8</span><br><span class="line">class2:        0x1000013f8</span><br><span class="line">metaClass1:    0x1000013d0</span><br><span class="line">metaClass2:    0x1000013d0</span><br></pre></td></tr></table></figure>
+
+<p>输出结果所示，虽然实例对象的内存不一致，但它们类对象和元类对象所指向的都是同一块区域</p>
+<p>于是打开 <strong>OC</strong> 的源码，找到 <code>objc-class.mm</code> 中的 <code>object_getClass()</code>方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Class object_getClass(id obj)</span><br><span class="line">&#123;</span><br><span class="line">if (obj) return obj-&gt;getIsa();</span><br><span class="line">else return Nil;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到 <code>object_getClass</code> 函数的返回值是 <code>isa</code> 指针</p>
+<h3 id="实例对象的isa"><a href="#实例对象的isa" class="headerlink" title="实例对象的isa"></a>实例对象的isa</h3><p>通过 <strong>lldb</strong> 来查看实例对象 <code>isa</code> 的指向</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(lldb) p/x instanceClass1-&gt;isa</span><br><span class="line">(Class) $3 = 0x001d8001000013f9 MyClass</span><br></pre></td></tr></table></figure>
+
+<p>类对象的内存值为和实例对象所指向的值不相同，于是打开源码  <code>getIsa()</code> 发现在返回类对象的地址时需要做一次与运算才能得到正确的地址</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#   <span class="meta-keyword">define</span> ISA_MASK        0x00007ffffffffff8ULL</span></span><br><span class="line"><span class="keyword">inline</span> Class </span><br><span class="line">objc_object::ISA() </span><br><span class="line">&#123;</span><br><span class="line">assert(!isTaggedPointer()); </span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> SUPPORT_INDEXED_ISA</span></span><br><span class="line"><span class="keyword">if</span> (isa.nonpointer) &#123;</span><br><span class="line"><span class="keyword">uintptr_t</span> slot = isa.indexcls;</span><br><span class="line"><span class="keyword">return</span> classForIndex((<span class="keyword">unsigned</span>)slot);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> (Class)isa.bits;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="keyword">return</span> (Class)(isa.bits &amp; ISA_MASK);</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>与 运算的值是一个宏 <code>ISA_MASK</code> ，值为 <code>0x00007ffffffffff8ULL</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lldb) p/x 0x001d8001000013f9 &amp; 0x00007ffffffffff8</span><br><span class="line">(long) $4 = 0x00000001000013f8</span><br></pre></td></tr></table></figure>
+
+<h3 id="类对象的isa"><a href="#类对象的isa" class="headerlink" title="类对象的isa"></a>类对象的isa</h3><p>由于限制，无法使用 <strong>lldb</strong> 打印类对象 <code>isa</code> 所指向的地址，因此需要自定一个结构体，结构体中仅有一个 <code>isa</code> 成员</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">struct classStruct</span><br><span class="line">&#123;</span><br><span class="line">Class isa;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">//实例对象</span><br><span class="line">MyClass * instanceClass1 = [[MyClass alloc] init];</span><br><span class="line">MyClass * instanceClass2 = [[MyClass alloc] init];</span><br><span class="line"></span><br><span class="line">//类对象 </span><br><span class="line">struct classStruct* class1 = (__bridge struct classStruct *)(object_getClass(instanceClass1));</span><br><span class="line">Class class2 = (object_getClass(instanceClass1));</span><br><span class="line"></span><br><span class="line">//元类对象</span><br><span class="line">Class metaClass1 = object_getClass(class2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此时可以直接访问类对象  <code>class1</code> 中的 <code>isa</code> 成员，将 <code>isa</code> 所指向的地址和 <code>0x00007ffffffffff8</code> 做与元算，结果正好为元类对象 <code>metaClass</code> 的地址</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(lldb) p/x class1-&gt;isa</span><br><span class="line">(Class) $<span class="number">0</span> = <span class="number">0x001d8001000013d1</span></span><br><span class="line">(lldb) p/x metaClass1</span><br><span class="line">(Class) $<span class="number">1</span> = <span class="number">0x00000001000013d0</span></span><br><span class="line">(lldb) p/x <span class="number">0x00007ffffffffff8</span> &amp; <span class="number">0x001d8001000013d1</span></span><br><span class="line">(<span class="keyword">long</span>) $<span class="number">2</span> = <span class="number">0x00000001000013d0</span></span><br></pre></td></tr></table></figure>
+
+<p>所以最后用一个图来描述它们之间的关系</p>
+<p><img src="/Users/daniel/Desktop/OC%E5%BA%95%E5%B1%82%E7%9F%A5%E8%AF%86/OC%E5%AF%B9%E8%B1%A1%E5%88%86%E7%B1%BB_3.png" alt="OC对象分类_3"></p>
+<h3 id="元类对象的isa"><a href="#元类对象的isa" class="headerlink" title="元类对象的isa"></a>元类对象的isa</h3><p>根据苹果官方的图示，所有的元类对象的 <code>isa</code> 都指向基类的元类对象(Root Class) </p>
+<p><img src="/Users/daniel/Desktop/OC%E5%BA%95%E5%B1%82%E7%9F%A5%E8%AF%86/OC%E5%AF%B9%E8%B1%A1%E5%88%86%E7%B1%BB_4.png" alt="OC对象分类_4"></p>
+<p>用代码进行验证</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">@interface MyClass : NSObject</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation MyClass</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">struct classStruct</span><br><span class="line">&#123;</span><br><span class="line">Class isa;</span><br><span class="line">Class superClass;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">//实例对象</span><br><span class="line">MyClass * instanceClass = [[MyClass alloc] init];</span><br><span class="line"></span><br><span class="line">//类对象</span><br><span class="line">Class class = (object_getClass(instanceClass));</span><br><span class="line"></span><br><span class="line">//元类对象</span><br><span class="line">Class metaClass1 = object_getClass(class);</span><br><span class="line">//将元类对象转为自定义的结构体指针</span><br><span class="line">struct classStruct* metaClass2 = (__bridge struct classStruct *)metaClass1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>MyClass</code> 继承自 <code>NSObject</code> ，所以 <code>MyClass</code> 的元类对象的 <code>isa</code> 和 <code>superclass</code> 都应该指向 <code>NSObject</code> 的元类对象</p>
+<p><img src="/Users/daniel/Desktop/OC%E5%BA%95%E5%B1%82%E7%9F%A5%E8%AF%86/OC%E5%AF%B9%E8%B1%A1%E5%88%86%E7%B1%BB_5.png" alt="OC对象分类_5"></p>
+<p>接下来使用 <strong>lldb</strong> ，仅需验证 <code>metaClass2</code> 的 <code>isa</code> 和 <code>superclass</code> 均指向同一个地址即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(lldb) p/x metaClass2-&gt;superClass</span><br><span class="line">(Class) $0 = 0x00007fff8aed60f0</span><br><span class="line">(lldb) p/x metaClass2-&gt;isa</span><br><span class="line">(Class) $1 = 0x001dffff8aed60f1</span><br><span class="line">(lldb) p/x 0x00007ffffffffff8 &amp; 0x001dffff8aed60f1</span><br><span class="line">(long) $2 = 0x00007fff8aed60f0</span><br></pre></td></tr></table></figure>
+
+<p>此时 <code>$0</code> 和 <code>$1 &amp; isa_mask</code>  的值均指向 <code>0x00007fff8aed60f0</code> 也就是 <code>NSObject</code> 的元类对象</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="../../../04/21/struct/" rel="next" title="结构体及其偏移量的计算">
+                <i class="fa fa-chevron-left"></i> 结构体及其偏移量的计算
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="../../11/OC_EssenceOfObject/" rel="prev" title="OC对象本质">
+                OC对象本质 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">fatofyoung@yeah.net</p>
+              <p class="site-description motion-element" itemprop="description">sense and simplicity</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="../../../../archives/">
+              
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#OC对象"><span class="nav-number">1.</span> <span class="nav-text">OC对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实例对象"><span class="nav-number">1.1.</span> <span class="nav-text">实例对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类对象"><span class="nav-number">1.2.</span> <span class="nav-text">类对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#元类对象"><span class="nav-number">1.3.</span> <span class="nav-text">元类对象</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象的-isa-指针指向的位置"><span class="nav-number">2.</span> <span class="nav-text">对象的 isa 指针指向的位置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实例对象的isa"><span class="nav-number">2.1.</span> <span class="nav-text">实例对象的isa</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类对象的isa"><span class="nav-number">2.2.</span> <span class="nav-text">类对象的isa</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#元类对象的isa"><span class="nav-number">2.3.</span> <span class="nav-text">元类对象的isa</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">fatofyoung@yeah.net</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="../../../../lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="../../../../lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="../../../../js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="../../../../js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="../../../../js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="../../../../js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="../../../../js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
