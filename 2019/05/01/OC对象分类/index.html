@@ -79,23 +79,23 @@
 
 
 
-<meta name="description" content="OC对象实例对象每次通过 alloc 产生出的对象，每个产生的对象都占用着不同内存 例如 1234567891011121314@interface MyClass:NSObejct&amp;#123;@public成员1;成员2;&amp;#125;@endint main()&amp;#123;MyClass *instanceClass = [[MyClass alloc] init];return 0;&amp;#125">
+<meta name="description" content="OC对象实例对象每次通过 alloc 产生出的对象，每个产生的对象都占用着不同内存 例如">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OC对象分类">
 <meta property="og:url" content="http://yoursite.com/2019/05/01/OC对象分类/index.html">
 <meta property="og:site_name" content="FatOfYoung">
-<meta property="og:description" content="OC对象实例对象每次通过 alloc 产生出的对象，每个产生的对象都占用着不同内存 例如 1234567891011121314@interface MyClass:NSObejct&amp;#123;@public成员1;成员2;&amp;#125;@endint main()&amp;#123;MyClass *instanceClass = [[MyClass alloc] init];return 0;&amp;#125">
+<meta property="og:description" content="OC对象实例对象每次通过 alloc 产生出的对象，每个产生的对象都占用着不同内存 例如">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/Users/daniel/Desktop/OC%E5%BA%95%E5%B1%82%E7%9F%A5%E8%AF%86/OC%E5%AF%B9%E8%B1%A1%E5%88%86%E7%B1%BB_1.png">
-<meta property="og:image" content="http://yoursite.com/Users/daniel/Desktop/OC%E5%BA%95%E5%B1%82%E7%9F%A5%E8%AF%86/OC%E5%AF%B9%E8%B1%A1%E5%88%86%E7%B1%BB_2.png">
-<meta property="og:image" content="http://yoursite.com/Users/daniel/Desktop/OC%E5%BA%95%E5%B1%82%E7%9F%A5%E8%AF%86/OC%E5%AF%B9%E8%B1%A1%E5%88%86%E7%B1%BB_3.png">
-<meta property="og:image" content="http://yoursite.com/Users/daniel/Desktop/OC%E5%BA%95%E5%B1%82%E7%9F%A5%E8%AF%86/OC%E5%AF%B9%E8%B1%A1%E5%88%86%E7%B1%BB_4.png">
-<meta property="og:image" content="http://yoursite.com/Users/daniel/Desktop/OC%E5%BA%95%E5%B1%82%E7%9F%A5%E8%AF%86/OC%E5%AF%B9%E8%B1%A1%E5%88%86%E7%B1%BB_5.png">
-<meta property="og:updated_time" content="2019-07-11T13:28:01.684Z">
+<meta property="og:image" content="http://yoursite.com/2019/05/01/OC对象分类/OC对象分类_1.png">
+<meta property="og:image" content="http://yoursite.com/2019/05/01/OC对象分类/OC对象分类_2.png">
+<meta property="og:image" content="http://yoursite.com/2019/05/01/OC对象分类/OC对象分类_3.png">
+<meta property="og:image" content="http://yoursite.com/2019/05/01/OC对象分类/OC对象分类_4.png">
+<meta property="og:image" content="http://yoursite.com/2019/05/01/OC对象分类/OC对象分类_5.png">
+<meta property="og:updated_time" content="2019-07-11T13:33:53.573Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OC对象分类">
-<meta name="twitter:description" content="OC对象实例对象每次通过 alloc 产生出的对象，每个产生的对象都占用着不同内存 例如 1234567891011121314@interface MyClass:NSObejct&amp;#123;@public成员1;成员2;&amp;#125;@endint main()&amp;#123;MyClass *instanceClass = [[MyClass alloc] init];return 0;&amp;#125">
-<meta name="twitter:image" content="http://yoursite.com/Users/daniel/Desktop/OC%E5%BA%95%E5%B1%82%E7%9F%A5%E8%AF%86/OC%E5%AF%B9%E8%B1%A1%E5%88%86%E7%B1%BB_1.png">
+<meta name="twitter:description" content="OC对象实例对象每次通过 alloc 产生出的对象，每个产生的对象都占用着不同内存 例如">
+<meta name="twitter:image" content="http://yoursite.com/2019/05/01/OC对象分类/OC对象分类_1.png">
 
 
 
@@ -329,12 +329,15 @@
       
         <h2 id="OC对象"><a href="#OC对象" class="headerlink" title="OC对象"></a>OC对象</h2><h3 id="实例对象"><a href="#实例对象" class="headerlink" title="实例对象"></a>实例对象</h3><p>每次通过 <strong>alloc</strong> 产生出的对象，每个产生的对象都占用着不同内存</p>
 <p>例如</p>
+<a id="more"></a>
+
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">@interface MyClass:NSObejct</span><br><span class="line">&#123;</span><br><span class="line">@public</span><br><span class="line">成员1;</span><br><span class="line">成员2;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">MyClass *instanceClass = [[MyClass alloc] init];</span><br><span class="line"></span><br><span class="line">return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<a id="more"></a> 
-
 <p><code>perClass</code> 为实例对象，实例对象中只存储 <code>isa</code> 指针和各个类成员的值，不存储类的方法。</p>
-<p><img src="/Users/daniel/Desktop/OC%E5%BA%95%E5%B1%82%E7%9F%A5%E8%AF%86/OC%E5%AF%B9%E8%B1%A1%E5%88%86%E7%B1%BB_1.png" alt="OC对象分类_1"></p>
+<img src="/2019/05/01/OC对象分类/OC对象分类_1.png">
+
+
+
 <h3 id="类对象"><a href="#类对象" class="headerlink" title="类对象"></a>类对象</h3><p>一个类无论有多少个实例对象，有且仅有一份类对象</p>
 <p>使用三种方法获取类对象</p>
 <ul>
@@ -351,7 +354,12 @@
 <li>类的协议信息 (protocol)</li>
 <li>类的成员变量信息 (ivar)</li>
 </ul>
-<p><img src="/Users/daniel/Desktop/OC%E5%BA%95%E5%B1%82%E7%9F%A5%E8%AF%86/OC%E5%AF%B9%E8%B1%A1%E5%88%86%E7%B1%BB_2.png" alt="OC对象分类_2"></p>
+<img src="/2019/05/01/OC对象分类/OC对象分类_2.png">
+
+
+
+
+
 <p>实例对象的方法调用转为C语言，例如</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[object MyFunc] == objec_msgSend(object, @selector(MyFunc));</span><br></pre></td></tr></table></figure>
 
@@ -386,14 +394,24 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(lldb) p/x class1-&gt;isa</span><br><span class="line">(Class) $<span class="number">0</span> = <span class="number">0x001d8001000013d1</span></span><br><span class="line">(lldb) p/x metaClass1</span><br><span class="line">(Class) $<span class="number">1</span> = <span class="number">0x00000001000013d0</span></span><br><span class="line">(lldb) p/x <span class="number">0x00007ffffffffff8</span> &amp; <span class="number">0x001d8001000013d1</span></span><br><span class="line">(<span class="keyword">long</span>) $<span class="number">2</span> = <span class="number">0x00000001000013d0</span></span><br></pre></td></tr></table></figure>
 
 <p>所以最后用一个图来描述它们之间的关系</p>
-<p><img src="/Users/daniel/Desktop/OC%E5%BA%95%E5%B1%82%E7%9F%A5%E8%AF%86/OC%E5%AF%B9%E8%B1%A1%E5%88%86%E7%B1%BB_3.png" alt="OC对象分类_3"></p>
+<img src="/2019/05/01/OC对象分类/OC对象分类_3.png">
+
+
+
+
+
+
 <h3 id="元类对象的isa"><a href="#元类对象的isa" class="headerlink" title="元类对象的isa"></a>元类对象的isa</h3><p>根据苹果官方的图示，所有的元类对象的 <code>isa</code> 都指向基类的元类对象(Root Class) </p>
-<p><img src="/Users/daniel/Desktop/OC%E5%BA%95%E5%B1%82%E7%9F%A5%E8%AF%86/OC%E5%AF%B9%E8%B1%A1%E5%88%86%E7%B1%BB_4.png" alt="OC对象分类_4"></p>
+<img src="/2019/05/01/OC对象分类/OC对象分类_4.png">
+
+
 <p>用代码进行验证</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">@interface MyClass : NSObject</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation MyClass</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">struct classStruct</span><br><span class="line">&#123;</span><br><span class="line">Class isa;</span><br><span class="line">Class superClass;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">//实例对象</span><br><span class="line">MyClass * instanceClass = [[MyClass alloc] init];</span><br><span class="line"></span><br><span class="line">//类对象</span><br><span class="line">Class class = (object_getClass(instanceClass));</span><br><span class="line"></span><br><span class="line">//元类对象</span><br><span class="line">Class metaClass1 = object_getClass(class);</span><br><span class="line">//将元类对象转为自定义的结构体指针</span><br><span class="line">struct classStruct* metaClass2 = (__bridge struct classStruct *)metaClass1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p><code>MyClass</code> 继承自 <code>NSObject</code> ，所以 <code>MyClass</code> 的元类对象的 <code>isa</code> 和 <code>superclass</code> 都应该指向 <code>NSObject</code> 的元类对象</p>
-<p><img src="/Users/daniel/Desktop/OC%E5%BA%95%E5%B1%82%E7%9F%A5%E8%AF%86/OC%E5%AF%B9%E8%B1%A1%E5%88%86%E7%B1%BB_5.png" alt="OC对象分类_5"></p>
+<img src="/2019/05/01/OC对象分类/OC对象分类_5.png">
+
+
 <p>接下来使用 <strong>lldb</strong> ，仅需验证 <code>metaClass2</code> 的 <code>isa</code> 和 <code>superclass</code> 均指向同一个地址即可</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(lldb) p/x metaClass2-&gt;superClass</span><br><span class="line">(Class) $0 = 0x00007fff8aed60f0</span><br><span class="line">(lldb) p/x metaClass2-&gt;isa</span><br><span class="line">(Class) $1 = 0x001dffff8aed60f1</span><br><span class="line">(lldb) p/x 0x00007ffffffffff8 &amp; 0x001dffff8aed60f1</span><br><span class="line">(long) $2 = 0x00007fff8aed60f0</span><br></pre></td></tr></table></figure>
 
